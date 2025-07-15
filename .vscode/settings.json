@@ -1,0 +1,8 @@
+{
+    "favorites.resources": [
+        {
+            "filePath": "routes\\api.php",
+            "group": "Default"
+        }
+    ]
+}

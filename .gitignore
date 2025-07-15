@@ -21,3 +21,7 @@ Homestead.yaml
 Homestead.json
 /.vagrant
 .phpunit.result.cache
+.env.PCFitxatge
+.env.SMI2000ADH
+.env.SERVIDOR
+.env.DESKTOP-HCBQ1DU
