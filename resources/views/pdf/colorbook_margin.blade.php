@@ -17,7 +17,7 @@ $versoImageLayerWidth = $versoMainLayerWidth - $layout['verso']['image-margin']*
 $versoImageLayerHeight = $versoMainLayerHeight - $layout['verso']['image-margin']*2;
 
 
-$versoText1Top = $height* $layout['verso']['text-y-percentage'];
+$versoText1Top = $height* $layout['verso']['text-y-percentage'] - $layout['verso']['primary-font-size'];
 $versoText2Top = $versoText1Top+ $layout['verso']['primary-font-size']+ $layout['verso']['text-margin'];
 
 $rectoBlackLayerWidth = $width - $layout['recto']['margin'] * 2;
@@ -27,7 +27,7 @@ $rectoImageLayerWidth = $width - $layout['recto']['margin']*2  - $layout['recto'
 $rectoImageLayerHeight = $height - $layout['recto']['margin']*2  - $layout['recto']['image-margin']*2;
 
 $rectoImageLayerMargin = $layout['recto']['margin']+ $layout['recto']['image-margin'];
-$rectoTextTop = $height/2 - $layout['recto']['font-size'];
+$rectoTextTop = $height* $layout['recto']['text-y-percentage'] - $layout['recto']['font-size'];
 @endphp
 <!DOCTYPE html>
 <html>

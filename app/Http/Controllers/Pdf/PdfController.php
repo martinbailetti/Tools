@@ -239,7 +239,8 @@ class PdfController extends Controller
                 'recto' => [
                     'margin' => 0.5,
                     'image-margin' => 0.25,
-                    'font-size' => 8
+                    'font-size' => 8,
+                    'text-y-percentage' => 0.5,
                 ]
             ];
             $layoutLetter = [
@@ -252,7 +253,7 @@ class PdfController extends Controller
                     'margin' => 0.5,
                     'border-margin' => 0.25,
                     'image-margin' => 0.25,
-                    'text-y-percentage' => 0.6,
+                    'text-y-percentage' => 0.75,
                     'text-margin' => 0.3,
                     'primary-font-size' => 2.1,
                     'secondary-font-size' => 1.5,
@@ -260,7 +261,8 @@ class PdfController extends Controller
                 'recto' => [
                     'margin' => 0.5,
                     'image-margin' => 0.25,
-                    'font-size' => 8
+                    'font-size' => 8,
+                    'text-y-percentage' => 0.53,
                 ]
             ];
 
