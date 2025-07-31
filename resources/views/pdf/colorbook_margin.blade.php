@@ -1,3 +1,34 @@
+@php
+$width = $layout['width']-($layout['margin-in']+$layout['margin-out']);
+$height = $layout['height']-($layout['margin-in']+$layout['margin-out']);
+
+$versoWhiteLayerWidth = $width - $layout['verso']['margin'] * 2;
+$versoWhiteLayerHeight = $height - $layout['verso']['margin'] * 2;
+
+
+$versoMainLayerMargin = $layout['verso']['margin']+ $layout['verso']['border-margin'];
+
+$versoMainLayerWidth = $versoWhiteLayerWidth - $layout['verso']['border-margin']*2;
+$versoMainLayerHeight = $versoWhiteLayerHeight - $layout['verso']['border-margin']*2;
+
+$versoImageLayerMargin = $versoMainLayerMargin+ $layout['verso']['image-margin'];
+
+$versoImageLayerWidth = $versoMainLayerWidth - $layout['verso']['image-margin']*2;
+$versoImageLayerHeight = $versoMainLayerHeight - $layout['verso']['image-margin']*2;
+
+
+$versoText1Top = $height* $layout['verso']['text-y-percentage'];
+$versoText2Top = $versoText1Top+ $layout['verso']['primary-font-size']+ $layout['verso']['text-margin'];
+
+$rectoBlackLayerWidth = $width - $layout['recto']['margin'] * 2;
+$rectoBlackLayerHeight = $height - $layout['recto']['margin'] * 2;
+
+$rectoImageLayerWidth = $width - $layout['recto']['margin']*2  - $layout['recto']['image-margin']*2;
+$rectoImageLayerHeight = $height - $layout['recto']['margin']*2  - $layout['recto']['image-margin']*2;
+
+$rectoImageLayerMargin = $layout['recto']['margin']+ $layout['recto']['image-margin'];
+$rectoTextTop = $height/2 - $layout['recto']['font-size'];
+@endphp
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,40 +68,40 @@
 
     @foreach($items as $index => $item)
 
-    <div style="width:{{ $layout['width']-($layout['margin-in']+$layout['margin-out'])  }}cm;height:{{ $layout['height']-($layout['margin-in']+$layout['margin-out']) }}cm;top:{{ $layout['margin-out'] }}cm;left:{{ $layout['margin-in'] }}cm;background-color:black;margin:0cm 0cm;overflow:hidden;position:relative; ">
-        <div style="position:absolute;width:{{ $layout['width'] - ($layout['margin-in']+$layout['margin-out'])  - $layout['verso']['margin']*2 }}cm;height:{{ $layout['height']- ($layout['margin-in']+$layout['margin-out'])  - $layout['verso']['margin']*2 }}cm;top:{{ $layout['verso']['margin'] }}cm;left:{{ $layout['verso']['margin'] }}cm;background-color:white;"> </div>
+    <div style="width:{{ $width }}cm;height:{{ $height }}cm;top:{{ $layout['margin-out'] }}cm;left:{{ $layout['margin-in'] }}cm;background-color:black;margin:0cm 0cm;overflow:hidden;position:relative; ">
+        <div style="position:absolute;width:{{ $versoWhiteLayerWidth }}cm;height:{{ $versoWhiteLayerHeight }}cm;top:{{ $layout['verso']['margin'] }}cm;left:{{ $layout['verso']['margin'] }}cm;background-color:white;"> </div>
 
-        <div style="position:absolute; width:{{ $layout['width'] - ($layout['margin-in']+$layout['margin-out'])  - $layout['verso']['margin']*2  - $layout['verso']['border-margin']*2 }}cm;height:{{ $layout['height']-($layout['margin-in']+$layout['margin-out'])  - $layout['verso']['margin']*2  - $layout['verso']['border-margin']*2 }}cm;top:{{ $layout['verso']['margin']+ $layout['verso']['border-margin'] }}cm;left:{{ $layout['verso']['margin']+ $layout['verso']['border-margin'] }}cm; background-color: black;">
+        <div style="position:absolute; width:{{ $versoMainLayerWidth }}cm;height:{{ $versoMainLayerHeight  }}cm;top:{{ $versoMainLayerMargin }}cm;left:{{ $versoMainLayerMargin }}cm; background-color: black;">
         </div>
-        <div style="position:absolute; width:{{ $layout['width'] -($layout['margin-in']+$layout['margin-out'])  - $layout['verso']['margin']*2  - $layout['verso']['border-margin']*2 - $layout['verso']['image-margin']*2 }}cm;height:{{ $layout['height']- ($layout['margin-in']+$layout['margin-out'])  - $layout['verso']['margin']*2  - $layout['verso']['border-margin']*2 - $layout['verso']['image-margin']*2 }}cm;top:{{ $layout['verso']['margin']+ $layout['verso']['border-margin']+ $layout['verso']['image-margin'] }}cm;left:{{ $layout['verso']['margin']+ $layout['verso']['border-margin']+ $layout['verso']['image-margin'] }}cm; background-image: url('{{ $item['image']['url'] }}'); background-size: cover; background-position: center;">
+        <div style="position:absolute; width:{{  $versoImageLayerWidth }}cm;height:{{ $versoImageLayerHeight}}cm;top:{{ $versoImageLayerMargin }}cm;left:{{ $versoImageLayerMargin }}cm; background-image: url('{{ $item['image']['url'] }}'); background-size: cover; background-position: center;">
         </div>
 
-        <div style="position:absolute;  width:{{ $layout['width'] -($layout['margin-in']+$layout['margin-out'])  - $layout['verso']['margin']*2  - $layout['verso']['border-margin']*2 }}cm;height:{{ $layout['height'] -($layout['margin-in']+$layout['margin-out'])  - $layout['verso']['margin']*2  - $layout['verso']['border-margin']*2 }}cm;top:{{  $layout['verso']['margin']+ $layout['verso']['border-margin'] }}cm;left:{{ $layout['verso']['margin']+ $layout['verso']['border-margin'] }}cm; background-color: black; opacity:0.8;">
+        <div style="position:absolute;  width:{{ $versoMainLayerWidth }}cm;height:{{ $versoMainLayerHeight  }}cm;top:{{ $versoMainLayerMargin }}cm;left:{{ $versoMainLayerMargin }}cm; background-color: black; opacity:0.8;">
         </div>
-        <div style="position:absolute; width:{{ $layout['width'] -($layout['margin-in']+$layout['margin-out'])  - $layout['verso']['margin']*2  - $layout['verso']['border-margin']*2 }}cm;left:{{  $layout['verso']['margin']+ $layout['verso']['border-margin'] }}cm;top:{{ $layout['height']* $layout['verso']['text-y-percentage'] }}cm;font-size:{{ $layout['verso']['primary-font-size'] }}cm; color:white; font-family: 'NotoSerif'; text-align:center;">
+        <div style="position:absolute; width:{{ $versoMainLayerWidth }}cm;left:{{  $versoMainLayerMargin }}cm;top:{{ $versoText1Top }}cm;line-height:{{ $layout['verso']['primary-font-size'] }}cm;font-size:{{ $layout['verso']['primary-font-size'] }}cm; color:white; font-family: 'NotoSerif'; text-align:center;">
             {!! htmlspecialchars_decode($item['es'], ENT_QUOTES) !!}
         </div>
-        <div style="position:absolute; width:{{ $layout['width'] -($layout['margin-in']+$layout['margin-out'])  - $layout['verso']['margin']*2  - $layout['verso']['border-margin']*2 }}cm;left:{{ $layout['verso']['margin']+ $layout['verso']['border-margin'] }}cm;top:{{ $layout['height']* $layout['verso']['text-y-percentage']+ $layout['verso']['primary-font-size']+ $layout['verso']['text-margin'] }}cm;font-size:{{ $layout['verso']['secondary-font-size'] }}cm; color:white; font-family: 'NotoSerifItalic'; text-align:center;">
+        <div style="position:absolute; width:{{ $versoMainLayerWidth }}cm;left:{{ $versoMainLayerMargin }}cm;top:{{ $versoText2Top }}cm;line-height:{{ $layout['verso']['secondary-font-size'] }}cm;font-size:{{ $layout['verso']['secondary-font-size'] }}cm; color:white; font-family: 'NotoSerifItalic'; text-align:center;">
             {!! htmlspecialchars_decode($item['sy2'], ENT_QUOTES) !!}
         </div>
     </div>
 
-    <div style="width:{{ $layout['width'] -($layout['margin-in']+$layout['margin-out']) }}cm;height:{{ $layout['height'] -($layout['margin-in']+$layout['margin-out']) }}cm;top:{{ $layout['margin-out'] }}cm;left:{{ $layout['margin-in'] }}cm;margin:0cm 0cm;overflow:hidden;position:relative; ">
-        <div style="position:absolute;width:{{ $layout['width'] - ($layout['margin-in']+$layout['margin-out'])  - $layout['recto']['margin']*2 }}cm;height:{{ $layout['height']- ($layout['margin-in']+$layout['margin-out'])  - $layout['recto']['margin']*2 }}cm;top:{{ $layout['recto']['margin'] }}cm;left:{{ $layout['recto']['margin'] }}cm;background-color:black;"> </div>
-        <div style="position:absolute; width:{{ $layout['width'] - ($layout['margin-in']+$layout['margin-out'])  - $layout['recto']['margin']*2  - $layout['recto']['image-margin']*2 }}cm;height:{{ $layout['height']- ($layout['margin-in']+$layout['margin-out'])  - $layout['recto']['margin']*2  - $layout['recto']['image-margin']*2 }}cm;top:{{ $layout['recto']['margin']+ $layout['recto']['image-margin'] }}cm;left:{{ $layout['recto']['margin']+ $layout['recto']['image-margin'] }}cm; background-image: url('{{ $item['image']['url'] }}'); background-size: cover; background-position: center;">
-        </div>
-        <div style="position:absolute; width:{{ $layout['width']- ($layout['margin-in']+$layout['margin-out'])  - $layout['recto']['margin']*2  - $layout['recto']['image-margin']*2 }}cm;left:{{ $layout['recto']['margin']+ $layout['recto']['image-margin'] }}cm;top:{{ $layout['recto']['text-y-percentage']* $layout['height']  }}cm;font-size:{{ $layout['recto']['font-size'] }}cm; color:black; font-family: 'Zen'; text-align:center;transform: translate(-0.1cm, -0.1cm);">
-            {{ $item['sym'] }}
+    <div style="width:{{ $width }}cm;height:{{ $height }}cm;top:{{ $layout['margin-out'] }}cm;left:{{ $layout['margin-in'] }}cm;margin:0cm 0cm;overflow:hidden;position:relative; ">
+        <div style="position:absolute;width:{{ $rectoBlackLayerWidth }}cm;height:{{ $rectoBlackLayerHeight }}cm;top:{{ $layout['recto']['margin'] }}cm;left:{{ $layout['recto']['margin'] }}cm;background-color:black;"> </div>
+        <div style="position:absolute; width:{{ $rectoImageLayerWidth }}cm;height:{{ $rectoImageLayerHeight }}cm;top:{{ $rectoImageLayerMargin }}cm;left:{{ $rectoImageLayerMargin }}cm; background-image: url('{{ $item['image']['url'] }}'); background-size: cover; background-position: center;">
         </div>
 
 
-        <div style="position:absolute; width:{{ $layout['width']- ($layout['margin-in']+$layout['margin-out'])  - $layout['recto']['margin']*2  - $layout['recto']['image-margin']*2 }}cm;left:{{ $layout['recto']['margin']+ $layout['recto']['image-margin'] }}cm;top:{{ $layout['recto']['text-y-percentage']* $layout['height'] }}cm;font-size:{{ $layout['recto']['font-size'] }}cm; color:black; font-family: 'Zen'; text-align:center;transform: scale(1.03, 1.03);">
+        <div style="position:absolute; width:{{$rectoImageLayerWidth }}cm;left:{{ $rectoImageLayerMargin }}cm;top:{{ $rectoTextTop  }}cm;font-size:{{ $layout['recto']['font-size'] }}cm;line-height:{{ $layout['recto']['font-size'] }}cm; color:black; font-family: 'Zen'; text-align:center;transform: translate(-0.1cm, -0.1cm);">
             {{ $item['sym'] }}
         </div>
-        <div style="position:absolute; width:{{ $layout['width']- ($layout['margin-in']+$layout['margin-out'])  - $layout['recto']['margin']*2  - $layout['recto']['image-margin']*2 }}cm;left:{{ $layout['recto']['margin']+ $layout['recto']['image-margin'] }}cm;top:{{ $layout['recto']['text-y-percentage']* $layout['height'] }}cm;font-size:{{ $layout['recto']['font-size'] }}cm; color:black; font-family: 'Zen'; text-align:center;transform: scale(0.97, 0.97);">
+        <div style="position:absolute; width:{{ $rectoImageLayerWidth }}cm;left:{{ $rectoImageLayerMargin }}cm;top:{{ $rectoTextTop }}cm;font-size:{{ $layout['recto']['font-size'] }}cm;line-height:{{ $layout['recto']['font-size'] }}cm; color:black; font-family: 'Zen'; text-align:center;transform: scale(1.03, 1.03);">
             {{ $item['sym'] }}
         </div>
-        <div style="position:absolute; width:{{ $layout['width']- ($layout['margin-in']+$layout['margin-out'])  - $layout['recto']['margin']*2  - $layout['recto']['image-margin']*2 }}cm;left:{{ $layout['recto']['margin']+ $layout['recto']['image-margin'] }}cm;top:{{ $layout['recto']['text-y-percentage']* $layout['height'] }}cm;font-size:{{ $layout['recto']['font-size'] }}cm; color:white; font-family: 'Zen'; text-align:center;">
+        <div style="position:absolute; width:{{ $rectoImageLayerWidth }}cm;left:{{ $rectoImageLayerMargin }}cm;top:{{ $rectoTextTop }}cm;font-size:{{ $layout['recto']['font-size'] }}cm;line-height:{{ $layout['recto']['font-size'] }}cm; color:black; font-family: 'Zen'; text-align:center;transform: scale(0.97, 0.97);">
+            {{ $item['sym'] }}
+        </div>
+        <div style="position:absolute; width:{{ $rectoImageLayerWidth }}cm;left:{{ $rectoImageLayerMargin }}cm;top:{{ $rectoTextTop }}cm;font-size:{{ $layout['recto']['font-size'] }}cm;line-height:{{ $layout['recto']['font-size'] }}cm; color:white; font-family: 'Zen'; text-align:center;">
             {{ $item['sym'] }}
         </div>
     </div>
