@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\RolesController;
 use App\Http\Controllers\Auth\UsersController;
+use App\Http\Controllers\Excel\ExcelController;
 use App\Http\Controllers\Pdf\PdfController;
 use App\Http\Controllers\Tasks\ClientHoursController;
 use App\Http\Controllers\Tasks\ClientsController;
@@ -32,4 +33,7 @@ use App\Http\Controllers\Tasks\UserTasksController;
 Route::get('download', [FileDownloadController::class, 'download']);
 
 Route::get('printable/{template}/{path}', [PdfController::class, 'get']);
+Route::get('generate', [PdfController::class, 'generateColorBookPdf']);
+Route::get('generatec', [PdfController::class, 'generateColorBookPdfCarta']);
+Route::get('excel', [ExcelController::class, 'index']);
 

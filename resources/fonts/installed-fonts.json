@@ -1,0 +1,20 @@
+{
+    "zen": {
+        "normal": "zen_normal_0955377f1cd419522fe9bc60ffed9a18"
+    },
+    "hanwang": {
+        "normal": "hanwang_normal_48d70f4552c72634e8bbd15a5a88d8e7"
+    },
+    "garamond": {
+        "normal": "garamond_normal_328e1e263175f3a620252b2f338b03e2"
+    },
+    "garamonditalic": {
+        "italic": "garamonditalic_italic_38b25cf60490f4aadf8035a3f6fae9e5"
+    },
+    "notoserif": {
+        "normal": "notoserif_normal_582f71236dc9ac040770a5b5169f1802"
+    },
+    "notoserifitalic": {
+        "normal": "notoserifitalic_normal_87306f20a5f04d2cbede26fa74f31d45"
+    }
+}
