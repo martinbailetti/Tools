@@ -34,6 +34,6 @@ Route::get('download', [FileDownloadController::class, 'download']);
 
 Route::get('printable/{template}/{path}', [PdfController::class, 'get']);
 Route::get('generate', [PdfController::class, 'generateColorBookPdf']);
-Route::get('generatec', [PdfController::class, 'generateColorBookPdfCarta']);
+
 Route::get('excel', [ExcelController::class, 'index']);
 
