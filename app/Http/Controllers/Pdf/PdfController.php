@@ -104,6 +104,18 @@ class PdfController extends Controller
         try {
             // Si no se proporciona archivo, buscar en storage/app/public
             if (!$excelFile) {
+                // Descargar el archivo de Google Spreadsheet como Excel
+                // Reemplaza 'SPREADSHEET_ID' y 'SHEET_NAME' según corresponda
+                $spreadsheetId = '1nYdFCcD5hLjPmz1xmddfNupjItjOI4riFzgpKX9Bq7k';
+                $sheetName = 'Chino';
+                $exportUrl = "https://docs.google.com/spreadsheets/d/$spreadsheetId/export?format=xlsx&sheet=$sheetName";
+
+                // Descargar el archivo temporalmente
+                $tempExcel = storage_path('app/temp_google_excel.xlsx');
+                file_put_contents($tempExcel, file_get_contents($exportUrl));
+                $excelFile = $tempExcel;
+            }
+            if (!$excelFile) {
                 $excelFile = public_path('/excel/test.xlsx'); // Ajusta el nombre según tu archivo
             }
 
