@@ -23,14 +23,14 @@ $versoText2Top = $versoText1Top+ $layout['verso']['primary-font-size']+ $layout[
 $rectoBlackLayerWidth = $width - $layout['recto']['margin'] * 2;
 $rectoBlackLayerHeight = $height - $layout['recto']['margin'] * 2;
 
-$rectoImageLayerWidth = $width - $layout['recto']['margin']*2  - $layout['recto']['image-margin']*2;
-$rectoImageLayerHeight = $height - $layout['recto']['margin']*2  - $layout['recto']['image-margin']*2;
+$rectoImageLayerWidth = $width - $layout['recto']['margin']*2 - $layout['recto']['image-margin']*2;
+$rectoImageLayerHeight = $height - $layout['recto']['margin']*2 - $layout['recto']['image-margin']*2;
 
 $rectoImageLayerMargin = $layout['recto']['margin']+ $layout['recto']['image-margin'];
 $rectoTextTop = $height* $layout['recto']['text-y-percentage'] - $layout['recto']['font-size'];
 
 
-$firstPageTitleLine1Top = $height* $layout['page1']['title-line-1-percentage'] - $layout['page1']['title-line-1-font-size'];
+$firstPageTitleLine1Top = $height* $layout['page1']['title-line-1-y-percentage'] - $layout['page1']['title-line-1-font-size'];
 $firstPageTitleLine2Top = $firstPageTitleLine1Top + $layout['page1']['title-line-1-font-size'] + $layout['page1']['title-line-2-margin'];
 $firstPageTitleLine3Top = $firstPageTitleLine2Top + $layout['page1']['title-line-2-font-size'] + $layout['page1']['title-line-3-margin'];
 
@@ -61,28 +61,67 @@ $firstPageTitleLine3Top = $firstPageTitleLine2Top + $layout['page1']['title-line
             src: url('{{ resource_path('fonts/NotoSerif-Italic.ttf') }}') format('truetype');
         }
 
-
-
-        .page-break {
-            page-break-after: always;
-        }
-
     </style>
 </head>
 <body style="margin: 0cm 0cm;height:100%;">
     <div style="font-family: 'NotoSerif';width:{{ $width }}cm;height:{{ $height }}cm;top:{{ $layout['margin-out'] }}cm;left:{{ $layout['margin-in'] }}cm;margin:0cm 0cm;overflow:hidden;position:relative; ">
 
         <div style="font-size:{{ $layout['page1']['title-line-1-font-size'] }}cm;line-height:{{ $layout['page1']['title-line-1-font-size'] }}cm; position:absolute; width:{{ $width }}cm;top:{{ $firstPageTitleLine1Top }}cm; text-align: center;">
-        {!! htmlspecialchars_decode($layout['page1']['title-line-1'], ENT_QUOTES) !!}
+            {!! htmlspecialchars_decode($layout['page1']['title-line-1'], ENT_QUOTES) !!}
         </div>
         <div style="font-size:{{ $layout['page1']['title-line-2-font-size'] }}cm;line-height:{{ $layout['page1']['title-line-2-font-size'] }}cm; position:absolute; width:{{ $width }}cm;top:{{ $firstPageTitleLine2Top }}cm; text-align: center;">
-        {!! htmlspecialchars_decode($layout['page1']['title-line-2'], ENT_QUOTES) !!}
+            {!! htmlspecialchars_decode($layout['page1']['title-line-2'], ENT_QUOTES) !!}
         </div>
         <div style="font-size:{{ $layout['page1']['title-line-3-font-size'] }}cm;line-height:{{ $layout['page1']['title-line-3-font-size'] }}cm; position:absolute; width:{{ $width }}cm;top:{{ $firstPageTitleLine3Top }}cm; text-align: center;">
-        {!! htmlspecialchars_decode($layout['page1']['title-line-3'], ENT_QUOTES) !!}
+            {!! htmlspecialchars_decode($layout['page1']['title-line-3'], ENT_QUOTES) !!}
         </div>
 
+        <div style=" position:absolute; width:{{ $width }}cm;top:{{ $height * $layout['page1']['logo-y-percentage'] }}cm; text-align: center;">
+            <img src="{{ $layout['page1']['logo-image'] }}" style="width: auto; height: {{ $layout['page1']['logo-height'] }}cm;" />
+        </div>
     </div>
+    <div style="page-break-after: always;"></div>
+    <div style="font-family: 'NotoSerif';font-size: {{ $layout['page2']['text-font-size'] }}cm;line-height: {{ $layout['page2']['text-font-size'] }}cm;width:{{ $width }}cm;height:{{ $height }}cm;top:{{ $layout['margin-out'] }}cm;left:{{ $layout['margin-in'] }}cm;margin:0cm 0cm;overflow:hidden;position:relative; ">
+        <div style="position:absolute; width:{{ $width- $layout['page2']['margin-x']*2  }}cm;bottom:{{ $layout['page2']['margin-bottom']+ $layout['margin-out'] }}cm;left:{{ $layout['page2']['margin-x'] }}cm;">
+            <div style="margin-bottom: {{ $layout['page2']['text-y-space'] }}cm;">
+                El secreto de los ideogramas chinos<br>
+                Libro para colorear para mentes curiosas
+            </div>
+            <div style="margin-bottom: {{ $layout['page2']['text-y-space'] }}cm;">
+                © 2025 The Happy Capybara<br>
+                Todos los derechos reservados
+            </div>
+            <div style="margin-bottom: {{ $layout['page2']['text-y-space'] }}cm;">
+                Ninguna parte de esta publicación puede ser reproducida, distribuida o transmitida de forma alguna ni por medio alguno, incluyendo fotocopias, grabaciones u otros métodos electrónicos o mecánicos, sin el permiso previo por escrito del editor, excepto en el caso de citas breves incorporadas en críticas y ciertos otros usos no comerciales permitidos por la ley de derechos de autor.
+
+            </div>
+            <div>
+                Primera edición Julio 2025<br>
+                Publicado por The Happy Capybara Barcelona, España<br>
+                info@thehappycapybara.com<br>
+                ISBN: 9798294523992<br>
+                Independently published<br>
+                Impreso en Italia<br>
+                Editado y distribuido por Amazon KDP
+            </div>
+        </div>
+    </div>
+    <div style="page-break-after: always;"></div>
+    <div style="font-family: 'NotoSerif';width:{{ $width }}cm;height:{{ $height }}cm;top:{{ $layout['margin-out'] }}cm;left:{{ $layout['margin-in'] }}cm;margin:0cm 0cm;overflow:hidden;position:relative; ">
+
+
+        <div style="position:absolute; width:{{ $width }}cm;top:{{ $height * $layout['page3']['image-y-percentage'] }}cm; text-align: center;">
+            <img src="{{ $layout['page3']['image'] }}" style="width: {{ $width- $layout['page3']['margin']*2 }}cm; height:auto;" />
+        </div>
+
+
+    </div>
+    <div style="page-break-after: always;"></div>
+    <div style="background-image: url('{{ $layout['page4']['image'] }}'); background-size: cover; background-position: center;width:{{ $width }}cm;height:{{ $height }}cm;top:{{ $layout['margin-out'] }}cm;left:{{ $layout['margin-in'] }}cm;margin:0cm 0cm;overflow:hidden;position:relative; ">
+
+    </div>
+
+
 
     @foreach($items as $index => $item)
 
