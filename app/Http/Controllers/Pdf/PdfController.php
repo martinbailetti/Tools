@@ -191,6 +191,9 @@ class PdfController extends Controller
                 $symValue = $row['sym'];
                 $sy2Value = $row['sy2'];
                 $esValue = $row['es'];
+
+                $enValue = str_replace(' ', '', $enValue);
+
                 $enValue = preg_replace('/[^a-zA-Z]/', '_', $enValue);
                 $imageUrl = $baseUrl . strtolower($enValue) . '.png';
 
