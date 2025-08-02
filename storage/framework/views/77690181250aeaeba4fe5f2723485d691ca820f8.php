@@ -28,6 +28,12 @@ $rectoImageLayerHeight = $height - $layout['recto']['margin']*2  - $layout['rect
 
 $rectoImageLayerMargin = $layout['recto']['margin']+ $layout['recto']['image-margin'];
 $rectoTextTop = $height* $layout['recto']['text-y-percentage'] - $layout['recto']['font-size'];
+
+
+$firstPageTitleLine1Top = $height* $layout['page1']['title-line-1-percentage'] - $layout['page1']['title-line-1-font-size'];
+$firstPageTitleLine2Top = $firstPageTitleLine1Top + $layout['page1']['title-line-1-font-size'] + $layout['page1']['title-line-2-margin'];
+$firstPageTitleLine3Top = $firstPageTitleLine2Top + $layout['page1']['title-line-2-font-size'] + $layout['page1']['title-line-3-margin'];
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -64,7 +70,22 @@ $rectoTextTop = $height* $layout['recto']['text-y-percentage'] - $layout['recto'
     </style>
 </head>
 <body style="margin: 0cm 0cm;height:100%;">
+    <div style="font-family: 'NotoSerif';width:<?php echo e($width); ?>cm;height:<?php echo e($height); ?>cm;top:<?php echo e($layout['margin-out']); ?>cm;left:<?php echo e($layout['margin-in']); ?>cm;margin:0cm 0cm;overflow:hidden;position:relative; ">
 
+        <div style="font-size:<?php echo e($layout['page1']['title-line-1-font-size']); ?>cm;line-height:<?php echo e($layout['page1']['title-line-1-font-size']); ?>cm; position:absolute; width:<?php echo e($width); ?>cm;top:<?php echo e($firstPageTitleLine1Top); ?>cm; text-align: center;">
+        <?php echo htmlspecialchars_decode($layout['page1']['title-line-1'], ENT_QUOTES); ?>
+
+        </div>
+        <div style="font-size:<?php echo e($layout['page1']['title-line-2-font-size']); ?>cm;line-height:<?php echo e($layout['page1']['title-line-2-font-size']); ?>cm; position:absolute; width:<?php echo e($width); ?>cm;top:<?php echo e($firstPageTitleLine2Top); ?>cm; text-align: center;">
+        <?php echo htmlspecialchars_decode($layout['page1']['title-line-2'], ENT_QUOTES); ?>
+
+        </div>
+        <div style="font-size:<?php echo e($layout['page1']['title-line-3-font-size']); ?>cm;line-height:<?php echo e($layout['page1']['title-line-3-font-size']); ?>cm; position:absolute; width:<?php echo e($width); ?>cm;top:<?php echo e($firstPageTitleLine3Top); ?>cm; text-align: center;">
+        <?php echo htmlspecialchars_decode($layout['page1']['title-line-3'], ENT_QUOTES); ?>
+
+        </div>
+
+    </div>
 
     <?php $__currentLoopData = $items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
@@ -92,8 +113,6 @@ $rectoTextTop = $height* $layout['recto']['text-y-percentage'] - $layout['recto'
         <div style="position:absolute;width:<?php echo e($rectoBlackLayerWidth); ?>cm;height:<?php echo e($rectoBlackLayerHeight); ?>cm;top:<?php echo e($layout['recto']['margin']); ?>cm;left:<?php echo e($layout['recto']['margin']); ?>cm;background-color:black;"> </div>
         <div style="position:absolute; width:<?php echo e($rectoImageLayerWidth); ?>cm;height:<?php echo e($rectoImageLayerHeight); ?>cm;top:<?php echo e($rectoImageLayerMargin); ?>cm;left:<?php echo e($rectoImageLayerMargin); ?>cm; background-image: url('<?php echo e($item['image']['url']); ?>'); background-size: cover; background-position: center;">
         </div>
-
-
         <div style="position:absolute; width:<?php echo e($rectoImageLayerWidth); ?>cm;left:<?php echo e($rectoImageLayerMargin); ?>cm;top:<?php echo e($rectoTextTop); ?>cm;font-size:<?php echo e($layout['recto']['font-size']); ?>cm;line-height:<?php echo e($layout['recto']['font-size']); ?>cm; color:black; font-family: 'Zen'; text-align:center;transform: translate(-0.1cm, -0.1cm);">
             <?php echo e($item['sym']); ?>
 

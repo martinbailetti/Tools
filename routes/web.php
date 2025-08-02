@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Tasks\FileDownloadController;
+use App\Http\Controllers\UI\GeneratorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,8 +14,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-Route::group(['namespace' => 'App\Http\Controllers\Pdf'], function () {
-
-    Route::get('/', 'PdfController@index')->name('index');
-});
+Route::get('/', [GeneratorController::class, 'index'])->name('generator.index');
+Route::post('/generate', [GeneratorController::class, 'generateColorBookPdf'])->name('pdf.generate');

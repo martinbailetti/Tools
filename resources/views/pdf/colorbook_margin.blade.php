@@ -28,6 +28,12 @@ $rectoImageLayerHeight = $height - $layout['recto']['margin']*2  - $layout['rect
 
 $rectoImageLayerMargin = $layout['recto']['margin']+ $layout['recto']['image-margin'];
 $rectoTextTop = $height* $layout['recto']['text-y-percentage'] - $layout['recto']['font-size'];
+
+
+$firstPageTitleLine1Top = $height* $layout['page1']['title-line-1-percentage'] - $layout['page1']['title-line-1-font-size'];
+$firstPageTitleLine2Top = $firstPageTitleLine1Top + $layout['page1']['title-line-1-font-size'] + $layout['page1']['title-line-2-margin'];
+$firstPageTitleLine3Top = $firstPageTitleLine2Top + $layout['page1']['title-line-2-font-size'] + $layout['page1']['title-line-3-margin'];
+
 @endphp
 <!DOCTYPE html>
 <html>
@@ -64,7 +70,19 @@ $rectoTextTop = $height* $layout['recto']['text-y-percentage'] - $layout['recto'
     </style>
 </head>
 <body style="margin: 0cm 0cm;height:100%;">
+    <div style="font-family: 'NotoSerif';width:{{ $width }}cm;height:{{ $height }}cm;top:{{ $layout['margin-out'] }}cm;left:{{ $layout['margin-in'] }}cm;margin:0cm 0cm;overflow:hidden;position:relative; ">
 
+        <div style="font-size:{{ $layout['page1']['title-line-1-font-size'] }}cm;line-height:{{ $layout['page1']['title-line-1-font-size'] }}cm; position:absolute; width:{{ $width }}cm;top:{{ $firstPageTitleLine1Top }}cm; text-align: center;">
+        {!! htmlspecialchars_decode($layout['page1']['title-line-1'], ENT_QUOTES) !!}
+        </div>
+        <div style="font-size:{{ $layout['page1']['title-line-2-font-size'] }}cm;line-height:{{ $layout['page1']['title-line-2-font-size'] }}cm; position:absolute; width:{{ $width }}cm;top:{{ $firstPageTitleLine2Top }}cm; text-align: center;">
+        {!! htmlspecialchars_decode($layout['page1']['title-line-2'], ENT_QUOTES) !!}
+        </div>
+        <div style="font-size:{{ $layout['page1']['title-line-3-font-size'] }}cm;line-height:{{ $layout['page1']['title-line-3-font-size'] }}cm; position:absolute; width:{{ $width }}cm;top:{{ $firstPageTitleLine3Top }}cm; text-align: center;">
+        {!! htmlspecialchars_decode($layout['page1']['title-line-3'], ENT_QUOTES) !!}
+        </div>
+
+    </div>
 
     @foreach($items as $index => $item)
 
@@ -90,8 +108,6 @@ $rectoTextTop = $height* $layout['recto']['text-y-percentage'] - $layout['recto'
         <div style="position:absolute;width:{{ $rectoBlackLayerWidth }}cm;height:{{ $rectoBlackLayerHeight }}cm;top:{{ $layout['recto']['margin'] }}cm;left:{{ $layout['recto']['margin'] }}cm;background-color:black;"> </div>
         <div style="position:absolute; width:{{ $rectoImageLayerWidth }}cm;height:{{ $rectoImageLayerHeight }}cm;top:{{ $rectoImageLayerMargin }}cm;left:{{ $rectoImageLayerMargin }}cm; background-image: url('{{ $item['image']['url'] }}'); background-size: cover; background-position: center;">
         </div>
-
-
         <div style="position:absolute; width:{{$rectoImageLayerWidth }}cm;left:{{ $rectoImageLayerMargin }}cm;top:{{ $rectoTextTop  }}cm;font-size:{{ $layout['recto']['font-size'] }}cm;line-height:{{ $layout['recto']['font-size'] }}cm; color:black; font-family: 'Zen'; text-align:center;transform: translate(-0.1cm, -0.1cm);">
             {{ $item['sym'] }}
         </div>
