@@ -57,6 +57,11 @@ $firstPageTitleLine3Top = $firstPageTitleLine2Top + $layout['page1']['title-line
         }
 
         @font-face {
+            font-family: 'NotoSerifBold';
+            src: url('{{ resource_path('fonts/NotoSerifSC-Bold.ttf') }}') format('truetype');
+        }
+
+        @font-face {
             font-family: 'NotoSerifItalic';
             src: url('{{ resource_path('fonts/NotoSerif-Italic.ttf') }}') format('truetype');
         }
@@ -120,7 +125,41 @@ $firstPageTitleLine3Top = $firstPageTitleLine2Top + $layout['page1']['title-line
     <div style="background-image: url('{{ $layout['page4']['image'] }}'); background-size: cover; background-position: center;width:{{ $width }}cm;height:{{ $height }}cm;top:{{ $layout['margin-out'] }}cm;left:{{ $layout['margin-in'] }}cm;margin:0cm 0cm;overflow:hidden;position:relative; ">
 
     </div>
+    {{--
+          'page5'=> [
+                    'image' => 'https://printables.happycapibara.com/color-books/chinese_background.png',
+                    'header-y' => 1,
+                    'header-font-size' => 1,
+                    'footer-y' => 20,
+                    'footer-font-size' => 1,
+                    'text-font-size' => 0.8,
+                    'text-1-y' => 3,
+                    'text-2-y' => 6,
+                    'text-3-y' => 9,
 
+                ]
+ --}}
+    <div style="page-break-after: always;"></div>
+    <div style="font-family: 'NotoSerif'; background-image: url('{{ $layout['page5']['image'] }}'); background-size: cover; background-position: center;width:{{ $width }}cm;height:{{ $height }}cm;top:{{ $layout['margin-out'] }}cm;left:{{ $layout['margin-in'] }}cm;margin:0cm 0cm;overflow:hidden;position:relative; ">
+        <div style="font-size: {{ $layout['page5']['header-font-size'] }}cm;line-height: {{ $layout['page5']['header-font-size'] }}cm;font-family: 'NotoSerifBold';text-align:center;position:absolute;width:{{ $width- $layout['page5']['margin']*2 }}cm;height:{{ $height }}cm;top:{{ $layout['page5']['header-y'] }}cm;left:{{ $layout['page5']['margin'] }}cm;">
+            Un viaje al corazón de la caligrafía china
+        </div>
+        <div style="font-size: {{ $layout['page5']['text-font-size'] }}cm;line-height: {{ $layout['page5']['text-font-size'] }}cm;text-align:center;position:absolute;width:{{ $width- $layout['page5']['margin']*2 }}cm;height:{{ $height }}cm;top:{{ $layout['page5']['text-1-y'] }}cm;left:{{ $layout['page5']['margin'] }}cm;">
+
+            Los caracteres chinos, conocidos como Hànzì, son mucho más que meras letras; son ideogramas que, en su origen eran representaciones pictóricas de objetos, conceptos y sentimientos.
+        </div>
+        <div style="font-size: {{ $layout['page5']['text-font-size'] }}cm;line-height: {{ $layout['page5']['text-font-size'] }}cm;text-align:center;position:absolute;width:{{ $width- $layout['page5']['margin']*2 }}cm;height:{{ $height }}cm;top:{{ $layout['page5']['text-2-y'] }}cm;left:{{ $layout['page5']['margin'] }}cm;">
+
+            Al colorear estos caracteres te sumerges en una práctica que, para la cultura china, es tanto un arte como una forma de meditación. La caligrafía es considerada una de las más elevadas expresiones artísticas, un reflejo de la armonía, el equilibrio y la conexión con la naturaleza. Los trazos, el ritmo y la composición de cada carácter son fundamentales, y al concentrarse en sus formas, podrás experimentar una sensación de calma y atención plena, similar a la que se busca en disciplinas como el tai chi o la meditación zen.
+        </div>
+
+        <div style="font-size: {{ $layout['page5']['text-font-size'] }}cm;line-height: {{ $layout['page5']['text-font-size'] }}cm;text-align:center;position:absolute;width:{{ $width- $layout['page5']['margin']*2 }}cm;height:{{ $height }}cm;top:{{ $layout['page5']['text-3-y'] }}cm;left:{{ $layout['page5']['margin'] }}cm;">
+            Este libro te invita a explorar no solo la estética visual de las palabras como "belleza" (<span style="font-family: 'Zen';">美</span>, měi) o "espíritu" (<span style="font-family: 'Zen';">心</span>, xīn), sino también el significado profundo que subyace en cada una. Al pintar "paz" (<span style="font-family: 'Zen';">安</span>, ān) o "sueño" (<span style="font-family: 'Zen';">梦</span>, mèng), no solo estás aplicando color, sino que estás interactuando con conceptos que han moldeado la cosmovisión china durante siglos.
+        </div>
+        <div style="font-size: {{ $layout['page5']['footer-font-size'] }}cm;line-height: {{ $layout['page5']['footer-font-size'] }}cm;font-family:'NotoSerifBold';text-align:center;position:absolute;width:{{ $width- $layout['page5']['margin']*2 }}cm;height:{{ $height }}cm;top:{{ $layout['page5']['footer-y'] }}cm;left:{{ $layout['page5']['margin'] }}cm;">
+            Que los Hànzì te brinden inspiración, relajación y bienestar.
+        </div>
+    </div>
 
 
     @foreach($items as $index => $item)

@@ -168,7 +168,6 @@ class GeneratorController extends Controller
             $layoutLetter = [
                 'width' => 21.59,
                 'height' => 27.94,
-                'margin' => 1,
                 'margin-in' => 0.95,
                 'margin-out' => 0.64,
                 'verso' => [
@@ -214,6 +213,19 @@ class GeneratorController extends Controller
                 ],
                 'page4'=> [
                     'image' => 'https://printables.happycapibara.com/color-books/chinese_landscape.png',
+
+                ],
+                'page5'=> [
+                    'image' => 'https://printables.happycapibara.com/color-books/chinese_background.png',
+                    'header-y' => 1.5,
+                    'header-font-size' => 0.5,
+                    'footer-y' => 24,
+                    'footer-font-size' => 0.5,
+                    'text-font-size' => 0.45,
+                    'text-1-y' => 6,
+                    'text-2-y' => 10.2,
+                    'text-3-y' => 17.5,
+                    'margin' => 1
 
                 ]
             ];

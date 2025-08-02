@@ -16,5 +16,8 @@
     },
     "notoserifitalic": {
         "normal": "notoserifitalic_normal_87306f20a5f04d2cbede26fa74f31d45"
+    },
+    "notoserifbold": {
+        "normal": "notoserifbold_normal_2d1c251a2ebaf078b350250d69f0c74c"
     }
 }
