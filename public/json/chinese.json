@@ -1,0 +1,62 @@
+{
+    "width": 21.59,
+    "height": 27.94,
+    "margin-in": 0.95,
+    "margin-out": 0.64,
+    "verso": {
+        "margin": 0.5,
+        "border-margin": 0.25,
+        "image-margin": 0.25,
+        "text-y-percentage": 0.75,
+        "text-margin": 0.3,
+        "primary-font-size": 2.1,
+        "secondary-font-size": 1.5
+    },
+    "recto": {
+        "margin": 0.5,
+        "image-margin": 0.25,
+        "font-size": 8,
+        "text-y-percentage": 0.53
+    },
+    "page1": {
+        "title-line-1": "El secreto",
+        "title-line-1-y-percentage": 0.4,
+        "title-line-1-font-size": 1.7,
+        "title-line-2": "de los",
+        "title-line-2-font-size": 1,
+        "title-line-2-margin": 0.7,
+        "title-line-3": "Ideogramas Chinos",
+        "title-line-3-margin": 0.15,
+        "title-line-3-font-size": 1.7,
+        "logo-image": "https://printables.happycapibara.com/logo.png",
+        "logo-y-percentage": 0.9,
+        "logo-height": 3
+    },
+    "page2": {
+        "text-y-percentage": 0.3,
+        "text-y-space": 0.3,
+        "text-font-size": 0.3,
+        "margin-x": 0.3,
+        "margin-bottom": 0.2
+    },
+    "page3": {
+        "image": "https://printables.happycapibara.com/color-books/birds.png",
+        "image-y-percentage": 0.3,
+        "margin": 0.2
+    },
+    "page4": {
+        "image": "https://printables.happycapibara.com/color-books/chinese_landscape.png"
+    },
+    "page5": {
+        "image": "https://printables.happycapibara.com/color-books/chinese_background.png",
+        "header-y": 1.5,
+        "header-font-size": 0.5,
+        "footer-y": 24,
+        "footer-font-size": 0.5,
+        "text-font-size": 0.45,
+        "text-1-y": 6,
+        "text-2-y": 10.2,
+        "text-3-y": 17.5,
+        "margin": 1
+    }
+}

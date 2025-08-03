@@ -125,20 +125,7 @@ $firstPageTitleLine3Top = $firstPageTitleLine2Top + $layout['page1']['title-line
     <div style="background-image: url('{{ $layout['page4']['image'] }}'); background-size: cover; background-position: center;width:{{ $width }}cm;height:{{ $height }}cm;top:{{ $layout['margin-out'] }}cm;left:{{ $layout['margin-in'] }}cm;margin:0cm 0cm;overflow:hidden;position:relative; ">
 
     </div>
-    {{--
-          'page5'=> [
-                    'image' => 'https://printables.happycapibara.com/color-books/chinese_background.png',
-                    'header-y' => 1,
-                    'header-font-size' => 1,
-                    'footer-y' => 20,
-                    'footer-font-size' => 1,
-                    'text-font-size' => 0.8,
-                    'text-1-y' => 3,
-                    'text-2-y' => 6,
-                    'text-3-y' => 9,
 
-                ]
- --}}
     <div style="page-break-after: always;"></div>
     <div style="font-family: 'NotoSerif'; background-image: url('{{ $layout['page5']['image'] }}'); background-size: cover; background-position: center;width:{{ $width }}cm;height:{{ $height }}cm;top:{{ $layout['margin-out'] }}cm;left:{{ $layout['margin-in'] }}cm;margin:0cm 0cm;overflow:hidden;position:relative; ">
         <div style="font-size: {{ $layout['page5']['header-font-size'] }}cm;line-height: {{ $layout['page5']['header-font-size'] }}cm;font-family: 'NotoSerifBold';text-align:center;position:absolute;width:{{ $width- $layout['page5']['margin']*2 }}cm;height:{{ $height }}cm;top:{{ $layout['page5']['header-y'] }}cm;left:{{ $layout['page5']['margin'] }}cm;">
