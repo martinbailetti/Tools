@@ -2465,6 +2465,64 @@
                 return fonts.sort();
             }
 
+            // Función para obtener el texto apropiado según el idioma seleccionado
+            function getTextForLanguage(pageConfig, languageCode) {
+                console.log('getTextForLanguage llamado con:', { pageConfig, languageCode });
+
+                if (!pageConfig) {
+                    return '';
+                }
+
+                // Convertir código de idioma a minúsculas para búsqueda
+                const langKey = languageCode.toLowerCase();
+
+                // Primera prioridad: texto específico del idioma (text_es, text_en, etc.)
+                const languageTextKey = `text_${langKey}`;
+                if (pageConfig[languageTextKey] && pageConfig[languageTextKey].trim() !== '') {
+                    console.log(`Usando texto específico del idioma: ${languageTextKey}`);
+                    return pageConfig[languageTextKey];
+                }
+
+                // Segunda prioridad: texto genérico (text)
+                if (pageConfig['text'] && pageConfig['text'].trim() !== '') {
+                    console.log('Usando texto genérico');
+                    return pageConfig['text'];
+                }
+
+                // Si no hay ningún texto disponible
+                console.log('No se encontró texto para el idioma', languageCode);
+                return '';
+            }
+
+            // Función para recargar todos los textos cuando cambia el idioma
+            function reloadTextsForLanguage(languageCode) {
+                console.log('Recargando textos para idioma:', languageCode);
+
+                const selectedJsonFile = $('#jsonFileSelector').val() || '/json/chinese.json';
+
+                $.get(selectedJsonFile)
+                    .done(function(config) {
+                        console.log('Configuración cargada para cambio de idioma:', config);
+
+                        // Recargar texto de cada página
+                        for (let pageNum = 1; pageNum <= 5; pageNum++) {
+                            const pageKey = `page${pageNum}`;
+                            if (config[pageKey]) {
+                                const pageText = getTextForLanguage(config[pageKey], languageCode);
+                                if (pageText) {
+                                    setTimeout(function() {
+                                        setQuillContent(`config_${pageKey}_text`, pageText);
+                                        console.log(`Texto actualizado para ${pageKey} en idioma ${languageCode}`);
+                                    }, pageNum * 50); // Delay escalonado
+                                }
+                            }
+                        }
+                    })
+                    .fail(function() {
+                        console.error('Error recargando configuración para cambio de idioma');
+                    });
+            }
+
             // Función para cargar configuración desde archivo seleccionado
             function loadSelectedConfig() {
                 console.log('loadSelectedConfig iniciado');
@@ -2526,8 +2584,9 @@
                             // Cargar textos en editores Quill con delay para asegurar que están listos
                             setTimeout(function() {
                                 console.log('Cargando contenido de página 1...');
-                                if (config.page1['text']) {
-                                    setQuillContent('config_page1_text', config.page1['text']);
+                                const pageText = getTextForLanguage(config.page1, $('#languageSelector').val() || 'ES');
+                                if (pageText) {
+                                    setQuillContent('config_page1_text', pageText);
                                 } else {
                                     setQuillContent('config_page1_text', 'El secreto');
                                 }
@@ -2548,8 +2607,9 @@
                             // Cargar textos en editores Quill con delay para asegurar que están listos
                             setTimeout(function() {
                                 console.log('Cargando contenido de página 2...');
-                                if (config.page2['text']) {
-                                    setQuillContent('config_page2_text', config.page2['text']);
+                                const pageText = getTextForLanguage(config.page2, $('#languageSelector').val() || 'ES');
+                                if (pageText) {
+                                    setQuillContent('config_page2_text', pageText);
                                 }
                             }, 200);
                         }
@@ -2568,8 +2628,9 @@
                             // Cargar textos en editores Quill con delay para asegurar que están listos
                             setTimeout(function() {
                                 console.log('Cargando contenido de página 3...');
-                                if (config.page3['text']) {
-                                    setQuillContent('config_page3_text', config.page3['text']);
+                                const pageText = getTextForLanguage(config.page3, $('#languageSelector').val() || 'ES');
+                                if (pageText) {
+                                    setQuillContent('config_page3_text', pageText);
                                 }
                             }, 300);
                         }
@@ -2587,8 +2648,9 @@
                             // Cargar textos en editores Quill con delay para asegurar que están listos
                             setTimeout(function() {
                                 console.log('Cargando contenido de página 4...');
-                                if (config.page4['text']) {
-                                    setQuillContent('config_page4_text', config.page4['text']);
+                                const pageText = getTextForLanguage(config.page4, $('#languageSelector').val() || 'ES');
+                                if (pageText) {
+                                    setQuillContent('config_page4_text', pageText);
                                 }
                             }, 350);
                         }
@@ -2606,8 +2668,9 @@
                             // Cargar textos en editores Quill con delay para asegurar que están listos
                             setTimeout(function() {
                                 console.log('Cargando contenido de página 5...');
-                                if (config.page5['text']) {
-                                    setQuillContent('config_page5_text', config.page5['text']);
+                                const pageText = getTextForLanguage(config.page5, $('#languageSelector').val() || 'ES');
+                                if (pageText) {
+                                    setQuillContent('config_page5_text', pageText);
                                 }
                             }, 400);
                         }
@@ -2650,6 +2713,20 @@
             // Evento para cuando cambia el selector de archivo JSON
             $('#jsonFileSelector').change(function() {
                 loadSelectedConfig();
+            });
+
+            // Evento para cuando cambia el selector de idioma
+            $('#languageSelector').change(function() {
+                const selectedLanguage = $(this).val();
+                console.log('Cambio de idioma detectado:', selectedLanguage);
+
+                // Recargar los textos para el nuevo idioma
+                reloadTextsForLanguage(selectedLanguage);
+
+                // Actualizar el preview después de cambiar idioma
+                setTimeout(function() {
+                    updatePreview(true);
+                }, 500);
             });
 
             // Save configuration
