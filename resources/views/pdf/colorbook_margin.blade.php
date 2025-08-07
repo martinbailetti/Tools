@@ -219,7 +219,7 @@ $rectoTextTop=$layout['recto']['text-top'];
 
 
         <x-styled-div position="absolute" width="{{ $versoMainLayerWidth }}cm" left="{{ $versoMainLayerMargin }}cm" top="{{ $versoText1Top }}cm" lineHeight="{{ $layout['verso']['primary-font-size'] }}cm" fontSize="{{ $layout['verso']['primary-font-size'] }}cm" color="white" fontFamily="{{ $layout['verso']['text-1-font-family'] }}" textAlign="center">
-            {!! $item['es'] !!}
+            {!! $item['language'] !!}
         </x-styled-div>
 
         <x-styled-div position="absolute" width="{{ $versoMainLayerWidth }}cm" left="{{ $versoMainLayerMargin }}cm" top="{{ $versoText2Top }}cm" lineHeight="{{ $layout['verso']['secondary-font-size'] }}cm" fontSize="{{ $layout['verso']['secondary-font-size'] }}cm" color="white" fontFamily="{{ $layout['verso']['text-2-font-family'] }}" textAlign="center">

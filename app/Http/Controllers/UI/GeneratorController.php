@@ -157,6 +157,9 @@ class GeneratorController extends Controller
             // Ruta del archivo JSON
             $jsonPath = public_path('json/' . $filename);
 
+            // Crear backup antes de actualizar
+            $this->createBackup($jsonPath, $filename);
+
             // Crear el directorio si no existe
             $jsonDir = dirname($jsonPath);
             if (!is_dir($jsonDir)) {
@@ -260,6 +263,7 @@ class GeneratorController extends Controller
             }
 
             $numberOfPages = $request->input('numberOfPages', 0);
+            $languageSelector = $request->input('languageSelector', 'ES');
 
             // Obtener los parámetros desde el JSON
             $spreadsheetId = $config['spreadsheetId'] ?? null;
@@ -278,7 +282,7 @@ class GeneratorController extends Controller
             }
 
             // Procesar datos usando la lógica común
-            $items = $this->processSpreadsheetData($spreadsheetId, $sheetName, $imagesURL, $numberOfPages, 'temp_google_excel.xlsx');
+            $items = $this->processSpreadsheetData($spreadsheetId, $sheetName, $imagesURL, $numberOfPages, $languageSelector, 'temp_google_excel.xlsx');
 
             // Usar fuentes seleccionadas por el usuario o detectar automáticamente
             $quillFonts = $config['fonts'] ?? [];
@@ -416,6 +420,7 @@ class GeneratorController extends Controller
         try {
             // Obtener parámetros directamente del request
             $numberOfPages = $request->input('numberOfPages', 5);
+            $languageSelector = $request->input('languageSelector', 'ES');
             $spreadsheetId = $request->input('spreadsheetId');
             $sheetName = $request->input('sheetName');
             $imagesURL = $request->input('imagesURL');
@@ -432,7 +437,7 @@ class GeneratorController extends Controller
             }
 
             // Procesar datos usando la lógica común
-            $items = $this->processSpreadsheetData($spreadsheetId, $sheetName, $imagesURL, $numberOfPages, 'temp_preview_excel.xlsx');
+            $items = $this->processSpreadsheetData($spreadsheetId, $sheetName, $imagesURL, $numberOfPages, $languageSelector, 'temp_preview_excel.xlsx');
 
             // Obtener configuración de layout desde request y decodificar JSON
             $layoutRaw = $request->input('layout', '{}');
@@ -479,6 +484,7 @@ class GeneratorController extends Controller
             $selectedJsonFile = $request->input('selectedJsonFile');
 
             $numberOfPages = $request->input('numberOfPages'); // Limitar páginas para preview
+            $languageSelector = $request->input('languageSelector', 'ES');
             $spreadsheetId = $request->input('spreadsheetId');
             $sheetName = $request->input('sheetName');
             $imagesURL = $request->input('imagesURL');
@@ -495,7 +501,7 @@ class GeneratorController extends Controller
             }
 
             // Procesar datos usando la lógica común
-            $items = $this->processSpreadsheetData($spreadsheetId, $sheetName, $imagesURL, $numberOfPages, 'temp_preview_excel.xlsx');
+            $items = $this->processSpreadsheetData($spreadsheetId, $sheetName, $imagesURL, $numberOfPages, $languageSelector, 'temp_preview_excel.xlsx');
 
             // Obtener configuración de layout desde request y decodificar JSON
             $layoutRaw = $request->input('layout', '{}');
@@ -549,7 +555,7 @@ class GeneratorController extends Controller
     }    /**
      * Procesa los datos del spreadsheet de Google y retorna los items procesados
      */
-    private function processSpreadsheetData($spreadsheetId, $sheetName, $imagesURL, $numberOfPages, $tempFileName)
+    private function processSpreadsheetData($spreadsheetId, $sheetName, $imagesURL, $numberOfPages, $languageSelector, $tempFileName)
     {
         // Descargar el archivo completo de Google Spreadsheet como Excel (sin filtro específico de hoja)
         $exportUrl = "https://docs.google.com/spreadsheets/d/$spreadsheetId/export?format=xlsx";
@@ -608,7 +614,7 @@ class GeneratorController extends Controller
                     // Verificar si tiene los headers que necesitamos
                     if (strpos($headersString, 'EN') !== false &&
                         strpos($headersString, 'SYM') !== false &&
-                        strpos($headersString, 'ES') !== false) {
+                        strpos($headersString, strtoupper($languageSelector)) !== false) {
                         $targetSheetIndex = $index;
                         $actualSheetName = $sheetNames[$index] ?? "Sheet_$index";
                         Log::info("Hoja encontrada por headers:", [
@@ -648,7 +654,7 @@ class GeneratorController extends Controller
             $limpio = $this->cleanExcelData($hoja);
 
             // Buscar las columnas requeridas
-            $columnIndexes = $this->findRequiredColumns($limpio[0] ?? []);
+            $columnIndexes = $this->findRequiredColumns($limpio[0] ?? [], $languageSelector);
 
             // Extraer los datos de las filas
             $rowData = $this->extractRowData($limpio, $columnIndexes, $numberOfPages);
@@ -685,18 +691,21 @@ class GeneratorController extends Controller
     }
 
     /**
-     * Busca las columnas requeridas EN, SYM, SY2, ES en la fila de headers
+     * Busca las columnas requeridas EN, SYM, SY2, y el idioma seleccionado en la fila de headers
      */
-    private function findRequiredColumns($headerRow)
+    private function findRequiredColumns($headerRow, $languageSelector)
     {
         $enColumnIndex = null;
         $symColumnIndex = null;
         $sy2ColumnIndex = null;
-        $esColumnIndex = null;
+        $languageColumnIndex = null;
 
         foreach ($headerRow as $index => $header) {
             switch (strtoupper($header)) {
                 case 'EN':
+                    if(strtoupper($languageSelector) === 'EN') {
+                        $languageColumnIndex = $index;
+                    }
                     $enColumnIndex = $index;
                     break;
                 case 'SYM':
@@ -705,8 +714,8 @@ class GeneratorController extends Controller
                 case 'SY2':
                     $sy2ColumnIndex = $index;
                     break;
-                case 'ES':
-                    $esColumnIndex = $index;
+                case strtoupper($languageSelector):
+                    $languageColumnIndex = $index;
                     break;
             }
         }
@@ -721,15 +730,15 @@ class GeneratorController extends Controller
         if ($sy2ColumnIndex === null) {
             throw new \Exception("Column 'SY2' not found in the Excel file");
         }
-        if ($esColumnIndex === null) {
-            throw new \Exception("Column 'ES' not found in the Excel file");
+        if ($languageColumnIndex === null) {
+            throw new \Exception("Column '" . strtoupper($languageSelector) . "' not found in the Excel file");
         }
 
         return [
             'en' => $enColumnIndex,
             'sym' => $symColumnIndex,
             'sy2' => $sy2ColumnIndex,
-            'es' => $esColumnIndex
+            'language' => $languageColumnIndex
         ];
     }
 
@@ -749,14 +758,14 @@ class GeneratorController extends Controller
             $enValue = $limpio[$row][$columnIndexes['en']] ?? null;
             $symValue = $limpio[$row][$columnIndexes['sym']] ?? null;
             $sy2Value = $limpio[$row][$columnIndexes['sy2']] ?? null;
-            $esValue = $limpio[$row][$columnIndexes['es']] ?? null;
+            $languageValue = $limpio[$row][$columnIndexes['language']] ?? null;
 
             if (!empty($enValue)) {
                 $rowData[] = [
                     'en' => trim($enValue),
                     'sym' => trim($symValue ?? ''),
                     'sy2' => trim($sy2Value ?? ''),
-                    'es' => trim($esValue ?? '')
+                    'language' => trim($languageValue ?? '')
                 ];
             }
         }
@@ -775,7 +784,7 @@ class GeneratorController extends Controller
             $enValue = $row['en'];
             $symValue = $row['sym'];
             $sy2Value = $row['sy2'];
-            $esValue = $row['es'];
+            $languageValue = $row['language'];
 
             // Procesar el nombre del archivo de imagen
             $enValue = str_replace(' ', '', $enValue);
@@ -792,7 +801,7 @@ class GeneratorController extends Controller
                     ],
                     'sym' => $symValue,
                     'sy2' => $sy2Value,
-                    'es' => $esValue
+                    'language' => $languageValue
                 ];
             } else {
                 // Incluir imágenes que no existen con placeholder
@@ -804,7 +813,7 @@ class GeneratorController extends Controller
                     ],
                     'sym' => $symValue,
                     'sy2' => $sy2Value,
-                    'es' => $esValue
+                    'language' => $languageValue
                 ];
             }
         }
@@ -833,6 +842,7 @@ class GeneratorController extends Controller
                 $targetSheetName,
                 'https://example.com/images/', // URL de prueba
                 $testPages,
+                'ES', // Idioma de prueba
                 'test_process_' . time() . '.xlsx'
             );
 
@@ -902,7 +912,8 @@ class GeneratorController extends Controller
                     $hasRequiredHeaders = (
                         strpos(strtoupper(implode('|', $firstRow)), 'EN') !== false &&
                         strpos(strtoupper(implode('|', $firstRow)), 'SYM') !== false &&
-                        strpos(strtoupper(implode('|', $firstRow)), 'ES') !== false
+                        (strpos(strtoupper(implode('|', $firstRow)), 'ES') !== false ||
+                         strpos(strtoupper(implode('|', $firstRow)), 'EN') !== false)
                     );
 
                     $sheetDetails[] = [
@@ -931,6 +942,85 @@ class GeneratorController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Error listando hojas: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Crea un backup del archivo JSON antes de actualizarlo
+     */
+    private function createBackup($jsonPath, $filename)
+    {
+        try {
+            // Verificar si el archivo original existe
+            if (!file_exists($jsonPath)) {
+                // Si no existe el archivo original, no hay nada que respaldar
+                return;
+            }
+
+            // Crear la carpeta de backups si no existe
+            $backupDir = public_path('backups');
+            if (!is_dir($backupDir)) {
+                mkdir($backupDir, 0755, true);
+            }
+
+            // Generar nombre del backup con timestamp
+            $timestamp = date('Y-m-d_H-i-s');
+            $backupFilename = pathinfo($filename, PATHINFO_FILENAME) . '_backup_' . $timestamp . '.json';
+            $backupPath = $backupDir . '/' . $backupFilename;
+
+            // Copiar el archivo original al backup
+            if (copy($jsonPath, $backupPath)) {
+                Log::info("Backup creado exitosamente: " . $backupFilename);
+            } else {
+                Log::warning("Error al crear backup para: " . $filename);
+            }
+
+        } catch (\Exception $e) {
+            Log::error("Error creando backup: " . $e->getMessage());
+            // No lanzamos excepción para no interrumpir el guardado principal
+        }
+    }
+
+    /**
+     * Obtiene la lista de backups disponibles
+     */
+    public function getBackups(Request $request)
+    {
+        try {
+            $backupDir = public_path('backups');
+            $backups = [];
+
+            if (is_dir($backupDir)) {
+                $files = scandir($backupDir);
+                foreach ($files as $file) {
+                    if (pathinfo($file, PATHINFO_EXTENSION) === 'json') {
+                        $filePath = $backupDir . '/' . $file;
+                        $backups[] = [
+                            'filename' => $file,
+                            'size' => filesize($filePath),
+                            'created' => date('Y-m-d H:i:s', filemtime($filePath)),
+                            'path' => '/backups/' . $file
+                        ];
+                    }
+                }
+
+                // Ordenar por fecha de creación (más reciente primero)
+                usort($backups, function ($a, $b) {
+                    return strtotime($b['created']) - strtotime($a['created']);
+                });
+            }
+
+            return response()->json([
+                'success' => true,
+                'backups' => $backups,
+                'total' => count($backups)
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error obteniendo backups: ' . $e->getMessage()
             ], 500);
         }
     }

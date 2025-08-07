@@ -529,7 +529,7 @@ $rectoTextTop=$layout['recto']['text-top'];
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php $component->withAttributes(['position' => 'absolute','width' => ''.e($versoMainLayerWidth).'cm','left' => ''.e($versoMainLayerMargin).'cm','top' => ''.e($versoText1Top).'cm','lineHeight' => ''.e($layout['verso']['primary-font-size']).'cm','fontSize' => ''.e($layout['verso']['primary-font-size']).'cm','color' => 'white','fontFamily' => ''.e($layout['verso']['text-1-font-family']).'','textAlign' => 'center']); ?>
-            <?php echo $item['es']; ?>
+            <?php echo $item['language']; ?>
 
          <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>

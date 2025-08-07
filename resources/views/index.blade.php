@@ -277,6 +277,21 @@
                                 </div>
                                 <div class="form-text">Si es 0 o se deja vacío, se tomarán todas las páginas disponibles</div>
                             </div>
+
+                            <div class="mb-3">
+                                <label for="languageSelector" class="form-label form-label-tooltip" data-bs-toggle="tooltip" title="Idioma de los textos">
+                                    <i class="fas fa-language me-1"></i>
+                                    Idioma
+                                </label>
+                                <div class="input-icon-container">
+                                    <select class="form-select" id="languageSelector" name="languageSelector">
+                                        <option value="ES" selected>Español (ES)</option>
+                                        <option value="EN">Inglés (EN)</option>
+                                    </select>
+                                    <i class="fas fa-globe form-icon"></i>
+                                </div>
+                                <div class="form-text">Selecciona el idioma para los textos del spreadsheet</div>
+                            </div>
                             <button type="submit" class="btn btn-outline-dark btn-lg w-100" id="generateBtn">
                                 <div class="card-body text-center">
                                     <h5 class="card-title">
@@ -1586,6 +1601,7 @@
                         spreadsheetId: updatedConfig.spreadsheetId
                         , sheetName: updatedConfig.spreadsheetSheetName
                         , imagesURL: updatedConfig.imagesURL
+                        , languageSelector: $('#languageSelector').val() || 'ES'
                         , layout: updatedConfig // Enviar la configuración actualizada con valores del formulario
                         , _token: $('meta[name="csrf-token"]').attr('content') || $('input[name="_token"]').val()
                     };
@@ -1600,6 +1616,7 @@
                     if (previewData.spreadsheetId) urlParams.append('spreadsheetId', previewData.spreadsheetId);
                     if (previewData.sheetName) urlParams.append('sheetName', previewData.sheetName);
                     if (previewData.imagesURL) urlParams.append('imagesURL', previewData.imagesURL);
+                    if (previewData.languageSelector) urlParams.append('languageSelector', previewData.languageSelector);
                     if (previewData._token) urlParams.append('_token', previewData._token);
 
                     // Agregar fuentes seleccionadas
@@ -2193,6 +2210,7 @@
                 const formData = {
                     numberOfPages: $('#numberOfPages').val() || 1
                     , selectedJsonFile: $('#jsonFileSelector').val()
+                    , languageSelector: $('#languageSelector').val() || 'ES'
                     , _token: $('meta[name="csrf-token"]').attr('content') || $('input[name="_token"]').val()
                 };
 
