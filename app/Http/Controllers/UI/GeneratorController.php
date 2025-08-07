@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Generator\Book;
 use App\Services\FontManager;
 use Barryvdh\DomPDF\Facade\Pdf;
-use FontLib\Font;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
@@ -159,14 +159,14 @@ class GeneratorController extends Controller
             $book->config = $jsonContent;
             $book->save();
 
-            // Guardar el archivo JSON en disco (opcional, si se requiere mantener el archivo físico)
-   /*          $jsonPath = public_path('json/' . $selectedJsonFile . '.json');
-            $this->createBackup($jsonPath, $selectedJsonFile . '.json');
-            $result = file_put_contents($jsonPath, $jsonContent);
+            // Guardar el archivo JSON en disco con timestamp en el log
+            $timestamp = date('Ymd_His');
+            $jsonFilenameWithTimestamp = $selectedJsonFile . '_' . $timestamp . '.json';
 
-            if ($result === false) {
-                throw new \Exception('Error al escribir el archivo JSON');
-            } */
+            $jsonPath = public_path('json/' . $jsonFilenameWithTimestamp);
+            file_put_contents($jsonPath, $jsonContent);
+
+
 
             return response()->json([
                 'success' => true,
@@ -490,6 +490,8 @@ class GeneratorController extends Controller
             $sheetName = $request->input('sheetName');
             $imagesURL = $request->input('imagesURL');
 
+            $preview_pages = $request->input('preview_pages', []);
+
             // Validar que los parámetros requeridos estén presentes
             if (!$spreadsheetId) {
                 throw new \Exception("spreadsheetId is required");
@@ -523,6 +525,7 @@ class GeneratorController extends Controller
                 })),
                 'layout' => $layout,
                 'preview' => true, // Para PDF usar fuentes locales, no preview mode
+                'previewPages' => $preview_pages,
                 'selectedLanguage' => strtolower($languageSelector)
             ];
 

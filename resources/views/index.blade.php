@@ -293,6 +293,70 @@
                                 </div>
                                 <div class="form-text">Selecciona el idioma para los textos del spreadsheet</div>
                             </div>
+
+                            <div class="mb-3">
+                                <label class="form-label form-label-tooltip" data-bs-toggle="tooltip" title="Selecciona las páginas y contenido a incluir">
+                                    <i class="fas fa-file-alt me-1"></i>
+                                    Páginas a Incluir
+                                </label>
+                                <div class="row g-2">
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="includePage1" name="includePages[]" value="page1" checked>
+                                            <label class="form-check-label" for="includePage1">
+                                                <i class="fas fa-file me-1"></i>
+                                                Página 1
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="includePage2" name="includePages[]" value="page2" checked>
+                                            <label class="form-check-label" for="includePage2">
+                                                <i class="fas fa-file me-1"></i>
+                                                Página 2
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="includePage3" name="includePages[]" value="page3" checked>
+                                            <label class="form-check-label" for="includePage3">
+                                                <i class="fas fa-file me-1"></i>
+                                                Página 3
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="includePage4" name="includePages[]" value="page4" checked>
+                                            <label class="form-check-label" for="includePage4">
+                                                <i class="fas fa-file me-1"></i>
+                                                Página 4
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="includePage5" name="includePages[]" value="page5" checked>
+                                            <label class="form-check-label" for="includePage5">
+                                                <i class="fas fa-file me-1"></i>
+                                                Página 5
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="includeContent" name="includePages[]" value="content" checked>
+                                            <label class="form-check-label" for="includeContent">
+                                                <i class="fas fa-file-text me-1"></i>
+                                                Contenido
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-text">Selecciona qué páginas y contenido incluir en el PDF generado</div>
+                            </div>
                             <button type="submit" class="btn btn-outline-dark btn-lg w-100" id="generateBtn">
                                 <div class="card-body text-center">
                                     <h5 class="card-title">
@@ -1025,8 +1089,8 @@
                             <button type="button" class="btn btn-sm btn-outline-light" id="openPreviewNewTab">
                                 <i class="fas fa-external-link-alt"></i>
                             </button>
-                            <button type="button" class="btn btn-sm btn-outline-warning" id="forceHideLoadingBtn" title="Forzar ocultar loading">
-                                <i class="fas fa-eye-slash"></i>
+                            <button type="button" class="btn btn-sm btn-outline-danger" id="cancelPreviewBtn" title="Cancelar generación de preview" style="display: none;">
+                                <i class="fas fa-times"></i>
                             </button>
                         </div>
                     </div>

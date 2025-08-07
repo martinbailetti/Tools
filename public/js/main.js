@@ -7,6 +7,16 @@ let quillEditors = {};
 // Variables globales para el preview
 let previewTimeout = null;
 let previewUpdateDelay = 1000; // 1 segundo de delay para evitar muchas llamadas (reducido de 2)
+let currentPreviewXHR = null; // Variable para almacenar la llamada AJAX actual del preview
+
+// Función para obtener las páginas seleccionadas de los checkboxes
+function getSelectedPages() {
+    const selectedPages = [];
+    $('input[name="includePages[]"]:checked').each(function() {
+        selectedPages.push($(this).val());
+    });
+    return selectedPages;
+}
 
 // Función para obtener contenido de editores Quill (definida temprano para usar en updatePreview)
 function getQuillContent(hiddenId) {
@@ -770,6 +780,7 @@ function updatePreview(force = false) {
                 sheetName: updatedConfig.spreadsheetSheetName,
                 imagesURL: updatedConfig.imagesURL,
                 languageSelector: $("#languageSelector").val() || "ES",
+                preview_pages: getSelectedPages(), // Agregar páginas seleccionadas
                 layout: updatedConfig, // Enviar la configuración actualizada con valores del formulario
                 _token:
                     $('meta[name="csrf-token"]').attr("content") ||
@@ -822,7 +833,11 @@ function updatePreview(force = false) {
             console.log(
                 "Llamando al endpoint POST para generar PDF temporal..."
             );
-            $.ajax({
+
+            // Mostrar botón cancelar cuando inicie la llamada AJAX
+            $("#cancelPreviewBtn").show();
+
+            currentPreviewXHR = $.ajax({
                 url: "/preview-pdf",
                 type: "POST",
                 data: previewData,
@@ -832,6 +847,8 @@ function updatePreview(force = false) {
                     ),
                 },
                 success: function (response) {
+                    currentPreviewXHR = null; // Limpiar la referencia XHR
+                    $("#cancelPreviewBtn").hide(); // Ocultar botón cancelar
                     if (response.success && response.pdf_url) {
                         console.log("PDF temporal generado:", response.pdf_url);
 
@@ -869,6 +886,8 @@ function updatePreview(force = false) {
                     }
                 },
                 error: function (xhr, status, error) {
+                    currentPreviewXHR = null; // Limpiar la referencia XHR
+                    $("#cancelPreviewBtn").hide(); // Ocultar botón cancelar
                     console.error("Error generando PDF temporal:", error);
                     let errorMessage = "Error generando vista previa";
 
@@ -1545,6 +1564,7 @@ $(document).ready(function () {
             numberOfPages: $("#numberOfPages").val() || 1,
             selectedJsonFile: $("#jsonFileSelector").val(),
             languageSelector: $("#languageSelector").val() || "ES",
+            includePages: getSelectedPages(), // Agregar páginas seleccionadas
             _token:
                 $('meta[name="csrf-token"]').attr("content") ||
                 $('input[name="_token"]').val(),
@@ -1552,7 +1572,7 @@ $(document).ready(function () {
 
         // Realizar petición AJAX
         $.ajax({
-            url: '{{ route("pdf.generate") }}',
+            url: '/generate',
             type: "POST",
             data: formData,
             xhrFields: {
@@ -2222,6 +2242,34 @@ $(document).ready(function () {
     $("#previewConfigBtn").click(function () {
         console.log("Preview manual solicitado");
         updatePreview(true); // Forzar actualización inmediata del preview
+    });
+
+    // Event handler para cancelar preview
+    $("#cancelPreviewBtn").on("click", function () {
+        if (currentPreviewXHR) {
+            console.log("Cancelando llamada de preview...");
+            currentPreviewXHR.abort(); // Cancelar la llamada AJAX
+            currentPreviewXHR = null; // Limpiar la referencia
+
+            // Ocultar botón cancelar y loading
+            $("#cancelPreviewBtn").hide();
+            hidePreviewLoading();
+
+            // Mostrar mensaje de cancelación en el iframe
+            const iframe = document.getElementById("previewFrame");
+            const cancelUrl = "data:text/html;charset=utf-8," + encodeURIComponent(`
+                <html>
+                    <body style="font-family: Arial, sans-serif; padding: 20px; text-align: center; color: #666;">
+                        <div style="border: 2px dashed #ffc107; padding: 40px; border-radius: 10px;">
+                            <i style="font-size: 48px; color: #ffc107;">⚠️</i>
+                            <h3 style="color: #ffc107; margin: 20px 0;">Preview cancelado</h3>
+                            <p>La generación del preview fue cancelada por el usuario.</p>
+                        </div>
+                    </body>
+                </html>
+            `);
+            iframe.src = cancelUrl;
+        }
     });
 
     // Función para cargar CSS de fuentes dinámico

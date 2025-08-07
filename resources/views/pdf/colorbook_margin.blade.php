@@ -2,15 +2,15 @@
 
 // Función helper para obtener el texto correcto según el idioma
 function getTextForPage($pageData, $selectedLanguage) {
-    $textKey = 'text_' . $selectedLanguage;
+$textKey = 'text_' . $selectedLanguage;
 
-    // Si existe la clave específica del idioma, usarla
-    if (isset($pageData[$textKey]) && !empty($pageData[$textKey])) {
-        return $pageData[$textKey];
-    }
+// Si existe la clave específica del idioma, usarla
+if (isset($pageData[$textKey]) && !empty($pageData[$textKey])) {
+return $pageData[$textKey];
+}
 
-    // Si no, usar la clave genérica 'text' como fallback
-    return $pageData['text'] ?? '';
+// Si no, usar la clave genérica 'text' como fallback
+return $pageData['text'] ?? '';
 }
 
 $width=$layout['width']-($layout['margin-in']+$layout['margin-out']);
@@ -80,7 +80,7 @@ $rectoTextTop=$layout['recto']['text-top'];
 </head>
 <body style="margin: 0cm 0cm;height:100%;">
 
-
+    @if(!$preview || (isset($previewPages) && in_array('page1', $previewPages)))
     <x-page preview="{{$preview}}" width="{{ $width }}" height="{{ $height }}" marginTop="{{ $layout['margin-out'] }}" marginLeft="{{ $layout['margin-in'] }}">
 
         @if(!empty($layout['page1']['background-url']))
@@ -107,6 +107,10 @@ $rectoTextTop=$layout['recto']['text-top'];
     </x-page>
 
     <x-page-break></x-page-break>
+    @endif
+
+
+    @if(!$preview || (isset($previewPages) && in_array('page2', $previewPages)))
     <x-page preview="{{$preview}}" width="{{ $width }}" height="{{ $height }}" marginTop="{{ $layout['margin-out'] }}" marginLeft="{{ $layout['margin-in'] }}">
 
         @if(!empty($layout['page2']['background-url']))
@@ -130,7 +134,9 @@ $rectoTextTop=$layout['recto']['text-top'];
 
     </x-page>
     <x-page-break></x-page-break>
+    @endif
 
+    @if(!$preview || (isset($previewPages) && in_array('page3', $previewPages)))
     <x-page preview="{{$preview}}" width="{{ $width }}" height="{{ $height }}" marginTop="{{ $layout['margin-out'] }}" marginLeft="{{ $layout['margin-in'] }}">
 
         @if(!empty($layout['page3']['background-url']))
@@ -158,8 +164,10 @@ $rectoTextTop=$layout['recto']['text-top'];
 
     </x-page>
     <x-page-break></x-page-break>
+    @endif
 
 
+    @if(!$preview || (isset($previewPages) && in_array('page4', $previewPages)))
     <x-page preview="{{$preview}}" width="{{ $width }}" height="{{ $height }}" marginTop="{{ $layout['margin-out'] }}" marginLeft="{{ $layout['margin-in'] }}">
         @if(!empty($layout['page4']['background-url']))
         <x-styled-div backgroundImage="{{ $layout['page4']['background-url'] }}" backgroundSize="cover" backgroundPosition="center" width="{{ $width }}cm" height="{{ $height }}cm" top="0cm" left="0cm" position="absolute">
@@ -183,9 +191,11 @@ $rectoTextTop=$layout['recto']['text-top'];
     </x-page>
 
     <x-page-break></x-page-break>
+    @endif
 
 
 
+    @if(!$preview || (isset($previewPages) && in_array('page5', $previewPages)))
     <x-page preview="{{$preview}}" width="{{ $width }}" height="{{ $height }}" marginTop="{{ $layout['margin-out'] }}" marginLeft="{{ $layout['margin-in'] }}">
 
         @if(!empty($layout['page5']['background-url']))
@@ -209,10 +219,10 @@ $rectoTextTop=$layout['recto']['text-top'];
 
     </x-page>
 
-
-
     <x-page-break></x-page-break>
+    @endif
 
+    @if(!$preview || (isset($previewPages) && in_array('content', $previewPages)))
     @foreach($items as $index => $item)
 
     <x-page preview="{{$preview}}" width="{{ $width }}" height="{{ $height }}" marginTop="{{ $layout['margin-out'] }}" marginLeft="{{ $layout['margin-in'] }}">
@@ -271,5 +281,6 @@ $rectoTextTop=$layout['recto']['text-top'];
     </x-page>
 
     @endforeach
+    @endif
 </body>
 </html>
