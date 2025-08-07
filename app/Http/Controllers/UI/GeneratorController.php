@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\UI;
 
 use App\Http\Controllers\Controller;
+use App\Models\Generator\Book;
 use App\Services\FontManager;
 use Barryvdh\DomPDF\Facade\Pdf;
 use FontLib\Font;
@@ -31,7 +32,8 @@ class GeneratorController extends Controller
             }
         }
 
-        return view('index', compact('jsonFiles'));
+        $books = Book::orderBy("token")->get();
+        return view('index', compact('jsonFiles'))->with('books', $books);
     }
 
     /**
@@ -70,22 +72,13 @@ class GeneratorController extends Controller
     public function saveConfig(Request $request)
     {
         try {
-            // Obtener el idioma seleccionado (será usado para guardar textos específicos)
-            $selectedLanguage = strtolower($request->input('language_selector', 'es'));
+            $selectedLanguage = strtolower($request->input('language_selector'));
 
-            // Obtener el nombre del archivo JSON desde el request, usar 'chinese.json' por defecto
-            $selectedJsonFile = $request->input('selected_json_file', '/json/chinese.json');
-            $filename = basename($selectedJsonFile);
+            $selectedJsonFile = $request->input('selected_json_file');
 
-            // Ruta del archivo JSON
-            $jsonPath = public_path('json/' . $filename);
 
-            // Leer configuración existente para preservar textos de otros idiomas
-            $existingConfig = [];
-            if (file_exists($jsonPath)) {
-                $existingContent = file_get_contents($jsonPath);
-                $existingConfig = json_decode($existingContent, true) ?: [];
-            }
+            $book = Book::where('token', $selectedJsonFile)->first();
+            $existingConfig = json_decode($book->config, true) ?: [];
 
             // Construir el array de configuración desde el request
             $config = [
@@ -113,12 +106,11 @@ class GeneratorController extends Controller
                     'font-size' => (float) $request->input('recto_font_size'),
                     'text-top' => (float) $request->input('recto_text_top'),
                     'text-font-family' => $request->input('recto_text_font_family')
-                ],
-                'fonts' => $request->input('selected_fonts', []) // Fuentes seleccionadas
+                ]
             ];
 
             // Función helper para construir configuración de página con textos multiidioma
-            $buildPageConfig = function($pageNumber, $existingPageConfig = []) use ($request, $selectedLanguage) {
+            $buildPageConfig = function ($pageNumber, $existingPageConfig = []) use ($request, $selectedLanguage) {
                 $pageTextContent = $request->input("page{$pageNumber}_text");
 
                 // Configuración base de la página
@@ -155,33 +147,30 @@ class GeneratorController extends Controller
             $config['page4'] = $buildPageConfig(4, $existingConfig['page4'] ?? []);
             $config['page5'] = $buildPageConfig(5, $existingConfig['page5'] ?? []);
 
-            // Crear backup antes de actualizar
-            $this->createBackup($jsonPath, $filename);
 
-            // Crear el directorio si no existe
-            $jsonDir = dirname($jsonPath);
-            if (!is_dir($jsonDir)) {
-                mkdir($jsonDir, 0755, true);
-            }
-
-            // Convertir a JSON con formato bonito
             $jsonContent = json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 
             if ($jsonContent === false) {
                 throw new \Exception('Error al generar el JSON: ' . json_last_error_msg());
             }
 
-            // Guardar el archivo
+
+            // Actualizar el registro en la tabla books
+            $book->config = $jsonContent;
+            $book->save();
+
+            // Guardar el archivo JSON en disco (opcional, si se requiere mantener el archivo físico)
+   /*          $jsonPath = public_path('json/' . $selectedJsonFile . '.json');
+            $this->createBackup($jsonPath, $selectedJsonFile . '.json');
             $result = file_put_contents($jsonPath, $jsonContent);
 
             if ($result === false) {
                 throw new \Exception('Error al escribir el archivo JSON');
-            }
+            } */
 
             return response()->json([
                 'success' => true,
                 'message' => "Configuración guardada exitosamente para idioma '{$selectedLanguage}'",
-                'file_size' => $result,
                 'language' => $selectedLanguage
             ]);
         } catch (\Exception $e) {
@@ -480,7 +469,6 @@ class GeneratorController extends Controller
             ];
 
             return view('pdf.colorbook_margin', $data);
-
         } catch (\Exception $e) {
             return response()->view('errors.preview', [
                 'message' => $e->getMessage()
@@ -494,10 +482,7 @@ class GeneratorController extends Controller
         set_time_limit(60 * 10);
 
         try {
-            // Obtener parámetros directamente del request
 
-
-            $selectedJsonFile = $request->input('selectedJsonFile');
 
             $numberOfPages = $request->input('numberOfPages'); // Limitar páginas para preview
             $languageSelector = $request->input('languageSelector', 'ES');
@@ -528,8 +513,6 @@ class GeneratorController extends Controller
                 throw new \Exception("Invalid layout JSON: " . json_last_error_msg());
             }
 
-            // Obtener fuentes seleccionadas desde request
-            $quillFonts = FontManager::generatePdfFontCSS($selectedJsonFile);
 
             $data = [
                 'items' => $items,
@@ -539,7 +522,6 @@ class GeneratorController extends Controller
                     return !isset($item['image']['missing']);
                 })),
                 'layout' => $layout,
-                'quillFonts' => $quillFonts,
                 'preview' => true, // Para PDF usar fuentes locales, no preview mode
                 'selectedLanguage' => strtolower($languageSelector)
             ];
@@ -577,7 +559,6 @@ class GeneratorController extends Controller
                 'filename' => $tempPdfName,
                 'message' => 'PDF generado exitosamente'
             ]);
-
         } catch (\Exception $e) {
             // En caso de error, retornar JSON con error
             return response()->json([
@@ -585,7 +566,8 @@ class GeneratorController extends Controller
                 'error' => 'Error generando preview PDF: ' . $e->getMessage()
             ], 500);
         }
-    }    /**
+    }
+    /**
      * Procesa los datos del spreadsheet de Google y retorna los items procesados
      */
     private function processSpreadsheetData($spreadsheetId, $sheetName, $imagesURL, $numberOfPages, $languageSelector, $tempFileName)
@@ -612,7 +594,10 @@ class GeneratorController extends Controller
             $sheetNames = [];
             try {
                 $reader = \Maatwebsite\Excel\Facades\Excel::import(new class implements \Maatwebsite\Excel\Concerns\WithMultipleSheets {
-                    public function sheets(): array { return []; }
+                    public function sheets(): array
+                    {
+                        return [];
+                    }
                 }, $tempExcel);
 
                 // Usar PhpSpreadsheet directamente para obtener los nombres de hojas
@@ -645,9 +630,11 @@ class GeneratorController extends Controller
                     $headersString = strtoupper(implode('|', $firstRow));
 
                     // Verificar si tiene los headers que necesitamos
-                    if (strpos($headersString, 'EN') !== false &&
+                    if (
+                        strpos($headersString, 'EN') !== false &&
                         strpos($headersString, 'SYM') !== false &&
-                        strpos($headersString, strtoupper($languageSelector)) !== false) {
+                        strpos($headersString, strtoupper($languageSelector)) !== false
+                    ) {
                         $targetSheetIndex = $index;
                         $actualSheetName = $sheetNames[$index] ?? "Sheet_$index";
                         Log::info("Hoja encontrada por headers:", [
@@ -696,7 +683,6 @@ class GeneratorController extends Controller
             $items = $this->buildItemsWithImages($rowData, $imagesURL);
 
             return $items;
-
         } finally {
             // Eliminar el archivo temporal siempre
             if (file_exists($tempExcel)) {
@@ -736,7 +722,7 @@ class GeneratorController extends Controller
         foreach ($headerRow as $index => $header) {
             switch (strtoupper($header)) {
                 case 'EN':
-                    if(strtoupper($languageSelector) === 'EN') {
+                    if (strtoupper($languageSelector) === 'EN') {
                         $languageColumnIndex = $index;
                     }
                     $enColumnIndex = $index;
@@ -897,7 +883,6 @@ class GeneratorController extends Controller
                 'message' => "Test de procesamiento de Excel completado exitosamente para hoja '$targetSheetName'",
                 'data' => $result
             ]);
-
         } catch (\Exception $e) {
             Log::error('Error en test de Excel:', [
                 'message' => $e->getMessage(),
@@ -946,7 +931,7 @@ class GeneratorController extends Controller
                         strpos(strtoupper(implode('|', $firstRow)), 'EN') !== false &&
                         strpos(strtoupper(implode('|', $firstRow)), 'SYM') !== false &&
                         (strpos(strtoupper(implode('|', $firstRow)), 'ES') !== false ||
-                         strpos(strtoupper(implode('|', $firstRow)), 'EN') !== false)
+                            strpos(strtoupper(implode('|', $firstRow)), 'EN') !== false)
                     );
 
                     $sheetDetails[] = [
@@ -964,13 +949,11 @@ class GeneratorController extends Controller
                     'totalSheets' => count($sheetNames),
                     'sheets' => $sheetDetails
                 ]);
-
             } finally {
                 if (file_exists($tempExcel)) {
                     unlink($tempExcel);
                 }
             }
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -1008,7 +991,6 @@ class GeneratorController extends Controller
             } else {
                 Log::warning("Error al crear backup para: " . $filename);
             }
-
         } catch (\Exception $e) {
             Log::error("Error creando backup: " . $e->getMessage());
             // No lanzamos excepción para no interrumpir el guardado principal
@@ -1045,7 +1027,6 @@ class GeneratorController extends Controller
             if ($deletedCount > 0) {
                 Log::info("Limpieza de archivos temporales: eliminados {$deletedCount} archivos");
             }
-
         } catch (\Exception $e) {
             Log::error("Error limpiando archivos temporales: " . $e->getMessage());
         }
@@ -1085,11 +1066,87 @@ class GeneratorController extends Controller
                 'backups' => $backups,
                 'total' => count($backups)
             ]);
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Error obteniendo backups: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Busca un libro por token en la base de datos
+     */
+    public function getBookByToken(Request $request)
+    {
+        try {
+            $token = $request->input('token');
+
+            if (!$token) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Token es requerido'
+                ], 400);
+            }
+
+            $book = Book::where('token', $token)->first();
+
+            if (!$book) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No se encontró ningún libro con el token proporcionado'
+                ], 404);
+            }
+
+            // Decodificar el JSON de la columna config
+            $config = null;
+            if ($book->config) {
+                $config = json_decode($book->config, true);
+
+                // Verificar si el JSON se decodificó correctamente
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Error al decodificar la configuración JSON: ' . json_last_error_msg()
+                    ], 500);
+                }
+            }
+
+            return response()->json([
+                'success' => true,
+                'token' => $book->token,
+                'config' => $config,
+                'message' => 'Configuración encontrada exitosamente'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al buscar el libro: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    public function getBooks()
+    {
+        try {
+
+
+            $books = Book::orderBy("token")->get();
+
+            if (empty($books)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No se encontraron libros'
+                ], 404);
+            }
+
+            return response()->json([
+                'success' => true,
+                'result' => $books
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al buscar el libro: ' . $e->getMessage()
             ], 500);
         }
     }
