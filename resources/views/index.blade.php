@@ -1649,13 +1649,13 @@
                         success: function(response) {
                             if (response.success && response.pdf_url) {
                                 console.log('PDF temporal generado:', response.pdf_url);
-                                
+
                                 // Cargar el PDF en el iframe con parámetros de visualización
                                 const pdfUrl = response.pdf_url + '#toolbar=0&navpanes=0&view=FitH&zoom=page-width';
                                 console.log('URL de preview PDF:', pdfUrl);
-                                
+
                                 const iframe = document.getElementById('previewFrame');
-                                
+
                                 // Configurar listeners para detectar carga exitosa del PDF
                                 iframe.onload = function() {
                                     console.log('Iframe onload evento disparado - verificando estado del PDF...');
@@ -1664,12 +1664,12 @@
                                         hidePreviewLoading();
                                     });
                                 };
-                                
+
                                 iframe.onerror = function() {
                                     console.log('Error cargando PDF en iframe');
                                     hidePreviewLoading();
                                 };
-                                
+
                                 // Cargar PDF en iframe
                                 console.log('Cargando PDF generado en iframe...');
                                 iframe.src = pdfUrl;
@@ -1680,11 +1680,11 @@
                         error: function(xhr, status, error) {
                             console.error('Error generando PDF temporal:', error);
                             let errorMessage = 'Error generando vista previa';
-                            
+
                             if (xhr.responseJSON && xhr.responseJSON.error) {
                                 errorMessage = xhr.responseJSON.error;
                             }
-                            
+
                             // Mostrar error en iframe
                             const iframe = document.getElementById('previewFrame');
                             const errorUrl = 'data:text/html;charset=utf-8,' + encodeURIComponent(`
@@ -1698,14 +1698,14 @@
                                     </body>
                                 </html>
                             `);
-                            
+
                             iframe.onload = function() {
                                 console.log('Iframe de error cargado');
                                 hidePreviewLoading();
                             };
-                            
+
                             iframe.src = errorUrl;
-                            
+
                             setTimeout(function() {
                                 hidePreviewLoading();
                             }, 1000);
@@ -2661,6 +2661,8 @@
                 // Recopilar todos los datos del accordion
                 const configData = {
                     // Archivo seleccionado
+                    // Idioma seleccionado para el guardado específico
+                    language_selector: $('#languageSelector').val() || 'ES',
                     selected_json_file: $('#jsonFileSelector').val(),
 
                     // General

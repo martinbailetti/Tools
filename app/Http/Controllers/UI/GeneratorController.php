@@ -70,6 +70,23 @@ class GeneratorController extends Controller
     public function saveConfig(Request $request)
     {
         try {
+            // Obtener el idioma seleccionado (será usado para guardar textos específicos)
+            $selectedLanguage = strtolower($request->input('language_selector', 'es'));
+
+            // Obtener el nombre del archivo JSON desde el request, usar 'chinese.json' por defecto
+            $selectedJsonFile = $request->input('selected_json_file', '/json/chinese.json');
+            $filename = basename($selectedJsonFile);
+
+            // Ruta del archivo JSON
+            $jsonPath = public_path('json/' . $filename);
+
+            // Leer configuración existente para preservar textos de otros idiomas
+            $existingConfig = [];
+            if (file_exists($jsonPath)) {
+                $existingContent = file_get_contents($jsonPath);
+                $existingConfig = json_decode($existingContent, true) ?: [];
+            }
+
             // Construir el array de configuración desde el request
             $config = [
                 'width' => (float) $request->input('width'),
@@ -97,65 +114,46 @@ class GeneratorController extends Controller
                     'text-top' => (float) $request->input('recto_text_top'),
                     'text-font-family' => $request->input('recto_text_font_family')
                 ],
-                'page1' => [
-                    'text' => $request->input('page1_text'),
-                    'text-top' => (float) $request->input('page1_text_top'),
-                    'text-margin-x' => (float) $request->input('page1_text_margin_x'),
-                    'background-url' => $request->input('page1_background_url'),
-                    'image-url' => $request->input('page1_image_url'),
-                    'image-top' => (float) $request->input('page1_image_top'),
-                    'image-height' => (float) $request->input('page1_image_height'),
-                    'image-width' => $request->input('page1_image_width')
-                ],
-                'page2' => [
-                    'text' => $request->input('page2_text'),
-                    'text-top' => (float) $request->input('page2_text_top'),
-                    'text-margin-x' => (float) $request->input('page2_text_margin_x'),
-                    'background-url' => $request->input('page2_background_url'),
-                    'image-url' => $request->input('page2_image_url'),
-                    'image-top' => (float) $request->input('page2_image_top'),
-                    'image-height' => (float) $request->input('page2_image_height'),
-                    'image-width' => $request->input('page2_image_width')
-                ],
-                'page3' => [
-                    'text' => $request->input('page3_text'),
-                    'text-top' => (float) $request->input('page3_text_top'),
-                    'text-margin-x' => (float) $request->input('page3_text_margin_x'),
-                    'background-url' => $request->input('page3_background_url'),
-                    'image-url' => $request->input('page3_image_url'),
-                    'image-top' => (float) $request->input('page3_image_top'),
-                    'image-height' => (float) $request->input('page3_image_height'),
-                    'image-width' => $request->input('page3_image_width')
-                ],
-                'page4' => [
-                    'text' => $request->input('page4_text'),
-                    'text-top' => (float) $request->input('page4_text_top'),
-                    'text-margin-x' => (float) $request->input('page4_text_margin_x'),
-                    'background-url' => $request->input('page4_background_url'),
-                    'image-url' => $request->input('page4_image_url'),
-                    'image-top' => (float) $request->input('page4_image_top'),
-                    'image-height' => (float) $request->input('page4_image_height'),
-                    'image-width' => $request->input('page4_image_width')
-                ],
-                'page5' => [
-                    'text' => $request->input('page5_text'),
-                    'text-top' => (float) $request->input('page5_text_top'),
-                    'text-margin-x' => (float) $request->input('page5_text_margin_x'),
-                    'background-url' => $request->input('page5_background_url'),
-                    'image-url' => $request->input('page5_image_url'),
-                    'image-top' => (float) $request->input('page5_image_top'),
-                    'image-height' => (float) $request->input('page5_image_height'),
-                    'image-width' => $request->input('page5_image_width')
-                ],
                 'fonts' => $request->input('selected_fonts', []) // Fuentes seleccionadas
             ];
 
-            // Obtener el nombre del archivo JSON desde el request, usar 'chinese.json' por defecto
-            $selectedJsonFile = $request->input('selected_json_file', '/json/chinese.json');
-            $filename = basename($selectedJsonFile);
+            // Función helper para construir configuración de página con textos multiidioma
+            $buildPageConfig = function($pageNumber, $existingPageConfig = []) use ($request, $selectedLanguage) {
+                $pageTextContent = $request->input("page{$pageNumber}_text");
 
-            // Ruta del archivo JSON
-            $jsonPath = public_path('json/' . $filename);
+                // Configuración base de la página
+                $pageConfig = [
+                    'text' => $pageTextContent, // Mantener el texto actual
+                    'text-top' => (float) $request->input("page{$pageNumber}_text_top"),
+                    'text-margin-x' => (float) $request->input("page{$pageNumber}_text_margin_x"),
+                    'background-url' => $request->input("page{$pageNumber}_background_url"),
+                    'image-url' => $request->input("page{$pageNumber}_image_url"),
+                    'image-top' => (float) $request->input("page{$pageNumber}_image_top"),
+                    'image-height' => (float) $request->input("page{$pageNumber}_image_height"),
+                    'image-width' => $request->input("page{$pageNumber}_image_width")
+                ];
+
+                // Preservar textos existentes de otros idiomas
+                foreach ($existingPageConfig as $key => $value) {
+                    if (strpos($key, 'text_') === 0 && $key !== "text_{$selectedLanguage}") {
+                        $pageConfig[$key] = $value;
+                    }
+                }
+
+                // Agregar o actualizar el texto para el idioma actual
+                if (!empty($pageTextContent)) {
+                    $pageConfig["text_{$selectedLanguage}"] = $pageTextContent;
+                }
+
+                return $pageConfig;
+            };
+
+            // Construir configuraciones de páginas con soporte multiidioma
+            $config['page1'] = $buildPageConfig(1, $existingConfig['page1'] ?? []);
+            $config['page2'] = $buildPageConfig(2, $existingConfig['page2'] ?? []);
+            $config['page3'] = $buildPageConfig(3, $existingConfig['page3'] ?? []);
+            $config['page4'] = $buildPageConfig(4, $existingConfig['page4'] ?? []);
+            $config['page5'] = $buildPageConfig(5, $existingConfig['page5'] ?? []);
 
             // Crear backup antes de actualizar
             $this->createBackup($jsonPath, $filename);
@@ -182,8 +180,9 @@ class GeneratorController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Configuración guardada exitosamente',
-                'file_size' => $result
+                'message' => "Configuración guardada exitosamente para idioma '{$selectedLanguage}'",
+                'file_size' => $result,
+                'language' => $selectedLanguage
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -197,6 +196,7 @@ class GeneratorController extends Controller
     {
         try {
             $filename = $request->get('filename');
+            $selectedLanguage = strtolower($request->get('language', 'es'));
 
             if (!$filename) {
                 return response()->json([
@@ -227,6 +227,20 @@ class GeneratorController extends Controller
                     'success' => false,
                     'message' => 'Error al leer el archivo JSON: ' . json_last_error_msg()
                 ], 500);
+            }
+
+            // Ajustar textos según el idioma seleccionado
+            foreach (['page1', 'page2', 'page3', 'page4', 'page5'] as $page) {
+                if (isset($config[$page])) {
+                    $languageTextKey = "text_{$selectedLanguage}";
+
+                    // Si existe texto para el idioma específico, usarlo
+                    if (isset($config[$page][$languageTextKey]) && !empty($config[$page][$languageTextKey])) {
+                        $config[$page]['text'] = $config[$page][$languageTextKey];
+                    }
+                    // Si no existe pero hay texto genérico, mantenerlo
+                    // (no hacer nada, mantener el texto actual)
+                }
             }
 
             return response()->json($config);
