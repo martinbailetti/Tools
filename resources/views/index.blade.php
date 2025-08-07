@@ -2368,73 +2368,7 @@
                 openPreviewInNewTab();
             });
 
-            // Botón de debug para forzar ocultar loading
 
-
-            // Event listeners para detectar cambios y actualizar preview automáticamente - DESHABILITADO
-            // $('#jsonFileSelector, #numberOfPages').on('change', function() {
-            //     console.log('Cambio detectado en:', this.id);
-            //     updatePreview();
-            // });
-
-            // Detectar cambios en checkboxes de fuentes - DESHABILITADO
-            // $(document).on('change', '.font-checkbox', function() {
-            //     console.log('Cambio en selección de fuentes');
-            //     updatePreview();
-            // });
-
-            // Detectar cambios en inputs de configuración - DESHABILITADO
-            // $(document).on('change input keyup paste', 'input[id^="config_"], select[id^="config_"], textarea[id^="config_"]', function() {
-            //     console.log('Cambio en configuración:', this.id);
-            //     updatePreview();
-            // });
-
-            // Detectar cambios específicos en campos principales del formulario - DESHABILITADO
-            // $('#spreadsheetId, #sheetName, #imagesURL').on('input change keyup paste', function() {
-            //     console.log('Cambio en campo principal:', this.id);
-            //     updatePreview();
-            // });
-
-            // Detectar cambios en accordions y controles específicos - DESHABILITADO
-            // $(document).on('change input keyup paste', 'input[type="number"], input[type="text"], input[type="url"], select, textarea', function() {
-            //     // Solo aplicar a elementos dentro de configuración de plantilla
-            //     if ($(this).closest('.accordion').length > 0 || $(this).attr('id')?.startsWith('config_')) {
-            //         console.log('Cambio en control de plantilla:', this.id || this.name);
-            //         updatePreview();
-            //     }
-            // });
-
-            // Detectar cambios en editores Quill usando eventos nativos de Quill - DESHABILITADO
-            // NOTA: Reemplaza el uso de DOMSubtreeModified (deprecated) por eventos nativos de Quill
-            // Los eventos de mutación DOM están deprecados y causan warnings en navegadores modernos
-            // Se configurará después de inicializar los editores
-            window.setupQuillChangeListeners = function() {
-                console.log('Listeners de Quill para preview automático DESHABILITADOS');
-                // Object.keys(quillEditors).forEach(function(editorKey) {
-                //     const editor = quillEditors[editorKey];
-                //     if (editor && !editor._previewListenerAdded) {
-                //         editor.on('text-change', function(delta, oldDelta, source) {
-                //             if (source === 'user') {
-                //                 console.log('Cambio en editor Quill detectado para preview:', editorKey);
-                //                 updatePreview();
-                //             }
-                //         });
-
-                //         // También escuchar cambios de selección/formato
-                //         editor.on('selection-change', function(range, oldRange, source) {
-                //             if (source === 'user' && range && range.length > 0) {
-                //                 console.log('Cambio de selección en editor Quill:', editorKey);
-                //                 // Pequeño delay para capturar cambios de formato
-                //                 setTimeout(() => updatePreview(), 100);
-                //             }
-                //         });
-
-                //         editor._previewListenerAdded = true;
-                //         console.log('Listeners configurados para editor:', editorKey);
-                //     }
-                // });
-                console.log('Listeners de Quill NO configurados (preview manual solamente)');
-            };
 
             // Auto-load configuration se manejará después de inicializar editores
 

@@ -3,12 +3,12 @@
 // Función helper para obtener el texto correcto según el idioma
 function getTextForPage($pageData, $selectedLanguage) {
     $textKey = 'text_' . $selectedLanguage;
-    
+
     // Si existe la clave específica del idioma, usarla
     if (isset($pageData[$textKey]) && !empty($pageData[$textKey])) {
         return $pageData[$textKey];
     }
-    
+
     // Si no, usar la clave genérica 'text' como fallback
     return $pageData['text'] ?? '';
 }
