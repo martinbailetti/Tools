@@ -310,7 +310,8 @@ class GeneratorController extends Controller
                 })),
                 'layout' => $config,
                 'quillFonts' => $quillFonts,
-                'preview' => $request->has('preview')
+                'preview' => $request->has('preview'),
+                'selectedLanguage' => strtolower($languageSelector)
             ];
 
             if ($request->has('preview')) {
@@ -474,7 +475,8 @@ class GeneratorController extends Controller
                 })),
                 'layout' => $layout,
                 'quillFonts' => $quillFonts,
-                'preview' => true
+                'preview' => true,
+                'selectedLanguage' => strtolower($languageSelector)
             ];
 
             return view('pdf.colorbook_margin', $data);
@@ -538,7 +540,8 @@ class GeneratorController extends Controller
                 })),
                 'layout' => $layout,
                 'quillFonts' => $quillFonts,
-                'preview' => true // Para PDF usar fuentes locales, no preview mode
+                'preview' => true, // Para PDF usar fuentes locales, no preview mode
+                'selectedLanguage' => strtolower($languageSelector)
             ];
 
             // Generar PDF usando DOMPDF

@@ -1,5 +1,17 @@
 @php
 
+// Función helper para obtener el texto correcto según el idioma
+function getTextForPage($pageData, $selectedLanguage) {
+    $textKey = 'text_' . $selectedLanguage;
+    
+    // Si existe la clave específica del idioma, usarla
+    if (isset($pageData[$textKey]) && !empty($pageData[$textKey])) {
+        return $pageData[$textKey];
+    }
+    
+    // Si no, usar la clave genérica 'text' como fallback
+    return $pageData['text'] ?? '';
+}
 
 $width=$layout['width']-($layout['margin-in']+$layout['margin-out']);
 $height=$layout['height']-2*$layout['margin-out'];
@@ -77,7 +89,7 @@ $rectoTextTop=$layout['recto']['text-top'];
         @endif
 
         <x-styled-div position="absolute" width="{{ $width - $layout['page1']['text-margin-x']*2 }}cm" left="{{ $layout['page1']['text-margin-x'] }}cm" top="{{ $layout['page1']['text-top'] }}cm" textAlign="center">
-            @processFontsForPdf($layout['page1']['text'])
+            @processFontsForPdf(getTextForPage($layout['page1'], $selectedLanguage))
         </x-styled-div>
 
 
@@ -103,7 +115,7 @@ $rectoTextTop=$layout['recto']['text-top'];
         @endif
 
         <x-styled-div position="absolute" width="{{ $width - $layout['page2']['text-margin-x']*2 }}cm" left="{{ $layout['page2']['text-margin-x'] }}cm" top="{{ $layout['page2']['text-top'] }}cm" textAlign="left">
-            @processFontsForPdf($layout['page2']['text'])
+            @processFontsForPdf(getTextForPage($layout['page2'], $selectedLanguage))
         </x-styled-div>
 
         @if(!empty($layout['page2']['image-url']) && ($layout['page2']['image-height'] > 0 || $layout['page2']['image-width'] > 0))
@@ -127,7 +139,7 @@ $rectoTextTop=$layout['recto']['text-top'];
         @endif
 
         <x-styled-div position="absolute" width="{{ $width - $layout['page3']['text-margin-x']*2 }}cm" left="{{ $layout['page3']['text-margin-x'] }}cm" top="{{ $layout['page3']['text-top'] }}cm" textAlign="left">
-            @processFontsForPdf($layout['page3']['text'])
+            @processFontsForPdf(getTextForPage($layout['page3'], $selectedLanguage))
         </x-styled-div>
         @if(!empty($layout['page3']['image-url']) && ($layout['page3']['image-height'] > 0 || $layout['page3']['image-width'] > 0))
         @php
@@ -155,7 +167,7 @@ $rectoTextTop=$layout['recto']['text-top'];
         @endif
 
         <x-styled-div position="absolute" width="{{ $width - $layout['page4']['text-margin-x']*2 }}cm" left="{{ $layout['page4']['text-margin-x'] }}cm" top="{{ $layout['page4']['text-top'] }}cm" textAlign="left">
-            @processFontsForPdf($layout['page4']['text'])
+            @processFontsForPdf(getTextForPage($layout['page4'], $selectedLanguage))
         </x-styled-div>
 
         @if(!empty($layout['page4']['image-url']) && ($layout['page4']['image-height'] > 0 || $layout['page4']['image-width'] > 0))
@@ -182,7 +194,7 @@ $rectoTextTop=$layout['recto']['text-top'];
         @endif
 
         <x-styled-div position="absolute" width="{{ $width - $layout['page5']['text-margin-x']*2 }}cm" left="{{ $layout['page5']['text-margin-x'] }}cm" top="{{ $layout['page5']['text-top'] }}cm" textAlign="left">
-            @processFontsForPdf($layout['page5']['text'])
+            @processFontsForPdf(getTextForPage($layout['page5'], $selectedLanguage))
         </x-styled-div>
 
         @if(!empty($layout['page5']['image-url']) && ($layout['page5']['image-height'] > 0 || $layout['page5']['image-width'] > 0))
