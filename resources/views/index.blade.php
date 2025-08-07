@@ -10,6 +10,45 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- FontAwesome -->
+    <style>
+        /* Estilos para modo pantalla completa de Quill */
+        .quill-fullscreen {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            z-index: 9999 !important;
+            background: white !important;
+            display: flex !important;
+            flex-direction: column !important;
+        }
+
+        .quill-fullscreen .ql-toolbar {
+            flex-shrink: 0 !important;
+            border-bottom: 1px solid #ccc !important;
+        }
+
+        .quill-fullscreen .ql-container {
+            flex: 1 !important;
+            border: none !important;
+        }
+
+        .quill-fullscreen .ql-editor {
+            height: 100% !important;
+            min-height: auto !important;
+            padding: 20px !important;
+            font-size: 16px !important;
+        }
+
+        /* Estilo para el botón de pantalla completa */
+        .ql-fullscreen {
+            padding: 4px 8px !important;
+            font-size: 14px !important;
+            font-weight: bold !important;
+        }
+    </style>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Quill.js WYSIWYG Editor -->
@@ -108,8 +147,10 @@
 
         /* Layout sin scroll para md y superiores */
         @media (min-width: 992px) {
+
             /* Hacer que body y html ocupen toda la pantalla sin scroll */
-            html, body {
+            html,
+            body {
                 height: 100vh;
                 overflow: hidden;
             }
@@ -122,7 +163,7 @@
             }
 
             /* Row debe ocupar toda la altura */
-            .container-fluid > .row {
+            .container-fluid>.row {
                 height: 100vh;
                 margin: 0;
             }
@@ -149,7 +190,8 @@
 
             /* Card body del preview sin scroll adicional */
             .col-lg-6.col-xl-5 .card-body {
-                height: calc(100% - 60px); /* Restar altura del header */
+                height: calc(100% - 60px);
+                /* Restar altura del header */
                 overflow: hidden;
             }
 
@@ -158,6 +200,26 @@
                 height: 100% !important;
                 min-height: unset !important;
             }
+        }
+
+        /* Estilos para labels con tooltip */
+        .form-label-tooltip {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            display: inline-block;
+            cursor: help;
+        }
+
+        /* Mejorar el estilo del tooltip de Bootstrap */
+        .tooltip {
+            --bs-tooltip-max-width: 300px;
+        }
+
+        .tooltip-inner {
+            text-align: left;
+            word-wrap: break-word;
         }
 
     </style>
@@ -187,7 +249,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="jsonFileSelector" class="form-label">
+                                <label for="jsonFileSelector" class="form-label form-label-tooltip" data-bs-toggle="tooltip" title="Archivo de Configuración JSON">
                                     <i class="fas fa-file-code me-1"></i>
                                     Archivo de Configuración JSON
                                 </label>
@@ -205,7 +267,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="numberOfPages" class="form-label">
+                                <label for="numberOfPages" class="form-label form-label-tooltip" data-bs-toggle="tooltip" title="Número de Páginas (opcional)">
                                     <i class="fas fa-sort-numeric-up me-1"></i>
                                     Número de Páginas (opcional)
                                 </label>
@@ -252,28 +314,28 @@
                                     <div class="accordion-body">
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <label class="form-label">
+                                                <label class="form-label form-label-tooltip" data-bs-toggle="tooltip" title="Ancho (width)">
                                                     <i class="fas fa-arrows-alt-h me-1"></i>
                                                     Ancho (width)
                                                 </label>
                                                 <input type="number" class="form-control" id="config_width" step="0.01" value="21.59">
                                             </div>
                                             <div class="col-md-6">
-                                                <label class="form-label">
+                                                <label class="form-label form-label-tooltip" data-bs-toggle="tooltip" title="Alto (height)">
                                                     <i class="fas fa-arrows-alt-v me-1"></i>
                                                     Alto (height)
                                                 </label>
                                                 <input type="number" class="form-control" id="config_height" step="0.01" value="27.94">
                                             </div>
                                             <div class="col-md-6 mt-2">
-                                                <label class="form-label">
+                                                <label class="form-label form-label-tooltip" data-bs-toggle="tooltip" title="Margen Interno (margin-in)">
                                                     <i class="fas fa-indent me-1"></i>
                                                     Margen Interno (margin-in)
                                                 </label>
                                                 <input type="number" class="form-control" id="config_margin_in" step="0.01" value="0.95">
                                             </div>
                                             <div class="col-md-6 mt-2">
-                                                <label class="form-label">
+                                                <label class="form-label form-label-tooltip" data-bs-toggle="tooltip" title="Margen Externo (margin-out)">
                                                     <i class="fas fa-outdent me-1"></i>
                                                     Margen Externo (margin-out)
                                                 </label>
@@ -287,7 +349,7 @@
                                                 </h6>
                                             </div>
                                             <div class="col-md-12 mt-2">
-                                                <label class="form-label">
+                                                <label class="form-label form-label-tooltip" data-bs-toggle="tooltip" title="ID de Google Spreadsheet">
                                                     <i class="fas fa-table me-1"></i>
                                                     ID de Google Spreadsheet
                                                 </label>
@@ -295,7 +357,7 @@
                                                 <div class="form-text">ID de la hoja de cálculo de Google Drive</div>
                                             </div>
                                             <div class="col-md-6 mt-2">
-                                                <label class="form-label">
+                                                <label class="form-label form-label-tooltip" data-bs-toggle="tooltip" title="Nombre de la Hoja">
                                                     <i class="fas fa-file-alt me-1"></i>
                                                     Nombre de la Hoja
                                                 </label>
@@ -303,52 +365,12 @@
                                                 <div class="form-text">Nombre de la pestaña en la hoja de cálculo</div>
                                             </div>
                                             <div class="col-md-12 mt-2">
-                                                <label class="form-label">
+                                                <label class="form-label form-label-tooltip" data-bs-toggle="tooltip" title="URL Base de Imágenes">
                                                     <i class="fas fa-images me-1"></i>
                                                     URL Base de Imágenes
                                                 </label>
                                                 <input type="url" class="form-control" id="config_images_url" value="https://printables.happycapibara.com/color-books/chinese/">
                                                 <div class="form-text">URL donde se encuentran las imágenes (debe terminar en /)</div>
-                                            </div>
-                                            <div class="col-md-12 mt-3">
-                                                <hr>
-                                                <h6 class="text-muted">
-                                                    <i class="fas fa-font me-2"></i>
-                                                    Configuración de Fuentes
-                                                </h6>
-                                            </div>
-                                            <div class="col-md-12 mt-2">
-                                                <label class="form-label">
-                                                    <i class="fas fa-font me-1"></i>
-                                                    Fuentes a Incrustar en el PDF
-                                                </label>
-                                                <div class="border rounded p-3 bg-light" style="max-height: 200px; overflow-y: auto;">
-                                                    <div id="config_fonts_container">
-                                                        <div class="text-muted text-center">
-                                                            <i class="fas fa-spinner fa-spin me-2"></i>
-                                                            Cargando fuentes disponibles...
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-text">
-                                                    <i class="fas fa-server me-1"></i>
-                                                    Las fuentes disponibles se cargan desde el servidor y se guardan en la configuración JSON
-                                                </div>
-                                                <div class="mt-2 d-flex justify-content-between align-items-center">
-                                                    <div>
-                                                        <button type="button" class="btn btn-sm btn-outline-primary" id="selectAllFonts">
-                                                            <i class="fas fa-check-double me-1"></i>
-                                                            Seleccionar Todas
-                                                        </button>
-                                                        <button type="button" class="btn btn-sm btn-outline-secondary ms-2" id="deselectAllFonts">
-                                                            <i class="fas fa-times me-1"></i>
-                                                            Deseleccionar Todas
-                                                        </button>
-                                                    </div>
-                                                    <div>
-                                                        <small class="text-muted" id="fontCounter">Fuentes: 0</small>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -391,7 +413,7 @@
                                                 <label class="form-label">
 
                                                     <i class="fa-solid fa-ruler-vertical me-1"></i>
-                                                    Posición de Texto 1
+                                                    Texto 1 Y
                                                 </label>
                                                 <input type="number" class="form-control" id="config_verso_text_1_top" step="0.01">
                                             </div>
@@ -399,7 +421,7 @@
                                                 <label class="form-label">
 
                                                     <i class="fa-solid fa-ruler-vertical me-1"></i>
-                                                    Posición de Texto 2
+                                                    Texto 2 Y
                                                 </label>
                                                 <input type="number" class="form-control" id="config_verso_text_2_top" step="0.01">
                                             </div>
@@ -417,6 +439,24 @@
                                                     Tamaño Fuente Secundaria
                                                 </label>
                                                 <input type="number" class="form-control" id="config_verso_secondary_font_size" step="0.1">
+                                            </div>
+                                            <div class="col-md-6 mt-2">
+                                                <label class="form-label">
+                                                    <i class="fas fa-font me-1"></i>
+                                                    Fuente Texto 1
+                                                </label>
+                                                <select class="form-control font-selector" id="config_verso_text_1_font_family">
+                                                    <option value="">Seleccionar fuente...</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 mt-2">
+                                                <label class="form-label">
+                                                    <i class="fas fa-font me-1"></i>
+                                                    Fuente Texto 2
+                                                </label>
+                                                <select class="form-control font-selector" id="config_verso_text_2_font_family">
+                                                    <option value="">Seleccionar fuente...</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -457,10 +497,19 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label">
-                                                    <i class="fas fa-percentage me-1"></i>
-                                                    Porcentaje Y del Texto
+                                                    <i class="fa-solid fa-ruler-vertical me-1"></i>
+                                                    Texto Y
                                                 </label>
                                                 <input type="number" class="form-control" id="config_recto_text_top" step="0.01" value="0.53">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">
+                                                    <i class="fas fa-font me-1"></i>
+                                                    Fuente Texto
+                                                </label>
+                                                <select class="form-control font-selector" id="config_recto_text_font_family">
+                                                    <option value="">Seleccionar fuente...</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -478,65 +527,65 @@
                                 <div id="collapsePage1" class="accordion-collapse collapse" data-bs-parent="#templateAccordion">
                                     <div class="accordion-body">
                                         <div class="row">
+                                            <div class="col-md-3">
+                                                <label class="form-label">Text Y</label>
+                                                <input type="number" class="form-control" id="config_page1_text_top" step="0.01" value="0.4">
+                                            </div>
                                             <div class="col-md-6">
-                                                <label class="form-label">
-                                                    <i class="fas fa-heading me-1"></i>
-                                                    Título Línea 1
+                                                <label class="form-label form-label-tooltip" data-bs-toggle="tooltip" title="Margen Horizontal del Texto (text-margin-x)">
+                                                    Margen X del Texto:
                                                 </label>
-                                                <input type="text" class="form-control" id="config_page1_title_line_1" value="El secreto">
+                                                <input type="number" class="form-control" id="config_page1_text_margin_x" step="0.01" value="0">
                                             </div>
-                                            <div class="col-md-3">
-                                                <label class="form-label">Y Porcentaje</label>
-                                                <input type="number" class="form-control" id="config_page1_title_line_1_y_percentage" step="0.01" value="0.4">
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label class="form-label">Tamaño Fuente</label>
-                                                <input type="number" class="form-control" id="config_page1_title_line_1_font_size" step="0.1" value="1.7">
-                                            </div>
-                                            <div class="col-md-6 mt-2">
-                                                <label class="form-label">
-                                                    <i class="fas fa-heading me-1"></i>
-                                                    Título Línea 2
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <label class="form-label form-label-tooltip" data-bs-toggle="tooltip" title="URL de Imagen de Fondo (background-url)">
+                                                    URL de Imagen de Fondo:
                                                 </label>
-                                                <input type="text" class="form-control" id="config_page1_title_line_2" value="de los">
-                                            </div>
-                                            <div class="col-md-3 mt-2">
-                                                <label class="form-label">Tamaño Fuente</label>
-                                                <input type="number" class="form-control" id="config_page1_title_line_2_font_size" step="0.1" value="1">
-                                            </div>
-                                            <div class="col-md-3 mt-2">
-                                                <label class="form-label">Margen</label>
-                                                <input type="number" class="form-control" id="config_page1_title_line_2_margin" step="0.01" value="0.7">
-                                            </div>
-                                            <div class="col-md-6 mt-2">
-                                                <label class="form-label">
-                                                    <i class="fas fa-heading me-1"></i>
-                                                    Título Línea 3
-                                                </label>
-                                                <input type="text" class="form-control" id="config_page1_title_line_3" value="Ideogramas Chinos">
-                                            </div>
-                                            <div class="col-md-3 mt-2">
-                                                <label class="form-label">Margen</label>
-                                                <input type="number" class="form-control" id="config_page1_title_line_3_margin" step="0.01" value="0.15">
-                                            </div>
-                                            <div class="col-md-3 mt-2">
-                                                <label class="form-label">Tamaño Fuente</label>
-                                                <input type="number" class="form-control" id="config_page1_title_line_3_font_size" step="0.1" value="1.7">
+                                                <input type="url" class="form-control" id="config_page1_background_url" value="">
                                             </div>
                                             <div class="col-md-6 mt-2">
                                                 <label class="form-label">
                                                     <i class="fas fa-image me-1"></i>
                                                     URL del Logo
                                                 </label>
-                                                <input type="url" class="form-control" id="config_page1_logo_image" value="https://printables.happycapibara.com/logo.png">
+                                                <input type="url" class="form-control" id="config_page1_image_url" value="https://printables.happycapibara.com/logo.png">
                                             </div>
                                             <div class="col-md-3 mt-2">
-                                                <label class="form-label">Logo Y Porcentaje</label>
-                                                <input type="number" class="form-control" id="config_page1_logo_y_percentage" step="0.01" value="0.9">
+                                                <label class="form-label">Logo Y</label>
+                                                <input type="number" class="form-control" id="config_page1_image_top" step="0.01" value="0.9">
                                             </div>
                                             <div class="col-md-3 mt-2">
                                                 <label class="form-label">Altura del Logo</label>
-                                                <input type="number" class="form-control" id="config_page1_logo_height" step="0.1" value="3">
+                                                <input type="number" class="form-control" id="config_page1_image_height" step="0.1" value="3">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label form-label-tooltip" data-bs-toggle="tooltip" title="Ancho de la Imagen (image-width)">
+                                                    Ancho de Imagen:
+                                                </label>
+                                                <input type="number" class="form-control" id="config_page1_image_width" step="0.1" value="0">
+                                            </div>
+                                        </div>
+
+                                        <!-- Editores de Texto con Quill.js -->
+                                        <div class="mt-4">
+                                            <h5 class="text-primary">
+                                                <i class="fas fa-edit me-2"></i>
+                                                Títulos de Página
+                                            </h5>
+
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <label class="form-label fw-bold">Título Línea 1</label>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleSourceView('config_page1_text')">
+                                                        <i class="fas fa-code"></i> Ver código
+                                                    </button>
+                                                </div>
+                                                <div id="config_page1_text_editor" style="height: 120px;"></div>
+                                                <textarea id="config_page1_text_source" class="form-control" style="height: 120px; display: none; font-family: monospace; font-size: 12px;" placeholder="Código HTML aquí..."></textarea>
+                                                <input type="hidden" id="config_page1_text" />
                                             </div>
                                         </div>
                                     </div>
@@ -556,38 +605,46 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <label class="form-label">
-                                                    <i class="fas fa-percentage me-1"></i>
-                                                    Texto Y Porcentaje
+                                                    <i class="fas fa-ruler-vertical me-1"></i>
+                                                    Texto Y
                                                 </label>
-                                                <input type="number" class="form-control" id="config_page2_text_top" step="0.01" value="0.3">
+                                                <input type="number" class="form-control" id="config_page2_text_top" step="0.01" value="21">
                                             </div>
                                             <div class="col-md-4">
-                                                <label class="form-label">
-                                                    <i class="fas fa-arrows-alt-v me-1"></i>
-                                                    Espaciado Y del Texto
+                                                <label class="form-label form-label-tooltip" data-bs-toggle="tooltip" title="Margen Horizontal del Texto (text-margin-x)">
+                                                    Margen X del Texto:
                                                 </label>
-                                                <input type="number" class="form-control" id="config_page2_text_y_space" step="0.01" value="0.3">
+                                                <input type="number" class="form-control" id="config_page2_text_margin_x" step="0.01" value="0.5">
                                             </div>
-                                            <div class="col-md-4">
-                                                <label class="form-label">
-                                                    <i class="fas fa-font me-1"></i>
-                                                    Tamaño de Fuente
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <label class="form-label form-label-tooltip" data-bs-toggle="tooltip" title="URL de Imagen de Fondo (background-url)">
+                                                    URL de Imagen de Fondo:
                                                 </label>
-                                                <input type="number" class="form-control" id="config_page2_text_font_size" step="0.01" value="0.3">
+                                                <input type="url" class="form-control" id="config_page2_background_url" value="">
                                             </div>
                                             <div class="col-md-6 mt-2">
                                                 <label class="form-label">
-                                                    <i class="fas fa-arrows-alt-h me-1"></i>
-                                                    Margen X
+                                                    <i class="fas fa-image me-1"></i>
+                                                    URL de Imagen
                                                 </label>
-                                                <input type="number" class="form-control" id="config_page2_margin_x" step="0.01" value="0.3">
+                                                <input type="url" class="form-control" id="config_page2_image_url" value="">
                                             </div>
-                                            <div class="col-md-6 mt-2">
-                                                <label class="form-label">
-                                                    <i class="fas fa-arrow-down me-1"></i>
-                                                    Margen Inferior
+                                            <div class="col-md-3 mt-2">
+                                                <label class="form-label">Imagen Y</label>
+                                                <input type="number" class="form-control" id="config_page2_image_top" step="0.01" value="0">
+                                            </div>
+                                            <div class="col-md-3 mt-2">
+                                                <label class="form-label">Altura de Imagen</label>
+                                                <input type="number" class="form-control" id="config_page2_image_height" step="0.1" value="0">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label form-label-tooltip" data-bs-toggle="tooltip" title="Ancho de la Imagen (image-width)">
+                                                    Ancho de Imagen:
                                                 </label>
-                                                <input type="number" class="form-control" id="config_page2_margin_bottom" step="0.01" value="0.2">
+                                                <input type="number" class="form-control" id="config_page2_image_width" step="0.1" value="0">
                                             </div>
                                         </div>
 
@@ -601,50 +658,16 @@
                                             <div class="mb-3">
                                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                                     <label class="form-label fw-bold">Bloque 1 - Título y Subtítulo</label>
-                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleSourceView('config_page2_text_block_1')">
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleSourceView('config_page2_text')">
                                                         <i class="fas fa-code"></i> Ver código
                                                     </button>
                                                 </div>
-                                                <div id="config_page2_text_block_1_editor" style="height: 120px;"></div>
-                                                <textarea id="config_page2_text_block_1_source" class="form-control" style="height: 120px; display: none; font-family: monospace; font-size: 12px;" placeholder="Código HTML aquí..."></textarea>
-                                                <input type="hidden" id="config_page2_text_block_1" />
+                                                <div id="config_page2_text_editor" style="height: 120px;"></div>
+                                                <textarea id="config_page2_text_source" class="form-control" style="height: 120px; display: none; font-family: monospace; font-size: 12px;" placeholder="Código HTML aquí..."></textarea>
+                                                <input type="hidden" id="config_page2_text" />
                                             </div>
 
-                                            <div class="mb-3">
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <label class="form-label fw-bold">Bloque 2 - Copyright</label>
-                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleSourceView('config_page2_text_block_2')">
-                                                        <i class="fas fa-code"></i> Ver código
-                                                    </button>
-                                                </div>
-                                                <div id="config_page2_text_block_2_editor" style="height: 120px;"></div>
-                                                <textarea id="config_page2_text_block_2_source" class="form-control" style="height: 120px; display: none; font-family: monospace; font-size: 12px;" placeholder="Código HTML aquí..."></textarea>
-                                                <input type="hidden" id="config_page2_text_block_2" />
-                                            </div>
 
-                                            <div class="mb-3">
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <label class="form-label fw-bold">Bloque 3 - Términos Legales</label>
-                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleSourceView('config_page2_text_block_3')">
-                                                        <i class="fas fa-code"></i> Ver código
-                                                    </button>
-                                                </div>
-                                                <div id="config_page2_text_block_3_editor" style="height: 150px;"></div>
-                                                <textarea id="config_page2_text_block_3_source" class="form-control" style="height: 150px; display: none; font-family: monospace; font-size: 12px;" placeholder="Código HTML aquí..."></textarea>
-                                                <input type="hidden" id="config_page2_text_block_3" />
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <label class="form-label fw-bold">Bloque 4 - Información Editorial</label>
-                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleSourceView('config_page2_text_block_4')">
-                                                        <i class="fas fa-code"></i> Ver código
-                                                    </button>
-                                                </div>
-                                                <div id="config_page2_text_block_4_editor" style="height: 150px;"></div>
-                                                <textarea id="config_page2_text_block_4_source" class="form-control" style="height: 150px; display: none; font-family: monospace; font-size: 12px;" placeholder="Código HTML aquí..."></textarea>
-                                                <input type="hidden" id="config_page2_text_block_4" />
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -661,26 +684,64 @@
                                 <div id="collapsePage3" class="accordion-collapse collapse" data-bs-parent="#templateAccordion">
                                     <div class="accordion-body">
                                         <div class="row">
+                                            <div class="col-md-3">
+                                                <label class="form-label">Text Y</label>
+                                                <input type="number" class="form-control" id="config_page3_text_top" step="0.01" value="0.4">
+                                            </div>
                                             <div class="col-md-6">
+                                                <label class="form-label form-label-tooltip" data-bs-toggle="tooltip" title="Margen Horizontal del Texto (text-margin-x)">
+                                                    Margen X del Texto:
+                                                </label>
+                                                <input type="number" class="form-control" id="config_page3_text_margin_x" step="0.01" value="0">
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <label class="form-label form-label-tooltip" data-bs-toggle="tooltip" title="URL de Imagen de Fondo (background-url)">
+                                                    URL de Imagen de Fondo:
+                                                </label>
+                                                <input type="url" class="form-control" id="config_page3_background_url" value="">
+                                            </div>
+                                            <div class="col-md-6 mt-2">
                                                 <label class="form-label">
                                                     <i class="fas fa-image me-1"></i>
-                                                    URL de la Imagen
+                                                    URL de Imagen
                                                 </label>
-                                                <input type="url" class="form-control" id="config_page3_image" value="https://printables.happycapibara.com/color-books/birds.png">
+                                                <input type="url" class="form-control" id="config_page3_image_url" value="">
                                             </div>
-                                            <div class="col-md-3">
-                                                <label class="form-label">
-                                                    <i class="fas fa-percentage me-1"></i>
-                                                    Imagen Y Porcentaje
-                                                </label>
-                                                <input type="number" class="form-control" id="config_page3_image_y_percentage" step="0.01" value="0.3">
+                                            <div class="col-md-3 mt-2">
+                                                <label class="form-label">Imagen Y</label>
+                                                <input type="number" class="form-control" id="config_page3_image_top" step="0.01" value="0">
                                             </div>
-                                            <div class="col-md-3">
-                                                <label class="form-label">
-                                                    <i class="fas fa-border-style me-1"></i>
-                                                    Margen
+                                            <div class="col-md-3 mt-2">
+                                                <label class="form-label">Altura de Imagen</label>
+                                                <input type="number" class="form-control" id="config_page3_image_height" step="0.1" value="0">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label form-label-tooltip" data-bs-toggle="tooltip" title="Ancho de la Imagen (image-width)">
+                                                    Ancho de Imagen:
                                                 </label>
-                                                <input type="number" class="form-control" id="config_page3_margin" step="0.01" value="0.2">
+                                                <input type="number" class="form-control" id="config_page3_image_width" step="0.1" value="0">
+                                            </div>
+                                        </div>
+
+                                        <!-- Editores de Texto con Quill.js -->
+                                        <div class="mt-4">
+                                            <h5 class="text-primary">
+                                                <i class="fas fa-edit me-2"></i>
+                                                Contenido de Texto
+                                            </h5>
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <label class="form-label fw-bold">Contenido de Página 3</label>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleSourceView('config_page3_text')">
+                                                        <i class="fas fa-code"></i> Ver código
+                                                    </button>
+                                                </div>
+                                                <div id="config_page3_text_editor" style="height: 150px;"></div>
+                                                <textarea id="config_page3_text_source" class="form-control" style="height: 150px; display: none; font-family: monospace; font-size: 12px;" placeholder="Código HTML aquí..."></textarea>
+                                                <input type="hidden" id="config_page3_text" />
                                             </div>
                                         </div>
                                     </div>
@@ -698,12 +759,64 @@
                                 <div id="collapsePage4" class="accordion-collapse collapse" data-bs-parent="#templateAccordion">
                                     <div class="accordion-body">
                                         <div class="row">
-                                            <div class="col-md-12">
+                                            <div class="col-md-3">
+                                                <label class="form-label">Text Y</label>
+                                                <input type="number" class="form-control" id="config_page4_text_top" step="0.01" value="0">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label form-label-tooltip" data-bs-toggle="tooltip" title="Margen Horizontal del Texto (text-margin-x)">
+                                                    Margen X del Texto:
+                                                </label>
+                                                <input type="number" class="form-control" id="config_page4_text_margin_x" step="0.01" value="0">
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <label class="form-label form-label-tooltip" data-bs-toggle="tooltip" title="URL de Imagen de Fondo (background-url)">
+                                                    URL de Imagen de Fondo:
+                                                </label>
+                                                <input type="url" class="form-control" id="config_page4_background_url" value="https://printables.happycapibara.com/color-books/chinese_landscape.png">
+                                            </div>
+                                            <div class="col-md-6 mt-2">
                                                 <label class="form-label">
                                                     <i class="fas fa-image me-1"></i>
-                                                    URL de la Imagen
+                                                    URL de Imagen
                                                 </label>
-                                                <input type="url" class="form-control" id="config_page4_image" value="https://printables.happycapibara.com/color-books/chinese_landscape.png">
+                                                <input type="url" class="form-control" id="config_page4_image_url" value="">
+                                            </div>
+                                            <div class="col-md-3 mt-2">
+                                                <label class="form-label">Imagen Y</label>
+                                                <input type="number" class="form-control" id="config_page4_image_top" step="0.01" value="0">
+                                            </div>
+                                            <div class="col-md-3 mt-2">
+                                                <label class="form-label">Altura de Imagen</label>
+                                                <input type="number" class="form-control" id="config_page4_image_height" step="0.1" value="0">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label form-label-tooltip" data-bs-toggle="tooltip" title="Ancho de la Imagen (image-width)">
+                                                    Ancho de Imagen:
+                                                </label>
+                                                <input type="number" class="form-control" id="config_page4_image_width" step="0.1" value="0">
+                                            </div>
+                                        </div>
+
+                                        <!-- Editores de Texto con Quill.js -->
+                                        <div class="mt-4">
+                                            <h5 class="text-primary">
+                                                <i class="fas fa-edit me-2"></i>
+                                                Contenido de Texto
+                                            </h5>
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <label class="form-label fw-bold">Contenido de Página 4</label>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleSourceView('config_page4_text')">
+                                                        <i class="fas fa-code"></i> Ver código
+                                                    </button>
+                                                </div>
+                                                <div id="config_page4_text_editor" style="height: 200px;"></div>
+                                                <textarea id="config_page4_text_source" class="form-control" style="height: 200px; display: none; font-family: monospace; font-size: 12px;" placeholder="Código HTML aquí..."></textarea>
+                                                <input type="hidden" id="config_page4_text" />
                                             </div>
                                         </div>
                                     </div>
@@ -721,119 +834,64 @@
                                 <div id="collapsePage5" class="accordion-collapse collapse" data-bs-parent="#templateAccordion">
                                     <div class="accordion-body">
                                         <div class="row">
-                                            <div class="col-md-12 mb-2">
-                                                <label class="form-label">
-                                                    <i class="fas fa-image me-1"></i>
-                                                    URL de la Imagen
+                                            <div class="col-md-3">
+                                                <label class="form-label">Text Y</label>
+                                                <input type="number" class="form-control" id="config_page5_text_top" step="0.01" value="5">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label form-label-tooltip" data-bs-toggle="tooltip" title="Margen Horizontal del Texto (text-margin-x)">
+                                                    Margen X del Texto:
                                                 </label>
-                                                <input type="url" class="form-control" id="config_page5_image" value="https://printables.happycapibara.com/color-books/chinese_background.png">
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label class="form-label">Header Y</label>
-                                                <input type="number" class="form-control" id="config_page5_header_y" step="0.1" value="1.5">
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label class="form-label">Header Font Size</label>
-                                                <input type="number" class="form-control" id="config_page5_header_font_size" step="0.1" value="0.5">
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label class="form-label">Footer Y</label>
-                                                <input type="number" class="form-control" id="config_page5_footer_y" step="0.1" value="24">
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label class="form-label">Footer Font Size</label>
-                                                <input type="number" class="form-control" id="config_page5_footer_font_size" step="0.1" value="0.5">
-                                            </div>
-                                            <div class="col-md-3 mt-2">
-                                                <label class="form-label">Text Font Size</label>
-                                                <input type="number" class="form-control" id="config_page5_text_font_size" step="0.01" value="0.45">
-                                            </div>
-                                            <div class="col-md-3 mt-2">
-                                                <label class="form-label">Text 1 Y</label>
-                                                <input type="number" class="form-control" id="config_page5_text_1_y" step="0.1" value="6">
-                                            </div>
-                                            <div class="col-md-3 mt-2">
-                                                <label class="form-label">Text 2 Y</label>
-                                                <input type="number" class="form-control" id="config_page5_text_2_y" step="0.1" value="10.2">
-                                            </div>
-                                            <div class="col-md-3 mt-2">
-                                                <label class="form-label">Text 3 Y</label>
-                                                <input type="number" class="form-control" id="config_page5_text_3_y" step="0.1" value="17.5">
-                                            </div>
-                                            <div class="col-md-12 mt-2">
-                                                <label class="form-label">
-                                                    <i class="fas fa-border-style me-1"></i>
-                                                    Margen
-                                                </label>
-                                                <input type="number" class="form-control" id="config_page5_margin" step="0.1" value="1">
+                                                <input type="number" class="form-control" id="config_page5_text_margin_x" step="0.01" value="0">
                                             </div>
                                         </div>
 
-                                        <!-- Editores de Texto para Página 5 con Quill.js -->
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <label class="form-label form-label-tooltip" data-bs-toggle="tooltip" title="URL de Imagen de Fondo (background-url)">
+                                                    URL de Imagen de Fondo:
+                                                </label>
+                                                <input type="url" class="form-control" id="config_page5_background_url" value="https://printables.happycapibara.com/color-books/chinese_background.png">
+                                            </div>
+                                            <div class="col-md-6 mt-2">
+                                                <label class="form-label">
+                                                    <i class="fas fa-image me-1"></i>
+                                                    URL de Imagen
+                                                </label>
+                                                <input type="url" class="form-control" id="config_page5_image_url" value="">
+                                            </div>
+                                            <div class="col-md-3 mt-2">
+                                                <label class="form-label">Imagen Y</label>
+                                                <input type="number" class="form-control" id="config_page5_image_top" step="0.01" value="0">
+                                            </div>
+                                            <div class="col-md-3 mt-2">
+                                                <label class="form-label">Altura de Imagen</label>
+                                                <input type="number" class="form-control" id="config_page5_image_height" step="0.1" value="0">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label form-label-tooltip" data-bs-toggle="tooltip" title="Ancho de la Imagen (image-width)">
+                                                    Ancho de Imagen:
+                                                </label>
+                                                <input type="number" class="form-control" id="config_page5_image_width" step="0.1" value="0">
+                                            </div>
+                                        </div>
+
+                                        <!-- Editores de Texto con Quill.js -->
                                         <div class="mt-4">
                                             <h5 class="text-primary">
                                                 <i class="fas fa-edit me-2"></i>
                                                 Contenido de Texto
                                             </h5>
-
                                             <div class="mb-3">
                                                 <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <label class="form-label fw-bold">Texto del Header</label>
-                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleSourceView('config_page5_header_text')">
+                                                    <label class="form-label fw-bold">Contenido de Página 5</label>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleSourceView('config_page5_text')">
                                                         <i class="fas fa-code"></i> Ver código
                                                     </button>
                                                 </div>
-                                                <div id="config_page5_header_text_editor" style="height: 120px;"></div>
-                                                <textarea id="config_page5_header_text_source" class="form-control" style="height: 120px; display: none; font-family: monospace; font-size: 12px;" placeholder="Código HTML aquí..."></textarea>
-                                                <input type="hidden" id="config_page5_header_text" />
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <label class="form-label fw-bold">Texto del Footer</label>
-                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleSourceView('config_page5_footer_text')">
-                                                        <i class="fas fa-code"></i> Ver código
-                                                    </button>
-                                                </div>
-                                                <div id="config_page5_footer_text_editor" style="height: 120px;"></div>
-                                                <textarea id="config_page5_footer_text_source" class="form-control" style="height: 120px; display: none; font-family: monospace; font-size: 12px;" placeholder="Código HTML aquí..."></textarea>
-                                                <input type="hidden" id="config_page5_footer_text" />
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <label class="form-label fw-bold">Contenido Texto 1</label>
-                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleSourceView('config_page5_text_1_content')">
-                                                        <i class="fas fa-code"></i> Ver código
-                                                    </button>
-                                                </div>
-                                                <div id="config_page5_text_1_content_editor" style="height: 150px;"></div>
-                                                <textarea id="config_page5_text_1_content_source" class="form-control" style="height: 150px; display: none; font-family: monospace; font-size: 12px;" placeholder="Código HTML aquí..."></textarea>
-                                                <input type="hidden" id="config_page5_text_1_content" />
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <label class="form-label fw-bold">Contenido Texto 2</label>
-                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleSourceView('config_page5_text_2_content')">
-                                                        <i class="fas fa-code"></i> Ver código
-                                                    </button>
-                                                </div>
-                                                <div id="config_page5_text_2_content_editor" style="height: 180px;"></div>
-                                                <textarea id="config_page5_text_2_content_source" class="form-control" style="height: 180px; display: none; font-family: monospace; font-size: 12px;" placeholder="Código HTML aquí..."></textarea>
-                                                <input type="hidden" id="config_page5_text_2_content" />
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <label class="form-label fw-bold">Contenido Texto 3</label>
-                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleSourceView('config_page5_text_3_content')">
-                                                        <i class="fas fa-code"></i> Ver código
-                                                    </button>
-                                                </div>
-                                                <div id="config_page5_text_3_content_editor" style="height: 180px;"></div>
-                                                <textarea id="config_page5_text_3_content_source" class="form-control" style="height: 180px; display: none; font-family: monospace; font-size: 12px;" placeholder="Código HTML aquí..."></textarea>
-                                                <input type="hidden" id="config_page5_text_3_content" />
+                                                <div id="config_page5_text_editor" style="height: 200px;"></div>
+                                                <textarea id="config_page5_text_source" class="form-control" style="height: 200px; display: none; font-family: monospace; font-size: 12px;" placeholder="Código HTML aquí..."></textarea>
+                                                <input type="hidden" id="config_page5_text" />
                                             </div>
                                         </div>
                                     </div>
@@ -849,10 +907,6 @@
                             <button type="button" class="btn btn-primary me-2" id="loadConfigBtn">
                                 <i class="fas fa-download me-1"></i>
                                 Cargar Configuración
-                            </button>
-                            <button type="button" class="btn btn-secondary" id="resetConfigBtn">
-                                <i class="fas fa-undo me-1"></i>
-                                Resetear
                             </button>
                         </div>
                         <div class="mt-2">
@@ -972,12 +1026,7 @@
                         </div>
 
                         <!-- Iframe para el preview PDF -->
-                        <iframe
-                            id="previewFrame"
-                            class="w-100 h-100"
-                            style="min-height: 800px; border: none; background: #f5f5f5;"
-                            src="about:blank"
-                            allow="fullscreen">
+                        <iframe id="previewFrame" class="w-100 h-100" style="min-height: 800px; border: none; background: #f5f5f5;" src="about:blank" allow="fullscreen">
                         </iframe>
                     </div>
                 </div>
@@ -1011,6 +1060,53 @@
     <!-- Elemento style para fuentes dinámicas (debe existir antes que cualquier JavaScript) -->
     <style id="dynamic-fonts" type="text/css">
         /* Placeholder para fuentes dinámicas */
+
+        /* Estilos para controles personalizados (tamaño y line-height) */
+        .ql-toolbar .ql-formats:last-child {
+            border-left: 1px solid #ccc;
+            padding-left: 8px;
+            margin-left: 8px;
+        }
+
+        .ql-toolbar .ql-formats:nth-last-child(2) {
+            border-left: 1px solid #ccc;
+            padding-left: 8px;
+            margin-left: 8px;
+        }
+
+        .ql-toolbar .ql-formats label {
+            display: inline-block;
+            vertical-align: middle;
+            font-size: 11px;
+            color: #444;
+            font-weight: normal;
+            user-select: none;
+        }
+
+        .ql-toolbar .ql-formats input[type="text"] {
+            display: inline-block;
+            vertical-align: middle;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 3px 6px;
+            font-size: 11px;
+            width: 90px;
+            height: 24px;
+            box-sizing: border-box;
+            background: white;
+        }
+
+        .ql-toolbar .ql-formats input[type="text"]:focus {
+            outline: none;
+            border-color: #0066cc;
+            box-shadow: 0 0 3px rgba(0, 102, 204, 0.3);
+            background: #fafafa;
+        }
+
+        .ql-toolbar .ql-formats input[type="text"]:hover {
+            border-color: #999;
+        }
+
     </style>
 
     <script>
@@ -1038,19 +1134,53 @@
             const sourceElement = document.getElementById(hiddenId + '_source');
             const editor = quillEditors[hiddenId];
 
+            let content = '';
+
             // Si el textarea de código está visible, usar su contenido
             if (sourceElement && sourceElement.style.display !== 'none') {
-                return sourceElement.value;
+                content = sourceElement.value;
             }
-
             // Si no, usar el contenido del editor Quill si existe
-            if (editor && editor.root) {
-                return editor.root.innerHTML;
+            else if (editor && editor.root) {
+                content = editor.root.innerHTML;
+            }
+            // Fallback: usar el valor del input hidden
+            else {
+                const hiddenElement = document.getElementById(hiddenId);
+                content = hiddenElement ? hiddenElement.value : '';
             }
 
-            // Fallback: usar el valor del input hidden
-            const hiddenElement = document.getElementById(hiddenId);
-            return hiddenElement ? hiddenElement.value : '';
+            // Limpiar caracteres problemáticos
+            if (content) {
+                // Remover BOM (Byte Order Mark) y caracteres de espacio sin ancho
+                content = content.replace(/\ufeff/g, ''); // BOM
+                content = content.replace(/\u200b/g, ''); // Zero Width Space
+                content = content.replace(/\u200c/g, ''); // Zero Width Non-Joiner
+                content = content.replace(/\u200d/g, ''); // Zero Width Joiner
+                content = content.replace(/\u2060/g, ''); // Word Joiner
+
+                // Limpiar múltiples espacios en blanco consecutivos dentro del HTML pero preservar estructura
+                content = content.replace(/\s{2,}/g, ' ');
+
+                // Limpiar espacios al inicio y final pero solo del contenido de texto, no del HTML
+                content = content.trim();
+            }
+
+            return content;
+        }
+
+        // Función para limpiar caracteres problemáticos del contenido
+        function cleanContent(content) {
+            if (!content) return content;
+
+            // Remover BOM (Byte Order Mark) y caracteres de espacio sin ancho
+            content = content.replace(/\ufeff/g, ''); // BOM
+            content = content.replace(/\u200b/g, ''); // Zero Width Space
+            content = content.replace(/\u200c/g, ''); // Zero Width Non-Joiner
+            content = content.replace(/\u200d/g, ''); // Zero Width Joiner
+            content = content.replace(/\u2060/g, ''); // Word Joiner
+
+            return content;
         }
 
         // Función robusta para ocultar el loading del preview
@@ -1062,9 +1192,9 @@
             // Múltiples métodos para asegurar que se oculte
             $loading.hide();
             $loading.css({
-                'display': 'none',
-                'visibility': 'hidden',
-                'opacity': '0'
+                'display': 'none'
+                , 'visibility': 'hidden'
+                , 'opacity': '0'
             });
             $loading.addClass('force-hide');
 
@@ -1078,6 +1208,49 @@
                     console.log('Loading ocultado exitosamente');
                 }
             }, 100);
+        }
+
+        // Función para detectar cuando el PDF está realmente listo
+        function waitForPdfReady(iframe, callback, maxAttempts = 15) {
+            let attempts = 0;
+
+            function checkPdfStatus() {
+                attempts++;
+                console.log(`Verificando estado del PDF... intento ${attempts}/${maxAttempts}`);
+
+                try {
+                    // Verificar si el iframe tiene el src correcto y es un PDF
+                    if (iframe.src && iframe.src !== 'about:blank' && iframe.src.includes('preview-pdf')) {
+                        // Para PDFs embebidos, verificar que el contenido esté disponible
+                        if (iframe.contentDocument || iframe.contentWindow) {
+                            console.log('PDF parece estar listo');
+                            callback();
+                            return;
+                        }
+                    }
+                } catch (error) {
+                    // Los errores de CORS son normales con PDFs embebidos
+                    console.log('Error de acceso al contenido (normal para PDFs):', error.message);
+
+                    // Si hay error de acceso pero el src es correcto, asumir que está listo
+                    if (iframe.src && iframe.src.includes('preview-pdf')) {
+                        console.log('PDF con CORS - asumiendo que está listo');
+                        callback();
+                        return;
+                    }
+                }
+
+                // Si no está listo y no hemos alcanzado el máximo de intentos, reintentamos
+                if (attempts < maxAttempts) {
+                    setTimeout(checkPdfStatus, 400); // Verificar cada 400ms
+                } else {
+                    console.log('Máximo de intentos alcanzado - continuando');
+                    callback();
+                }
+            }
+
+            // Iniciar verificación
+            checkPdfStatus();
         }
 
         // Función para detectar cuando todas las imágenes del iframe hayan cargado
@@ -1163,9 +1336,9 @@
             // Remover clase force-hide y mostrar loading
             $loading.removeClass('force-hide');
             $loading.css({
-                'display': 'flex',
-                'visibility': 'visible',
-                'opacity': '1'
+                'display': 'flex'
+                , 'visibility': 'visible'
+                , 'opacity': '1'
             }).show();
 
             // Obtener configuración del JSON seleccionado
@@ -1177,7 +1350,9 @@
                     console.log('Configuración cargada para preview:', config);
 
                     // Obtener valores actuales del formulario y sobrescribir la configuración
-                    const updatedConfig = { ...config }; // Copiar configuración base
+                    const updatedConfig = {
+                        ...config
+                    }; // Copiar configuración base
 
                     // Actualizar con valores del formulario si existen
                     if ($('#config_width').length && $('#config_width').val()) {
@@ -1226,6 +1401,12 @@
                     if ($('#config_verso_secondary_font_size').length && $('#config_verso_secondary_font_size').val()) {
                         updatedConfig.verso['secondary-font-size'] = parseFloat($('#config_verso_secondary_font_size').val());
                     }
+                    if ($('#config_verso_text_1_font_family').length && $('#config_verso_text_1_font_family').val()) {
+                        updatedConfig.verso['text-1-font-family'] = $('#config_verso_text_1_font_family').val();
+                    }
+                    if ($('#config_verso_text_2_font_family').length && $('#config_verso_text_2_font_family').val()) {
+                        updatedConfig.verso['text-2-font-family'] = $('#config_verso_text_2_font_family').val();
+                    }
 
                     // Actualizar configuraciones de recto
                     if (!updatedConfig.recto) updatedConfig.recto = {};
@@ -1241,143 +1422,155 @@
                     if ($('#config_recto_text_top').length && $('#config_recto_text_top').val()) {
                         updatedConfig.recto['text-top'] = parseFloat($('#config_recto_text_top').val());
                     }
+                    if ($('#config_recto_text_font_family').length && $('#config_recto_text_font_family').val()) {
+                        updatedConfig.recto['text-font-family'] = $('#config_recto_text_font_family').val();
+                    }
 
                     // Actualizar configuraciones de páginas específicas
                     // Page 1
                     if (!updatedConfig.page1) updatedConfig.page1 = {};
-                    if ($('#config_page1_title_line_1').length && $('#config_page1_title_line_1').val()) {
-                        updatedConfig.page1['title-line-1'] = $('#config_page1_title_line_1').val();
+                    const textContent = getQuillContent('config_page1_text');
+                    if (textContent) {
+                        updatedConfig.page1['text'] = textContent;
                     }
-                    if ($('#config_page1_title_line_1_y_percentage').length && $('#config_page1_title_line_1_y_percentage').val()) {
-                        updatedConfig.page1['title-line-1-y-percentage'] = parseFloat($('#config_page1_title_line_1_y_percentage').val());
+                    if ($('#config_page1_text_top').length && $('#config_page1_text_top').val()) {
+                        updatedConfig.page1['text-top'] = parseFloat($('#config_page1_text_top').val());
                     }
-                    if ($('#config_page1_title_line_1_font_size').length && $('#config_page1_title_line_1_font_size').val()) {
-                        updatedConfig.page1['title-line-1-font-size'] = parseFloat($('#config_page1_title_line_1_font_size').val());
+                    if ($('#config_page1_text_margin_x').length && $('#config_page1_text_margin_x').val()) {
+                        updatedConfig.page1['text-margin-x'] = parseFloat($('#config_page1_text_margin_x').val());
                     }
-                    if ($('#config_page1_title_line_2').length && $('#config_page1_title_line_2').val()) {
-                        updatedConfig.page1['title-line-2'] = $('#config_page1_title_line_2').val();
+                    if ($('#config_page1_background_url').length && $('#config_page1_background_url').val()) {
+                        updatedConfig.page1['background-url'] = $('#config_page1_background_url').val();
                     }
-                    if ($('#config_page1_title_line_2_font_size').length && $('#config_page1_title_line_2_font_size').val()) {
-                        updatedConfig.page1['title-line-2-font-size'] = parseFloat($('#config_page1_title_line_2_font_size').val());
+                    if ($('#config_page1_image_url').length && $('#config_page1_image_url').val()) {
+                        updatedConfig.page1['image-url'] = $('#config_page1_image_url').val();
                     }
-                    if ($('#config_page1_title_line_2_margin').length && $('#config_page1_title_line_2_margin').val()) {
-                        updatedConfig.page1['title-line-2-margin'] = parseFloat($('#config_page1_title_line_2_margin').val());
+                    if ($('#config_page1_image_top').length && $('#config_page1_image_top').val()) {
+                        updatedConfig.page1['image-top'] = parseFloat($('#config_page1_image_top').val());
                     }
-                    if ($('#config_page1_title_line_3').length && $('#config_page1_title_line_3').val()) {
-                        updatedConfig.page1['title-line-3'] = $('#config_page1_title_line_3').val();
+                    if ($('#config_page1_image_height').length && $('#config_page1_image_height').val()) {
+                        updatedConfig.page1['image-height'] = parseFloat($('#config_page1_image_height').val());
                     }
-                    if ($('#config_page1_title_line_3_margin').length && $('#config_page1_title_line_3_margin').val()) {
-                        updatedConfig.page1['title-line-3-margin'] = parseFloat($('#config_page1_title_line_3_margin').val());
-                    }
-                    if ($('#config_page1_title_line_3_font_size').length && $('#config_page1_title_line_3_font_size').val()) {
-                        updatedConfig.page1['title-line-3-font-size'] = parseFloat($('#config_page1_title_line_3_font_size').val());
-                    }
-                    if ($('#config_page1_logo_image').length && $('#config_page1_logo_image').val()) {
-                        updatedConfig.page1['logo-image'] = $('#config_page1_logo_image').val();
-                    }
-                    if ($('#config_page1_logo_y_percentage').length && $('#config_page1_logo_y_percentage').val()) {
-                        updatedConfig.page1['logo-y-percentage'] = parseFloat($('#config_page1_logo_y_percentage').val());
-                    }
-                    if ($('#config_page1_logo_height').length && $('#config_page1_logo_height').val()) {
-                        updatedConfig.page1['logo-height'] = parseFloat($('#config_page1_logo_height').val());
+                    if ($('#config_page1_image_width').length && $('#config_page1_image_width').val()) {
+                        updatedConfig.page1['image-width'] = $('#config_page1_image_width').val();
                     }
 
                     // Page 2
                     if (!updatedConfig.page2) updatedConfig.page2 = {};
+                    const page2TextContent = getQuillContent('config_page2_text');
+                    if (page2TextContent) {
+                        updatedConfig.page2['text'] = page2TextContent;
+                    }
                     if ($('#config_page2_text_top').length && $('#config_page2_text_top').val()) {
                         updatedConfig.page2['text-top'] = parseFloat($('#config_page2_text_top').val());
                     }
-                    if ($('#config_page2_text_y_space').length && $('#config_page2_text_y_space').val()) {
-                        updatedConfig.page2['text-y-space'] = parseFloat($('#config_page2_text_y_space').val());
+                    if ($('#config_page2_text_margin_x').length && $('#config_page2_text_margin_x').val()) {
+                        updatedConfig.page2['text-margin-x'] = parseFloat($('#config_page2_text_margin_x').val());
                     }
-                    if ($('#config_page2_text_font_size').length && $('#config_page2_text_font_size').val()) {
-                        updatedConfig.page2['text-font-size'] = parseFloat($('#config_page2_text_font_size').val());
+                    if ($('#config_page2_background_url').length && $('#config_page2_background_url').val()) {
+                        updatedConfig.page2['background-url'] = $('#config_page2_background_url').val();
                     }
-                    if ($('#config_page2_margin_x').length && $('#config_page2_margin_x').val()) {
-                        updatedConfig.page2['margin-x'] = parseFloat($('#config_page2_margin_x').val());
+                    if ($('#config_page2_image_url').length && $('#config_page2_image_url').val()) {
+                        updatedConfig.page2['image-url'] = $('#config_page2_image_url').val();
                     }
-                    if ($('#config_page2_margin_bottom').length && $('#config_page2_margin_bottom').val()) {
-                        updatedConfig.page2['margin-bottom'] = parseFloat($('#config_page2_margin_bottom').val());
+                    if ($('#config_page2_image_top').length && $('#config_page2_image_top').val()) {
+                        updatedConfig.page2['image-top'] = parseFloat($('#config_page2_image_top').val());
                     }
-                    // Text blocks for Page 2
-                    if ($('#config_page2_text_block_1').length) {
-                        updatedConfig.page2['text-block-1'] = getQuillContent('config_page2_text_block_1');
+                    if ($('#config_page2_image_height').length && $('#config_page2_image_height').val()) {
+                        updatedConfig.page2['image-height'] = parseFloat($('#config_page2_image_height').val());
                     }
-                    if ($('#config_page2_text_block_2').length) {
-                        updatedConfig.page2['text-block-2'] = getQuillContent('config_page2_text_block_2');
-                    }
-                    if ($('#config_page2_text_block_3').length) {
-                        updatedConfig.page2['text-block-3'] = getQuillContent('config_page2_text_block_3');
-                    }
-                    if ($('#config_page2_text_block_4').length) {
-                        updatedConfig.page2['text-block-4'] = getQuillContent('config_page2_text_block_4');
+                    if ($('#config_page2_image_width').length && $('#config_page2_image_width').val()) {
+                        updatedConfig.page2['image-width'] = $('#config_page2_image_width').val();
                     }
 
                     // Page 3
                     if (!updatedConfig.page3) updatedConfig.page3 = {};
-                    if ($('#config_page3_image').length && $('#config_page3_image').val()) {
-                        updatedConfig.page3.image = $('#config_page3_image').val();
+
+                    // Obtener contenido Quill
+                    if (typeof getQuillContent === 'function') {
+                        updatedConfig.page3['text'] = getQuillContent('config_page3_text');
                     }
-                    if ($('#config_page3_image_y_percentage').length && $('#config_page3_image_y_percentage').val()) {
-                        updatedConfig.page3['image-y-percentage'] = parseFloat($('#config_page3_image_y_percentage').val());
+
+                    if ($('#config_page3_text_top').length && $('#config_page3_text_top').val()) {
+                        updatedConfig.page3['text-top'] = parseFloat($('#config_page3_text_top').val());
                     }
-                    if ($('#config_page3_margin').length && $('#config_page3_margin').val()) {
-                        updatedConfig.page3.margin = parseFloat($('#config_page3_margin').val());
+                    if ($('#config_page3_text_margin_x').length && $('#config_page3_text_margin_x').val()) {
+                        updatedConfig.page3['text-margin-x'] = parseFloat($('#config_page3_text_margin_x').val());
+                    }
+                    if ($('#config_page3_background_url').length && $('#config_page3_background_url').val()) {
+                        updatedConfig.page3['background-url'] = $('#config_page3_background_url').val();
+                    }
+                    if ($('#config_page3_image_url').length && $('#config_page3_image_url').val()) {
+                        updatedConfig.page3['image-url'] = $('#config_page3_image_url').val();
+                    }
+                    if ($('#config_page3_image_top').length && $('#config_page3_image_top').val()) {
+                        updatedConfig.page3['image-top'] = parseFloat($('#config_page3_image_top').val());
+                    }
+                    if ($('#config_page3_image_height').length && $('#config_page3_image_height').val()) {
+                        updatedConfig.page3['image-height'] = parseFloat($('#config_page3_image_height').val());
+                    }
+                    if ($('#config_page3_image_width').length && $('#config_page3_image_width').val()) {
+                        updatedConfig.page3['image-width'] = $('#config_page3_image_width').val();
                     }
 
                     // Page 4
                     if (!updatedConfig.page4) updatedConfig.page4 = {};
-                    if ($('#config_page4_image').length && $('#config_page4_image').val()) {
-                        updatedConfig.page4.image = $('#config_page4_image').val();
+
+                    // Obtener contenido Quill
+                    if (typeof getQuillContent === 'function') {
+                        updatedConfig.page4['text'] = getQuillContent('config_page4_text');
+                    }
+
+                    if ($('#config_page4_text_top').length && $('#config_page4_text_top').val()) {
+                        updatedConfig.page4['text-top'] = parseFloat($('#config_page4_text_top').val());
+                    }
+                    if ($('#config_page4_text_margin_x').length && $('#config_page4_text_margin_x').val()) {
+                        updatedConfig.page4['text-margin-x'] = parseFloat($('#config_page4_text_margin_x').val());
+                    }
+                    if ($('#config_page4_background_url').length && $('#config_page4_background_url').val()) {
+                        updatedConfig.page4['background-url'] = $('#config_page4_background_url').val();
+                    }
+                    if ($('#config_page4_image_url').length && $('#config_page4_image_url').val()) {
+                        updatedConfig.page4['image-url'] = $('#config_page4_image_url').val();
+                    }
+                    if ($('#config_page4_image_top').length && $('#config_page4_image_top').val()) {
+                        updatedConfig.page4['image-top'] = parseFloat($('#config_page4_image_top').val());
+                    }
+                    if ($('#config_page4_image_height').length && $('#config_page4_image_height').val()) {
+                        updatedConfig.page4['image-height'] = parseFloat($('#config_page4_image_height').val());
+                    }
+                    if ($('#config_page4_image_width').length && $('#config_page4_image_width').val()) {
+                        updatedConfig.page4['image-width'] = $('#config_page4_image_width').val();
                     }
 
                     // Page 5
                     if (!updatedConfig.page5) updatedConfig.page5 = {};
-                    if ($('#config_page5_image').length && $('#config_page5_image').val()) {
-                        updatedConfig.page5.image = $('#config_page5_image').val();
+
+                    // Obtener contenido Quill
+                    if (typeof getQuillContent === 'function') {
+                        updatedConfig.page5['text'] = getQuillContent('config_page5_text');
                     }
-                    if ($('#config_page5_header_y').length && $('#config_page5_header_y').val()) {
-                        updatedConfig.page5['header-y'] = parseFloat($('#config_page5_header_y').val());
+
+                    if ($('#config_page5_text_top').length && $('#config_page5_text_top').val()) {
+                        updatedConfig.page5['text-top'] = parseFloat($('#config_page5_text_top').val());
                     }
-                    if ($('#config_page5_header_font_size').length && $('#config_page5_header_font_size').val()) {
-                        updatedConfig.page5['header-font-size'] = parseFloat($('#config_page5_header_font_size').val());
+                    if ($('#config_page5_text_margin_x').length && $('#config_page5_text_margin_x').val()) {
+                        updatedConfig.page5['text-margin-x'] = parseFloat($('#config_page5_text_margin_x').val());
                     }
-                    if ($('#config_page5_footer_y').length && $('#config_page5_footer_y').val()) {
-                        updatedConfig.page5['footer-y'] = parseFloat($('#config_page5_footer_y').val());
+                    if ($('#config_page5_background_url').length && $('#config_page5_background_url').val()) {
+                        updatedConfig.page5['background-url'] = $('#config_page5_background_url').val();
                     }
-                    if ($('#config_page5_footer_font_size').length && $('#config_page5_footer_font_size').val()) {
-                        updatedConfig.page5['footer-font-size'] = parseFloat($('#config_page5_footer_font_size').val());
+                    if ($('#config_page5_image_url').length && $('#config_page5_image_url').val()) {
+                        updatedConfig.page5['image-url'] = $('#config_page5_image_url').val();
                     }
-                    if ($('#config_page5_text_font_size').length && $('#config_page5_text_font_size').val()) {
-                        updatedConfig.page5['text-font-size'] = parseFloat($('#config_page5_text_font_size').val());
+                    if ($('#config_page5_image_top').length && $('#config_page5_image_top').val()) {
+                        updatedConfig.page5['image-top'] = parseFloat($('#config_page5_image_top').val());
                     }
-                    if ($('#config_page5_text_1_y').length && $('#config_page5_text_1_y').val()) {
-                        updatedConfig.page5['text-1-y'] = parseFloat($('#config_page5_text_1_y').val());
+                    if ($('#config_page5_image_height').length && $('#config_page5_image_height').val()) {
+                        updatedConfig.page5['image-height'] = parseFloat($('#config_page5_image_height').val());
                     }
-                    if ($('#config_page5_text_2_y').length && $('#config_page5_text_2_y').val()) {
-                        updatedConfig.page5['text-2-y'] = parseFloat($('#config_page5_text_2_y').val());
-                    }
-                    if ($('#config_page5_text_3_y').length && $('#config_page5_text_3_y').val()) {
-                        updatedConfig.page5['text-3-y'] = parseFloat($('#config_page5_text_3_y').val());
-                    }
-                    if ($('#config_page5_margin').length && $('#config_page5_margin').val()) {
-                        updatedConfig.page5.margin = parseFloat($('#config_page5_margin').val());
-                    }
-                    // Text blocks for Page 5
-                    if ($('#config_page5_header_text').length) {
-                        updatedConfig.page5['header-text'] = getQuillContent('config_page5_header_text');
-                    }
-                    if ($('#config_page5_footer_text').length) {
-                        updatedConfig.page5['footer-text'] = getQuillContent('config_page5_footer_text');
-                    }
-                    if ($('#config_page5_text_1_content').length) {
-                        updatedConfig.page5['text-1-content'] = getQuillContent('config_page5_text_1_content');
-                    }
-                    if ($('#config_page5_text_2_content').length) {
-                        updatedConfig.page5['text-2-content'] = getQuillContent('config_page5_text_2_content');
-                    }
-                    if ($('#config_page5_text_3_content').length) {
-                        updatedConfig.page5['text-3-content'] = getQuillContent('config_page5_text_3_content');
+                    if ($('#config_page5_image_width').length && $('#config_page5_image_width').val()) {
+                        updatedConfig.page5['image-width'] = $('#config_page5_image_width').val();
                     }
 
                     console.log('Configuración actualizada con valores del formulario:', updatedConfig);
@@ -1390,12 +1583,11 @@
                     // Preparar datos para el preview usando el método getPreview
                     const previewData = {
                         numberOfPages: $('#numberOfPages').val() || 5, // Limitar a 5 páginas para preview
-                        spreadsheetId: updatedConfig.spreadsheetId,
-                        sheetName: updatedConfig.spreadsheetSheetName,
-                        imagesURL: updatedConfig.imagesURL,
-                        layout: updatedConfig, // Enviar la configuración actualizada con valores del formulario
-                        selectedFonts: getSelectedFonts(),
-                        _token: $('meta[name="csrf-token"]').attr('content') || $('input[name="_token"]').val()
+                        spreadsheetId: updatedConfig.spreadsheetId
+                        , sheetName: updatedConfig.spreadsheetSheetName
+                        , imagesURL: updatedConfig.imagesURL
+                        , layout: updatedConfig // Enviar la configuración actualizada con valores del formulario
+                        , _token: $('meta[name="csrf-token"]').attr('content') || $('input[name="_token"]').val()
                     };
 
                     console.log('Datos para preview:', previewData);
@@ -1423,6 +1615,9 @@
                     }
 
                     // Construir URL final para PDF preview con parámetros de visualización
+                    // Add cache busting parameter to prevent loading from cache
+                    urlParams.append('_t', Date.now().toString());
+
                     const basePreviewUrl = '/preview-pdf?' + urlParams.toString();
 
                     // Agregar parámetros para mostrar PDF a pantalla completa sin navegación lateral
@@ -1439,26 +1634,49 @@
 
                     // Limpiar listeners previos
                     iframe.onload = null;
+                    iframe.onerror = null;
 
-                    // Para PDFs, el evento onload es más simple
+                    // Configurar listeners para detectar carga exitosa del PDF
+                    let loadingTimerPdf = null;
+                    let loadingHidden = false;
+
+                    function hideLoadingOnce() {
+                        if (!loadingHidden) {
+                            console.log('PDF cargado - ocultando loading');
+                            hidePreviewLoading();
+                            loadingHidden = true;
+                            if (loadingTimerPdf) {
+                                clearTimeout(loadingTimerPdf);
+                                loadingTimerPdf = null;
+                            }
+                        }
+                    }
+
+                    // Estrategia principal: usar la función de detección inteligente
                     iframe.onload = function() {
-                        console.log('PDF cargado completamente en iframe');
-                        hidePreviewLoading();
+                        console.log('Iframe onload evento disparado - verificando estado del PDF...');
+
+                        // Usar función avanzada para detectar cuando el PDF está realmente listo
+                        waitForPdfReady(iframe, function() {
+                            console.log("PDF está listo en el iframe");
+                            // Solo ocultar loading cuando el PDF esté realmente listo
+                            hideLoadingOnce();
+                        });
                     };
 
-                    // Timeout de seguridad para PDFs (pueden tardar más en cargar)
-                    setTimeout(function() {
-                        console.log('Timeout de seguridad PDF: ocultando loading (5 segundos)');
-                        hidePreviewLoading();
-                    }, 5000);
-
-                    // Timeout adicional para casos extremos
-                    setTimeout(function() {
-                        console.log('Timeout extremo PDF: forzando ocultación (15 segundos)');
-                        hidePreviewLoading();
-                    }, 15000);
+                    // Evento de error
+                    iframe.onerror = function() {
+                        console.log('Error cargando PDF en iframe');
+                        hideLoadingOnce();
+                    };
 
                     // Cargar PDF directamente en iframe
+                    console.log('Iniciando carga de PDF en iframe...');
+                    console.log('=== URL COMPLETA GENERADA ===');
+                    console.log('Preview URL:', previewUrl);
+                    console.log('Base URL sin fragmento:', basePreviewUrl);
+                    console.log('Parámetros URL:', urlParams.toString());
+                    console.log('================================');
                     iframe.src = previewUrl;
                 })
                 .fail(function(xhr, status, error) {
@@ -1510,13 +1728,13 @@
         }
 
         // Función para cargar fuentes desde el servidor
-        function loadAvailableFonts() {
+        function loadAvailableFonts(shouldUpdateSelector = false, selectedFonts = null) {
             console.log('Cargando fuentes disponibles desde el servidor...');
 
             return $.ajax({
-                url: '/generate/fonts',
-                type: 'GET',
-                success: function(fonts) {
+                url: '/generate/fonts'
+                , type: 'GET'
+                , success: function(fonts) {
                     console.log('Fuentes cargadas desde servidor:', fonts);
                     availableFonts = fonts;
 
@@ -1530,31 +1748,167 @@
                     setTimeout(() => {
                         registerQuillFonts(fonts);
 
-                        // 4. Actualizar selector de fuentes
-                        updateFontsSelector(fonts);
-
                         fontsLoaded = true;
+
+                        // Poblar selectores de fuentes en el formulario
+                        populateFontSelectors();
+
                         console.log('Proceso de carga de fuentes completado');
                     }, 200);
-                },
-                error: function(xhr, status, error) {
+                }
+                , error: function(xhr, status, error) {
                     console.error('Error al cargar fuentes:', error);
                     console.log('Usando fuentes por defecto debido al error');
 
                     // Usar fuentes por defecto
-                    availableFonts = [
-                        { displayName: 'Sans Serif', cssName: 'sans-serif', familyName: 'sans-serif' },
-                        { displayName: 'Serif', cssName: 'serif', familyName: 'serif' },
-                        { displayName: 'Monospace', cssName: 'monospace', familyName: 'monospace' }
+                    availableFonts = [{
+                            displayName: 'Sans Serif'
+                            , cssName: 'sans-serif'
+                            , familyName: 'sans-serif'
+                        }
+                        , {
+                            displayName: 'Serif'
+                            , cssName: 'serif'
+                            , familyName: 'serif'
+                        }
+                        , {
+                            displayName: 'Monospace'
+                            , cssName: 'monospace'
+                            , familyName: 'monospace'
+                        }
                     ];
 
-                    updateFontsSelector(availableFonts);
                     fontsLoaded = true;
+
+                    // Poblar selectores de fuentes en el formulario con fuentes por defecto
+                    populateFontSelectors();
                 }
             });
         }
 
-        // Función moderna para cargar fuentes usando FontFace API
+        // Función para poblar los selectores de fuentes en el formulario
+        function populateFontSelectors() {
+            console.log('Poblando selectores de fuentes...');
+
+            const fontSelectors = [
+                'config_verso_text_1_font_family',
+                'config_verso_text_2_font_family',
+                'config_recto_text_font_family'
+            ];
+
+            fontSelectors.forEach(selectorId => {
+                const $selector = $('#' + selectorId);
+                if ($selector.length) {
+                    // Limpiar opciones existentes excepto la primera
+                    $selector.find('option:not(:first)').remove();
+
+                    // Añadir opciones de fuentes
+                    availableFonts.forEach(font => {
+                        $selector.append(
+                            `<option value="${font.cssName}">${font.displayName}</option>`
+                        );
+                    });
+
+                    console.log(`Selector ${selectorId} poblado con ${availableFonts.length} fuentes`);
+                }
+            });
+        }
+
+        // Función para establecer valores de fuentes desde configuración
+        function setFontSelectorValues(config) {
+            console.log('Estableciendo valores de selectores de fuentes...');
+
+            if (config.verso) {
+                $('#config_verso_text_1_font_family').val(config.verso['text-1-font-family'] || '');
+                $('#config_verso_text_2_font_family').val(config.verso['text-2-font-family'] || '');
+            }
+
+            if (config.recto) {
+                $('#config_recto_text_font_family').val(config.recto['text-font-family'] || '');
+            }
+
+            console.log('Valores de fuentes establecidos:', {
+                verso_text_1: config.verso?.['text-1-font-family'],
+                verso_text_2: config.verso?.['text-2-font-family'],
+                recto_text: config.recto?.['text-font-family']
+            });
+        }
+
+        // Función mejorada para establecer valores de fuentes desde configuración
+        function setFontSelectorValuesImproved(config) {
+            console.log('Estableciendo valores de selectores de fuentes (versión mejorada)...');
+            console.log('Config recibido:', config);
+            console.log('Fuentes disponibles:', availableFonts);
+
+            // Función helper para encontrar fuente compatible
+            function findCompatibleFont(fontValue) {
+                if (!fontValue) return '';
+
+                console.log(`Buscando fuente para: ${fontValue}`);
+
+                // Buscar por coincidencia exacta en cssName
+                let found = availableFonts.find(font => font.cssName === fontValue);
+                if (found) {
+                    console.log(`Encontrada por cssName: ${found.cssName}`);
+                    return found.cssName;
+                }
+
+                // Buscar por coincidencia exacta en filename (sin extensión)
+                found = availableFonts.find(font =>
+                    font.filename.replace(/\.(ttf|otf|woff|woff2)$/i, '') === fontValue
+                );
+                if (found) {
+                    console.log(`Encontrada por filename: ${found.filename} -> ${found.cssName}`);
+                    return found.cssName;
+                }
+
+                // Buscar por coincidencia parcial en displayName
+                found = availableFonts.find(font =>
+                    font.displayName.toLowerCase().includes(fontValue.toLowerCase()) ||
+                    fontValue.toLowerCase().includes(font.displayName.toLowerCase())
+                );
+                if (found) {
+                    console.log(`Encontrada por displayName: ${found.displayName} -> ${found.cssName}`);
+                    return found.cssName;
+                }
+
+                console.warn(`No se encontró fuente compatible para: ${fontValue}`);
+                return '';
+            }
+
+            // Esperar a que los selectores estén poblados
+            setTimeout(() => {
+                if (config.verso) {
+                    const text1Font = findCompatibleFont(config.verso['text-1-font-family']);
+                    const text2Font = findCompatibleFont(config.verso['text-2-font-family']);
+
+                    const $selector1 = $('#config_verso_text_1_font_family');
+                    const $selector2 = $('#config_verso_text_2_font_family');
+
+                    if ($selector1.length) {
+                        $selector1.val(text1Font);
+                        console.log(`Verso text-1 font: ${config.verso['text-1-font-family']} -> ${text1Font} (selector value: ${$selector1.val()})`);
+                    }
+
+                    if ($selector2.length) {
+                        $selector2.val(text2Font);
+                        console.log(`Verso text-2 font: ${config.verso['text-2-font-family']} -> ${text2Font} (selector value: ${$selector2.val()})`);
+                    }
+                }
+
+                if (config.recto) {
+                    const textFont = findCompatibleFont(config.recto['text-font-family']);
+                    const $selectorRecto = $('#config_recto_text_font_family');
+
+                    if ($selectorRecto.length) {
+                        $selectorRecto.val(textFont);
+                        console.log(`Recto text font: ${config.recto['text-font-family']} -> ${textFont} (selector value: ${$selectorRecto.val()})`);
+                    }
+                }
+
+                console.log('Valores de fuentes establecidos completados');
+            }, 200);
+        }        // Función moderna para cargar fuentes usando FontFace API
         function loadFontsWithFontFaceAPI(fonts) {
             console.log('Cargando fuentes con FontFace API...');
 
@@ -1569,12 +1923,11 @@
                 try {
                     // Crear FontFace dinámicamente
                     const fontFace = new FontFace(
-                        font.familyName,
-                        `url('/fonts/${font.filename}')`,
-                        {
-                            style: 'normal',
-                            weight: 'normal',
-                            display: 'swap' // Mejor rendimiento
+                        font.familyName
+                        , `url('/fonts/${font.filename}')`, {
+                            style: 'normal'
+                            , weight: 'normal'
+                            , display: 'swap' // Mejor rendimiento
                         }
                     );
 
@@ -1606,48 +1959,6 @@
                     document.body.style.fontDisplay = 'swap';
                 });
             });
-        }
-
-        // Función para actualizar el selector de fuentes
-        function updateFontsSelector(fonts) {
-            const container = $('#config_fonts_container');
-
-            if (!fonts || fonts.length === 0) {
-                container.html(`
-                    <div class="text-muted text-center">
-                        <i class="fas fa-info-circle me-2"></i>
-                        No hay fuentes disponibles
-                    </div>
-                `);
-                return;
-            }
-
-            let html = '<div class="row">';
-            fonts.forEach((font, index) => {
-                // Usar displayName del objeto fuente, fallback al nombre simple
-                const fontName = typeof font === 'object' ? font.displayName : font;
-                const fontValue = typeof font === 'object' ? font.filename : font;
-                const fontFamily = typeof font === 'object' ? font.familyName : font;
-
-                html += `
-                    <div class="col-md-6 col-lg-4 mb-2">
-                        <div class="form-check">
-                            <input class="form-check-input font-checkbox" type="checkbox"
-                                   value="${fontValue}" id="font_${index}" checked>
-                            <label class="form-check-label" for="font_${index}"
-                                   style="font-family: '${fontFamily}', sans-serif;">
-                                ${fontName}
-                            </label>
-                        </div>
-                    </div>
-                `;
-            });
-            html += '</div>';
-
-            container.html(html);
-
-            // Actualizar contador
-            updateFontCounter();
         }
 
         // Función para crear CSS dinámico para las fuentes
@@ -1695,6 +2006,57 @@
                 .ql-picker.ql-font .ql-picker-label[data-value=""]::before {
                     content: 'Font Default';
                     font-family: 'Times New Roman', serif;
+                }
+
+                /* Mejorar el dropdown de fuentes */
+                .ql-picker.ql-font .ql-picker-options {
+                    max-height: 300px;
+                    overflow-y: auto;
+                    width: auto;
+                    min-width: 200px;
+                    max-width: 350px;
+                }
+
+                .ql-picker.ql-font .ql-picker-item {
+                    padding: 8px 12px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    line-height: 1.2;
+                    min-height: auto;
+                }
+
+                .ql-picker.ql-font .ql-picker-item::before {
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: block;
+                    width: 100%;
+                }
+
+                .ql-picker.ql-font .ql-picker-label {
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    max-width: 120px;
+                }
+
+                .ql-picker.ql-font .ql-picker-label::before {
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: block;
+                    width: 100%;
+                }
+
+                /* Ajustar la toolbar para que no se rompa */
+                .ql-toolbar {
+                    flex-wrap: wrap;
+                    border-bottom: 1px solid #ccc;
+                }
+
+                .ql-toolbar .ql-formats {
+                    margin-right: 8px;
                 }
             `;
 
@@ -1774,54 +2136,44 @@
             });
         }
 
-        // Función para obtener las fuentes seleccionadas
+        // Función para obtener las fuentes seleccionadas (ya no necesaria, retorna array vacío)
         function getSelectedFonts() {
-            const selectedFonts = [];
-            $('.font-checkbox:checked').each(function() {
-                selectedFonts.push($(this).val());
-            });
-            return selectedFonts;
+            return [];
         }
 
-        // Función para actualizar el contador de fuentes seleccionadas
-        function updateFontCounter() {
-            const totalFonts = $('.font-checkbox').length;
-            const selectedFonts = $('.font-checkbox:checked').length;
-
-            const counterText = `Seleccionadas: ${selectedFonts} de ${totalFonts}`;
-
-            // Buscar si ya existe el contador, si no, crearlo
-            let $counter = $('#fontCounter');
-            if ($counter.length === 0) {
-                $('#selectAllFonts').parent().append(`
-                    <div class="mt-2">
-                        <small class="text-muted" id="fontCounter">${counterText}</small>
-                    </div>
-                `);
-            } else {
-                $counter.text(counterText);
-            }
-        }
-
-        // Eventos para seleccionar/deseleccionar todas las fuentes
-        $(document).on('click', '#selectAllFonts', function() {
-            $('.font-checkbox').prop('checked', true);
-            updateFontCounter();
-        });
-
-        $(document).on('click', '#deselectAllFonts', function() {
-            $('.font-checkbox').prop('checked', false);
-            updateFontCounter();
-        });
-
-        // Evento para actualizar contador cuando cambia selección
-        $(document).on('change', '.font-checkbox', function() {
-            updateFontCounter();
-        });
     </script>
 
     <script>
         $(document).ready(function() {
+            // Inicializar tooltips de Bootstrap
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+
+            // Aplicar automáticamente tooltips a todos los labels que no los tengan
+            $('.form-label').each(function() {
+                var $label = $(this);
+
+                // Si ya tiene tooltip, saltar
+                if ($label.attr('data-bs-toggle')) {
+                    return;
+                }
+
+                // Obtener el texto del label (sin iconos)
+                var labelText = $label.text().trim();
+
+                // Si tiene texto, agregar tooltip y clase
+                if (labelText) {
+                    $label.addClass('form-label-tooltip');
+                    $label.attr('data-bs-toggle', 'tooltip');
+                    $label.attr('title', labelText);
+
+                    // Inicializar el tooltip inmediatamente
+                    new bootstrap.Tooltip($label[0]);
+                }
+            });
+
             // Las fuentes se cargarán automáticamente en initializeSystem()
             $('#pdfGeneratorForm').on('submit', function(e) {
                 e.preventDefault();
@@ -1841,7 +2193,6 @@
                 const formData = {
                     numberOfPages: $('#numberOfPages').val() || 1
                     , selectedJsonFile: $('#jsonFileSelector').val()
-                    , selectedFonts: getSelectedFonts()
                     , _token: $('meta[name="csrf-token"]').attr('content') || $('input[name="_token"]').val()
                 };
 
@@ -1933,10 +2284,7 @@
             });
 
             // Botón de debug para forzar ocultar loading
-            $('#forceHideLoadingBtn').on('click', function() {
-                console.log('Forzando ocultación del loading manualmente');
-                hidePreviewLoading();
-            });
+
 
             // Event listeners para detectar cambios y actualizar preview automáticamente - DESHABILITADO
             // $('#jsonFileSelector, #numberOfPages').on('change', function() {
@@ -2068,6 +2416,7 @@
                             $('#config_verso_text_2_top').val(config.verso['text-2-top']);
                             $('#config_verso_primary_font_size').val(config.verso['primary-font-size']);
                             $('#config_verso_secondary_font_size').val(config.verso['secondary-font-size']);
+                            // Valores de fuentes se establecerán después de cargar las fuentes
                         }
 
                         // Recto
@@ -2076,106 +2425,116 @@
                             $('#config_recto_image_margin').val(config.recto['image-margin']);
                             $('#config_recto_font_size').val(config.recto['font-size']);
                             $('#config_recto_text_top').val(config.recto['text-top']);
+                            // Valor de fuente se establecerá después de cargar las fuentes
                         }
 
                         // Page 1
                         if (config.page1) {
-                            $('#config_page1_title_line_1').val(config.page1['title-line-1']);
-                            $('#config_page1_title_line_1_y_percentage').val(config.page1['title-line-1-y-percentage']);
-                            $('#config_page1_title_line_1_font_size').val(config.page1['title-line-1-font-size']);
-                            $('#config_page1_title_line_2').val(config.page1['title-line-2']);
-                            $('#config_page1_title_line_2_font_size').val(config.page1['title-line-2-font-size']);
-                            $('#config_page1_title_line_2_margin').val(config.page1['title-line-2-margin']);
-                            $('#config_page1_title_line_3').val(config.page1['title-line-3']);
-                            $('#config_page1_title_line_3_margin').val(config.page1['title-line-3-margin']);
-                            $('#config_page1_title_line_3_font_size').val(config.page1['title-line-3-font-size']);
-                            $('#config_page1_logo_image').val(config.page1['logo-image']);
-                            $('#config_page1_logo_y_percentage').val(config.page1['logo-y-percentage']);
-                            $('#config_page1_logo_height').val(config.page1['logo-height']);
+                            $('#config_page1_text_top').val(config.page1['text-top']);
+                            $('#config_page1_text_margin_x').val(config.page1['text-margin-x'] || 0);
+                            $('#config_page1_background_url').val(config.page1['background-url'] || '');
+                            $('#config_page1_image_url').val(config.page1['image-url']);
+                            $('#config_page1_image_top').val(config.page1['image-top']);
+                            $('#config_page1_image_height').val(config.page1['image-height']);
+                            $('#config_page1_image_width').val(config.page1['image-width'] || 'auto');
+
+                            // Cargar textos en editores Quill con delay para asegurar que están listos
+                            setTimeout(function() {
+                                console.log('Cargando contenido de página 1...');
+                                if (config.page1['text']) {
+                                    setQuillContent('config_page1_text', config.page1['text']);
+                                } else {
+                                    setQuillContent('config_page1_text', 'El secreto');
+                                }
+                            }, 100);
                         }
 
                         // Page 2
                         if (config.page2) {
                             $('#config_page2_text_top').val(config.page2['text-top']);
-                            $('#config_page2_text_y_space').val(config.page2['text-y-space']);
-                            $('#config_page2_text_font_size').val(config.page2['text-font-size']);
-                            $('#config_page2_margin_x').val(config.page2['margin-x']);
-                            $('#config_page2_margin_bottom').val(config.page2['margin-bottom']);
+                            $('#config_page2_text_margin_x').val(config.page2['text-margin-x'] || 0.5);
+                            $('#config_page2_background_url').val(config.page2['background-url'] || '');
+                            $('#config_page2_image_url').val(config.page2['image-url'] || '');
+                            $('#config_page2_image_top').val(config.page2['image-top'] || 0);
+                            $('#config_page2_image_height').val(config.page2['image-height'] || 0);
+                            $('#config_page2_image_width').val(config.page2['image-width'] || 'auto');
+                            $('#config_page2_text_top').val(config.page2['text-top']);
 
                             // Cargar textos en editores Quill con delay para asegurar que están listos
                             setTimeout(function() {
                                 console.log('Cargando contenido de página 2...');
-                                if (config.page2['text-block-1']) {
-                                    setQuillContent('config_page2_text_block_1', config.page2['text-block-1']);
-                                }
-                                if (config.page2['text-block-2']) {
-                                    setQuillContent('config_page2_text_block_2', config.page2['text-block-2']);
-                                }
-                                if (config.page2['text-block-3']) {
-                                    setQuillContent('config_page2_text_block_3', config.page2['text-block-3']);
-                                }
-                                if (config.page2['text-block-4']) {
-                                    setQuillContent('config_page2_text_block_4', config.page2['text-block-4']);
+                                if (config.page2['text']) {
+                                    setQuillContent('config_page2_text', config.page2['text']);
                                 }
                             }, 200);
                         }
 
                         // Page 3
                         if (config.page3) {
-                            $('#config_page3_image').val(config.page3.image);
-                            $('#config_page3_image_y_percentage').val(config.page3['image-y-percentage']);
-                            $('#config_page3_margin').val(config.page3.margin);
-                        }
+                            $('#config_page3_text_top').val(config.page3['text-top']);
+                            $('#config_page3_text_margin_x').val(config.page3['text-margin-x'] || 0);
+                            $('#config_page3_background_url').val(config.page3['background-url'] || '');
+                            $('#config_page3_image_url').val(config.page3['image-url'] || '');
+                            $('#config_page3_image_top').val(config.page3['image-top'] || 0);
+                            $('#config_page3_image_height').val(config.page3['image-height'] || 0);
+                            $('#config_page3_image_width').val(config.page3['image-width'] || 'auto');
+                            $('#config_page3_text_top').val(config.page3['text-top']);
 
-                        // Page 4
-                        if (config.page4) {
-                            $('#config_page4_image').val(config.page4.image);
-                        }
-
-                        // Page 5
-                        if (config.page5) {
-                            $('#config_page5_image').val(config.page5.image);
-                            $('#config_page5_header_y').val(config.page5['header-y']);
-                            $('#config_page5_header_font_size').val(config.page5['header-font-size']);
-                            $('#config_page5_footer_y').val(config.page5['footer-y']);
-                            $('#config_page5_footer_font_size').val(config.page5['footer-font-size']);
-                            $('#config_page5_text_font_size').val(config.page5['text-font-size']);
-                            $('#config_page5_text_1_y').val(config.page5['text-1-y']);
-                            $('#config_page5_text_2_y').val(config.page5['text-2-y']);
-                            $('#config_page5_text_3_y').val(config.page5['text-3-y']);
-                            $('#config_page5_margin').val(config.page5.margin);
-
-                            // Cargar textos en editores Quill con delay
+                            // Cargar textos en editores Quill con delay para asegurar que están listos
                             setTimeout(function() {
-                                console.log('Cargando contenido de página 5...');
-                                if (config.page5['header-text']) {
-                                    setQuillContent('config_page5_header_text', config.page5['header-text']);
-                                }
-                                if (config.page5['footer-text']) {
-                                    setQuillContent('config_page5_footer_text', config.page5['footer-text']);
-                                }
-                                if (config.page5['text-1-content']) {
-                                    setQuillContent('config_page5_text_1_content', config.page5['text-1-content']);
-                                }
-                                if (config.page5['text-2-content']) {
-                                    setQuillContent('config_page5_text_2_content', config.page5['text-2-content']);
-                                }
-                                if (config.page5['text-3-content']) {
-                                    setQuillContent('config_page5_text_3_content', config.page5['text-3-content']);
+                                console.log('Cargando contenido de página 3...');
+                                if (config.page3['text']) {
+                                    setQuillContent('config_page3_text', config.page3['text']);
                                 }
                             }, 300);
                         }
 
-                        // Cargar fuentes disponibles y aplicar selección desde config
-                        loadAvailableFonts().then(function() {
-                            // Aplicar selección de fuentes desde config
-                            if (config.fonts && Array.isArray(config.fonts)) {
-                                $('.font-checkbox').prop('checked', false); // Deseleccionar todas
-                                config.fonts.forEach(function(fontName) {
-                                    $('.font-checkbox[value="' + fontName + '"]').prop('checked', true);
-                                });
-                                updateFontCounter();
-                            }
+                        // Page 4
+                        if (config.page4) {
+                            $('#config_page4_text_top').val(config.page4['text-top'] || 0);
+                            $('#config_page4_text_margin_x').val(config.page4['text-margin-x'] || 0);
+                            $('#config_page4_background_url').val(config.page4['background-url'] || '');
+                            $('#config_page4_image_url').val(config.page4['image-url'] || '');
+                            $('#config_page4_image_top').val(config.page4['image-top'] || 0);
+                            $('#config_page4_image_height').val(config.page4['image-height'] || 0);
+                            $('#config_page4_image_width').val(config.page4['image-width'] || 'auto');
+
+                            // Cargar textos en editores Quill con delay para asegurar que están listos
+                            setTimeout(function() {
+                                console.log('Cargando contenido de página 4...');
+                                if (config.page4['text']) {
+                                    setQuillContent('config_page4_text', config.page4['text']);
+                                }
+                            }, 350);
+                        }
+
+                        // Page 5
+                        if (config.page5) {
+                            $('#config_page5_text_top').val(config.page5['text-top']);
+                            $('#config_page5_text_margin_x').val(config.page5['text-margin-x'] || 0);
+                            $('#config_page5_background_url').val(config.page5['background-url'] || '');
+                            $('#config_page5_image_url').val(config.page5['image-url'] || '');
+                            $('#config_page5_image_top').val(config.page5['image-top'] || 0);
+                            $('#config_page5_image_height').val(config.page5['image-height'] || 0);
+                            $('#config_page5_image_width').val(config.page5['image-width'] || 'auto');
+
+                            // Cargar textos en editores Quill con delay para asegurar que están listos
+                            setTimeout(function() {
+                                console.log('Cargando contenido de página 5...');
+                                if (config.page5['text']) {
+                                    setQuillContent('config_page5_text', config.page5['text']);
+                                }
+                            }, 400);
+                        }
+
+                        // Cargar fuentes disponibles después de cargar configuración
+                        loadAvailableFonts(false).then(function() {
+                            console.log('Fuentes cargadas después de aplicar configuración');
+
+                            // Establecer valores de selectores de fuentes después de poblarlos
+                            setTimeout(function() {
+                                setFontSelectorValuesImproved(config);
+                            }, 100);
                         });
 
                         showAlert('success', '<i class="fas fa-check-circle me-2"></i>Configuración cargada correctamente');
@@ -2235,66 +2594,66 @@
                     , verso_text_1_top: $('#config_verso_text_1_top').val()
                     , verso_text_2_top: $('#config_verso_text_2_top').val()
                     , verso_primary_font_size: $('#config_verso_primary_font_size').val()
-                    , verso_secondary_font_size: $('#config_verso_secondary_font_size').val(),
+                    , verso_secondary_font_size: $('#config_verso_secondary_font_size').val()
+                    , verso_text_1_font_family: $('#config_verso_text_1_font_family').val()
+                    , verso_text_2_font_family: $('#config_verso_text_2_font_family').val(),
 
                     // Recto
                     recto_margin: $('#config_recto_margin').val()
                     , recto_image_margin: $('#config_recto_image_margin').val()
                     , recto_font_size: $('#config_recto_font_size').val()
-                    , recto_text_top: $('#config_recto_text_top').val(),
+                    , recto_text_top: $('#config_recto_text_top').val()
+                    , recto_text_font_family: $('#config_recto_text_font_family').val(),
 
                     // Page 1
-                    page1_title_line_1: $('#config_page1_title_line_1').val()
-                    , page1_title_line_1_y_percentage: $('#config_page1_title_line_1_y_percentage').val()
-                    , page1_title_line_1_font_size: $('#config_page1_title_line_1_font_size').val()
-                    , page1_title_line_2: $('#config_page1_title_line_2').val()
-                    , page1_title_line_2_font_size: $('#config_page1_title_line_2_font_size').val()
-                    , page1_title_line_2_margin: $('#config_page1_title_line_2_margin').val()
-                    , page1_title_line_3: $('#config_page1_title_line_3').val()
-                    , page1_title_line_3_margin: $('#config_page1_title_line_3_margin').val()
-                    , page1_title_line_3_font_size: $('#config_page1_title_line_3_font_size').val()
-                    , page1_logo_image: $('#config_page1_logo_image').val()
-                    , page1_logo_y_percentage: $('#config_page1_logo_y_percentage').val()
-                    , page1_logo_height: $('#config_page1_logo_height').val(),
+                    page1_text: getQuillContent('config_page1_text')
+                    , page1_text_top: $('#config_page1_text_top').val()
+                    , page1_text_margin_x: $('#config_page1_text_margin_x').val()
+                    , page1_background_url: $('#config_page1_background_url').val()
+                    , page1_image_url: $('#config_page1_image_url').val()
+                    , page1_image_top: $('#config_page1_image_top').val()
+                    , page1_image_height: $('#config_page1_image_height').val()
+                    , page1_image_width: $('#config_page1_image_width').val(),
 
                     // Page 2
-                    page2_text_top: $('#config_page2_text_top').val()
-                    , page2_text_y_space: $('#config_page2_text_y_space').val()
-                    , page2_text_font_size: $('#config_page2_text_font_size').val()
-                    , page2_margin_x: $('#config_page2_margin_x').val()
-                    , page2_margin_bottom: $('#config_page2_margin_bottom').val()
-                    , page2_text_block_1: getQuillContent('config_page2_text_block_1')
-                    , page2_text_block_2: getQuillContent('config_page2_text_block_2')
-                    , page2_text_block_3: getQuillContent('config_page2_text_block_3')
-                    , page2_text_block_4: getQuillContent('config_page2_text_block_4'),
+                    page2_text: getQuillContent('config_page2_text')
+                    , page2_text_top: $('#config_page2_text_top').val()
+                    , page2_text_margin_x: $('#config_page2_text_margin_x').val()
+                    , page2_background_url: $('#config_page2_background_url').val()
+                    , page2_image_url: $('#config_page2_image_url').val()
+                    , page2_image_top: $('#config_page2_image_top').val()
+                    , page2_image_height: $('#config_page2_image_height').val()
+                    , page2_image_width: $('#config_page2_image_width').val(),
 
                     // Page 3
-                    page3_image: $('#config_page3_image').val()
-                    , page3_image_y_percentage: $('#config_page3_image_y_percentage').val()
-                    , page3_margin: $('#config_page3_margin').val(),
+                    page3_text: getQuillContent('config_page3_text')
+                    , page3_text_top: $('#config_page3_text_top').val()
+                    , page3_text_margin_x: $('#config_page3_text_margin_x').val()
+                    , page3_background_url: $('#config_page3_background_url').val()
+                    , page3_image_url: $('#config_page3_image_url').val()
+                    , page3_image_top: $('#config_page3_image_top').val()
+                    , page3_image_height: $('#config_page3_image_height').val()
+                    , page3_image_width: $('#config_page3_image_width').val(),
 
                     // Page 4
-                    page4_image: $('#config_page4_image').val(),
+                    page4_text: getQuillContent('config_page4_text')
+                    , page4_text_top: $('#config_page4_text_top').val()
+                    , page4_text_margin_x: $('#config_page4_text_margin_x').val()
+                    , page4_background_url: $('#config_page4_background_url').val()
+                    , page4_image_url: $('#config_page4_image_url').val()
+                    , page4_image_top: $('#config_page4_image_top').val()
+                    , page4_image_height: $('#config_page4_image_height').val()
+                    , page4_image_width: $('#config_page4_image_width').val(),
 
                     // Page 5
-                    page5_image: $('#config_page5_image').val()
-                    , page5_header_y: $('#config_page5_header_y').val()
-                    , page5_header_font_size: $('#config_page5_header_font_size').val()
-                    , page5_header_text: getQuillContent('config_page5_header_text')
-                    , page5_footer_y: $('#config_page5_footer_y').val()
-                    , page5_footer_font_size: $('#config_page5_footer_font_size').val()
-                    , page5_footer_text: getQuillContent('config_page5_footer_text')
-                    , page5_text_font_size: $('#config_page5_text_font_size').val()
-                    , page5_text_1_y: $('#config_page5_text_1_y').val()
-                    , page5_text_1_content: getQuillContent('config_page5_text_1_content')
-                    , page5_text_2_y: $('#config_page5_text_2_y').val()
-                    , page5_text_2_content: getQuillContent('config_page5_text_2_content')
-                    , page5_text_3_y: $('#config_page5_text_3_y').val()
-                    , page5_text_3_content: getQuillContent('config_page5_text_3_content')
-                    , page5_margin: $('#config_page5_margin').val(),
-
-                    // Fuentes seleccionadas
-                    selected_fonts: getSelectedFonts()
+                    page5_text: getQuillContent('config_page5_text')
+                    , page5_text_top: $('#config_page5_text_top').val()
+                    , page5_text_margin_x: $('#config_page5_text_margin_x').val()
+                    , page5_background_url: $('#config_page5_background_url').val()
+                    , page5_image_url: $('#config_page5_image_url').val()
+                    , page5_image_top: $('#config_page5_image_top').val()
+                    , page5_image_height: $('#config_page5_image_height').val()
+                    , page5_image_width: $('#config_page5_image_width').val()
                 };
 
                 // Mostrar indicador de carga
@@ -2312,6 +2671,9 @@
                     , success: function(response) {
                         if (response.success) {
                             showAlert('success', '<i class="fas fa-check-circle me-2"></i>Configuración guardada exitosamente');
+                            // Recargar preview automáticamente después de guardar
+                            console.log('Recargando preview automáticamente después de guardar configuración');
+                            updatePreview(true);
                         } else {
                             showAlert('danger', '<i class="fas fa-exclamation-triangle me-2"></i>Error: ' + response.message);
                         }
@@ -2330,11 +2692,10 @@
                 });
             });
 
-            // Reset configuration to defaults
-            $('#resetConfigBtn').click(function() {
-                if (confirm('¿Estás seguro de que quieres resetear toda la configuración a los valores por defecto?')) {
-                    $('#loadConfigBtn').click(); // Reload from JSON
-                }
+            // Preview configuration button
+            $('#previewConfigBtn').click(function() {
+                console.log('Preview manual solicitado');
+                updatePreview(true); // Forzar actualización inmediata del preview
             });
 
             // Función para cargar CSS de fuentes dinámico
@@ -2345,6 +2706,273 @@
                 link.href = '/fonts.css';
                 document.head.appendChild(link);
                 console.log('CSS de fuentes dinámico cargado');
+            }
+
+            // Función para agregar control de tamaño personalizado a un editor
+            function addCustomSizeControl(quill, editorId) {
+                const toolbar = quill.getModule('toolbar');
+                const container = toolbar.container;
+
+                // Variable para guardar la selección
+                let savedRange = null;
+
+                // Crear elemento personalizado para tamaño
+                const sizeGroup = document.createElement('span');
+                sizeGroup.className = 'ql-formats';
+
+                const sizeLabel = document.createElement('label');
+                sizeLabel.textContent = 'Tamaño: ';
+
+                const sizeInput = document.createElement('input');
+                sizeInput.type = 'text';
+                sizeInput.placeholder = '1.2cm';
+                sizeInput.title = 'Introduce el tamaño (ej: 1.2cm)';
+
+                sizeGroup.appendChild(sizeLabel);
+                sizeGroup.appendChild(sizeInput);
+
+                // Agregar al final de la toolbar
+                container.appendChild(sizeGroup);
+
+                // Función para aplicar el formato
+                function applySize() {
+                    const size = sizeInput.value.trim();
+                    if (size) {
+                        // Restaurar el foco al editor antes de aplicar el formato
+                        quill.focus();
+
+                        // Si tenemos una selección guardada, restaurarla
+                        if (savedRange) {
+                            quill.setSelection(savedRange.index, savedRange.length);
+                        }
+
+                        // Obtener la selección actual (después de restaurar)
+                        const currentRange = quill.getSelection();
+
+                        if (currentRange && currentRange.length > 0) {
+                            // Aplicar a texto seleccionado
+                            quill.formatText(currentRange.index, currentRange.length, 'size', size);
+                            console.log('Tamaño aplicado a selección:', size, currentRange);
+                        } else {
+                            // Aplicar al cursor (próximo texto que se escriba)
+                            quill.format('size', size);
+                            console.log('Tamaño aplicado al cursor:', size);
+                        }
+
+                        // Limpiar la selección guardada
+                        savedRange = null;
+                    }
+                }
+
+                // Guardar selección cuando el input obtiene foco
+                sizeInput.addEventListener('mousedown', function(e) {
+                    // Guardar la selección actual antes de que se pierda
+                    savedRange = quill.getSelection();
+                    console.log('Selección guardada:', savedRange);
+                });
+
+                sizeInput.addEventListener('focus', function(e) {
+                    // También guardar cuando obtiene foco por teclado
+                    if (!savedRange) {
+                        savedRange = quill.getSelection();
+                        console.log('Selección guardada en focus:', savedRange);
+                    }
+                });
+
+                // Event listener para aplicar el tamaño al presionar Enter
+                sizeInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        applySize();
+                        sizeInput.blur(); // Quitar foco del input
+                    }
+                });
+
+                // Event listener para aplicar el tamaño al perder foco
+                sizeInput.addEventListener('blur', function() {
+                    // Pequeño delay para permitir que se complete la acción
+                    setTimeout(applySize, 50);
+                });
+
+                // Mostrar tamaño actual cuando se selecciona texto
+                quill.on('selection-change', function(range) {
+                    // Solo actualizar si el input no tiene foco
+                    if (range && document.activeElement !== sizeInput) {
+                        const format = quill.getFormat(range);
+                        if (format.size) {
+                            sizeInput.value = format.size;
+                        } else {
+                            sizeInput.value = '';
+                        }
+                    }
+                });
+
+                console.log('Control de tamaño personalizado agregado a:', editorId);
+            }
+
+            // Función para agregar control de line-height personalizado a un editor
+            function addCustomLineHeightControl(quill, editorId) {
+                const toolbar = quill.getModule('toolbar');
+                const container = toolbar.container;
+
+                // Variable para guardar la selección
+                let savedRange = null;
+
+                // Crear elemento personalizado para line-height
+                const lineHeightGroup = document.createElement('span');
+                lineHeightGroup.className = 'ql-formats';
+
+                const lineHeightLabel = document.createElement('label');
+                lineHeightLabel.textContent = 'Interlineado: ';
+
+                const lineHeightInput = document.createElement('input');
+                lineHeightInput.type = 'text';
+                lineHeightInput.placeholder = '1.2cm';
+                lineHeightInput.title = 'Introduce el interlineado (ej: 1.2cm)';
+
+                lineHeightGroup.appendChild(lineHeightLabel);
+                lineHeightGroup.appendChild(lineHeightInput);
+
+                // Agregar al final de la toolbar
+                container.appendChild(lineHeightGroup);
+
+                // Función para aplicar el formato
+                function applyLineHeight() {
+                    const lineHeight = lineHeightInput.value.trim();
+                    if (lineHeight) {
+                        // Restaurar el foco al editor antes de aplicar el formato
+                        quill.focus();
+
+                        // Si tenemos una selección guardada, restaurarla
+                        if (savedRange) {
+                            quill.setSelection(savedRange.index, savedRange.length);
+                        }
+
+                        // Obtener la selección actual (después de restaurar)
+                        const currentRange = quill.getSelection();
+
+                        if (currentRange && currentRange.length > 0) {
+                            // Aplicar a texto seleccionado
+                            quill.formatText(currentRange.index, currentRange.length, 'line-height', lineHeight);
+                            console.log('Line-height aplicado a selección:', lineHeight, currentRange);
+                        } else {
+                            // Aplicar al cursor (próximo texto que se escriba)
+                            quill.format('line-height', lineHeight);
+                            console.log('Line-height aplicado al cursor:', lineHeight);
+                        }
+
+                        // Limpiar la selección guardada
+                        savedRange = null;
+                    }
+                }
+
+                // Guardar selección cuando el input obtiene foco
+                lineHeightInput.addEventListener('mousedown', function(e) {
+                    // Guardar la selección actual antes de que se pierda
+                    savedRange = quill.getSelection();
+                    console.log('Selección guardada para line-height:', savedRange);
+                });
+
+                lineHeightInput.addEventListener('focus', function(e) {
+                    // También guardar cuando obtiene foco por teclado
+                    if (!savedRange) {
+                        savedRange = quill.getSelection();
+                        console.log('Selección guardada en focus para line-height:', savedRange);
+                    }
+                });
+
+                // Event listener para aplicar el line-height al presionar Enter
+                lineHeightInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        applyLineHeight();
+                        lineHeightInput.blur(); // Quitar foco del input
+                    }
+                });
+
+                // Event listener para aplicar el line-height al perder foco
+                lineHeightInput.addEventListener('blur', function() {
+                    // Pequeño delay para permitir que se complete la acción
+                    setTimeout(applyLineHeight, 50);
+                });
+
+                // Mostrar line-height actual cuando se selecciona texto
+                quill.on('selection-change', function(range) {
+                    // Solo actualizar si el input no tiene foco
+                    if (range && document.activeElement !== lineHeightInput) {
+                        const format = quill.getFormat(range);
+                        if (format['line-height']) {
+                            lineHeightInput.value = format['line-height'];
+                        } else {
+                            lineHeightInput.value = '';
+                        }
+                    }
+                });
+
+                console.log('Control de line-height personalizado agregado a:', editorId);
+            }
+
+            // Función para agregar botón de pantalla completa a un editor
+            function addFullscreenButton(quill, editorId) {
+                const toolbar = quill.getModule('toolbar');
+                const container = toolbar.container;
+
+                // Crear elemento personalizado para fullscreen
+                const fullscreenGroup = document.createElement('span');
+                fullscreenGroup.className = 'ql-formats';
+
+                const fullscreenBtn = document.createElement('button');
+                fullscreenBtn.type = 'button';
+                fullscreenBtn.className = 'ql-fullscreen';
+                fullscreenBtn.title = 'Alternar pantalla completa';
+                fullscreenBtn.innerHTML = '⛶'; // Icono de expand
+
+                fullscreenGroup.appendChild(fullscreenBtn);
+                container.appendChild(fullscreenGroup);
+
+                // Manejar click del botón
+                fullscreenBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    toggleFullscreen(quill, editorId, fullscreenBtn);
+                });
+
+                console.log('Botón de pantalla completa agregado a:', editorId);
+            }
+
+            // Función para alternar pantalla completa
+            function toggleFullscreen(quill, editorId, button) {
+                const editorContainer = document.getElementById(editorId).closest('.ql-container').parentElement;
+                const isFullscreen = editorContainer.classList.contains('quill-fullscreen');
+
+                if (isFullscreen) {
+                    // Salir de pantalla completa
+                    editorContainer.classList.remove('quill-fullscreen');
+                    button.innerHTML = '⛶'; // Icono expand
+                    button.title = 'Alternar pantalla completa';
+                    document.body.style.overflow = '';
+
+                    // Remover listener de ESC
+                    document.removeEventListener('keydown', window.currentFullscreenEscListener);
+                } else {
+                    // Entrar en pantalla completa
+                    editorContainer.classList.add('quill-fullscreen');
+                    button.innerHTML = '⛗'; // Icono compress
+                    button.title = 'Salir de pantalla completa';
+                    document.body.style.overflow = 'hidden';
+
+                    // Agregar listener para ESC
+                    window.currentFullscreenEscListener = function(e) {
+                        if (e.key === 'Escape') {
+                            toggleFullscreen(quill, editorId, button);
+                        }
+                    };
+                    document.addEventListener('keydown', window.currentFullscreenEscListener);
+                }
+
+                // Trigger resize para que Quill se ajuste al nuevo tamaño
+                setTimeout(() => {
+                    quill.focus();
+                }, 100);
             }
 
             // Inicializar editores Quill.js
@@ -2365,45 +2993,47 @@
                     return;
                 }
 
+                // Registrar formato de tamaño personalizado que permite cualquier valor
+                const SizeStyle = Quill.import('attributors/style/size');
+                SizeStyle.whitelist = null; // Permitir cualquier valor
+                Quill.register(SizeStyle, true);
+                console.log('Formato de tamaño personalizado registrado');
+
+                // Crear y registrar formato de line-height personalizado
+                const Parchment = Quill.import('parchment');
+                const LineHeightStyle = new Parchment.Attributor.Style('line-height', 'line-height', {
+                    scope: Parchment.Scope.INLINE,
+                    whitelist: null // Permitir cualquier valor
+                });
+                Quill.register(LineHeightStyle, true);
+                console.log('Formato de line-height personalizado registrado');
+
                 console.log('Quill.js detectado correctamente');
                 const editorConfigs = [
+                    // Página 1
+                    {
+                        id: 'config_page1_text_editor'
+                        , hiddenId: 'config_page1_text'
+                    },
                     // Página 2
                     {
-                        id: 'config_page2_text_block_1_editor'
-                        , hiddenId: 'config_page2_text_block_1'
-                    }
-                    , {
-                        id: 'config_page2_text_block_2_editor'
-                        , hiddenId: 'config_page2_text_block_2'
-                    }
-                    , {
-                        id: 'config_page2_text_block_3_editor'
-                        , hiddenId: 'config_page2_text_block_3'
-                    }
-                    , {
-                        id: 'config_page2_text_block_4_editor'
-                        , hiddenId: 'config_page2_text_block_4'
+                        id: 'config_page2_text_editor'
+                        , hiddenId: 'config_page2_text'
+                    },
+                    // Página 3
+                    {
+                        id: 'config_page3_text_editor'
+                        , hiddenId: 'config_page3_text'
+                    },
+                    // Página 4
+                    {
+                        id: 'config_page4_text_editor'
+                        , hiddenId: 'config_page4_text'
                     },
                     // Página 5
                     {
-                        id: 'config_page5_header_text_editor'
-                        , hiddenId: 'config_page5_header_text'
-                    }
-                    , {
-                        id: 'config_page5_footer_text_editor'
-                        , hiddenId: 'config_page5_footer_text'
-                    }
-                    , {
-                        id: 'config_page5_text_1_content_editor'
-                        , hiddenId: 'config_page5_text_1_content'
-                    }
-                    , {
-                        id: 'config_page5_text_2_content_editor'
-                        , hiddenId: 'config_page5_text_2_content'
-                    }
-                    , {
-                        id: 'config_page5_text_3_content_editor'
-                        , hiddenId: 'config_page5_text_3_content'
+                        id: 'config_page5_text_editor'
+                        , hiddenId: 'config_page5_text'
                     }
                 ];
 
@@ -2420,15 +3050,10 @@
                                         'font': [''].concat(availableFonts.map(f => f.cssName))
                                     }]
                                     , [{
-                                        'size': ['small', false, 'large', 'huge']
-                                    }]
-                                    , ['bold', 'italic', 'underline']
-                                    , [{
                                         'color': []
                                     }, {
                                         'background': []
                                     }]
-                                    , ['link']
                                     , [{
                                         'list': 'ordered'
                                     }, {
@@ -2446,12 +3071,25 @@
                         quillEditors[config.hiddenId] = quill;
                         console.log('Editor guardado para:', config.hiddenId);
 
+                        // Agregar control de tamaño personalizado
+                        addCustomSizeControl(quill, config.id);
+
+                        // Agregar control de line-height personalizado
+                        addCustomLineHeightControl(quill, config.id);
+
+                        // Agregar botón de pantalla completa
+                        addFullscreenButton(quill, config.id);
+
                         // Sincronizar con input hidden cuando cambie el contenido
                         quill.on('text-change', function(delta, oldDelta, source) {
-                            const content = quill.root.innerHTML;
+                            let content = quill.root.innerHTML;
+
+                            // Limpiar caracteres problemáticos
+                            content = cleanContent(content);
+
                             const sourceElement = document.getElementById(config.hiddenId + '_source');
 
-                            // Actualizar input hidden
+                            // Actualizar input hidden con contenido limpio
                             document.getElementById(config.hiddenId).value = content;
 
                             // Si el textarea de código está visible, actualizarlo también
@@ -2597,8 +3235,8 @@
 
                 console.log('Dependencias verificadas, cargando fuentes...');
 
-                // Cargar fuentes primero
-                loadAvailableFonts().then(function() {
+                // Cargar fuentes primero (sin actualizar selector automáticamente)
+                loadAvailableFonts(false).then(function() {
                     console.log('Fuentes cargadas, inicializando editores...');
 
                     // Inicializar editores después de cargar fuentes

@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Log;
+
 class FontManager
 {
     /**
@@ -42,55 +45,22 @@ class FontManager
             }
         }
 
-        // Filtrar duplicados y priorizar versiones principales
-        $fontGroups = [];
+        // En lugar de filtrar por grupos, retornar todas las fuentes únicas
+        $uniqueFonts = [];
 
         foreach ($allFontFiles as $font) {
-            $baseName = $font['baseName'];
-
-            if (!isset($fontGroups[$baseName])) {
-                $fontGroups[$baseName] = [];
-            }
-
-            $fontGroups[$baseName][] = $font;
-        }
-
-        // Para cada grupo, seleccionar la mejor versión
-        foreach ($fontGroups as $baseName => $fonts) {
-            // Priorizar: 1) Regular/Normal, 2) Sin variación, 3) El primero alfabéticamente
-            usort($fonts, function($a, $b) {
-                // Priorizar versiones no-variación
-                if ($a['isVariation'] != $b['isVariation']) {
-                    return $a['isVariation'] - $b['isVariation'];
-                }
-
-                // Priorizar nombres que contengan "regular" o "normal"
-                $aIsRegular = stripos($a['fontName'], 'regular') !== false || stripos($a['fontName'], 'normal') !== false;
-                $bIsRegular = stripos($b['fontName'], 'regular') !== false || stripos($b['fontName'], 'normal') !== false;
-
-                if ($aIsRegular != $bIsRegular) {
-                    return $bIsRegular - $aIsRegular;
-                }
-
-                // Si ambos son iguales, ordenar alfabéticamente
-                return strcmp($a['fontName'], $b['fontName']);
-            });
-
-            // Tomar el primero (mejor opción)
-            $bestFont = $fonts[0];
-
             $uniqueFonts[] = [
-                'filename' => $bestFont['filename'],
-                'displayName' => $bestFont['displayName'],
-                'cssName' => $bestFont['cssName'],
-                'familyName' => $bestFont['familyName'],
-                'path' => $bestFont['path'],
-                'absolutePath' => $bestFont['absolutePath']
+                'filename' => $font['filename'],
+                'displayName' => $font['displayName'],
+                'cssName' => $font['cssName'],
+                'familyName' => $font['familyName'],
+                'path' => $font['path'],
+                'absolutePath' => $font['absolutePath']
             ];
         }
 
         // Ordenar alfabéticamente por nombre de display
-        usort($uniqueFonts, function($a, $b) {
+        usort($uniqueFonts, function ($a, $b) {
             return strcmp($a['displayName'], $b['displayName']);
         });
 
@@ -125,6 +95,87 @@ class FontManager
 
         foreach ($fonts as $font) {
             // CSS para Quill editor
+            $css .= "@font-face {\n";
+            $css .= "    font-family: '{$font['familyName']}';\n";
+            $css .= "    src: url('/fonts/{$font['filename']}') format('truetype');\n";
+            $css .= "}\n\n";
+
+            // Clase Quill específica
+            $css .= ".ql-font-{$font['cssName']} {\n";
+            $css .= "    font-family: '{$font['familyName']}';\n";
+            $css .= "}\n\n";
+        }
+
+        return $css;
+    }
+
+    /**
+     * Genera CSS dinámico para Quill.js
+     */
+    public static function generatePdfFontCSS($configFile)
+    {
+        if (!$configFile) {
+            return '';
+        }
+
+        // Obtener todas las fuentes disponibles en el directorio
+        $fonts = self::getAllFonts();
+
+        // Leer el archivo JSON de configuración
+        // Si el configFile ya incluye 'json/', usarlo directamente, sino construir el path
+        if (strpos($configFile, 'json/') === 0 || strpos($configFile, '/json/') === 0) {
+            $configPath = public_path(ltrim($configFile, '/'));
+        } else {
+            $configPath = public_path('json/' . $configFile);
+        }
+
+        $allowedFonts = [];
+
+        if (file_exists($configPath)) {
+            $json = file_get_contents($configPath);
+            $config = json_decode($json, true);
+
+            if (isset($config['fonts']) && is_array($config['fonts'])) {
+                $allowedFonts = $config['fonts']; // No convertir a minúsculas
+            }
+        } else {
+            // Si no se encuentra el archivo JSON, no mostrar ninguna fuente
+            Log::warning('FontManager::generatePdfFontCSS - Archivo JSON no encontrado', [
+                'configFile' => $configFile,
+                'configPath' => $configPath
+            ]);
+            return '';
+        }
+
+        // Si no hay fuentes definidas en el JSON, no mostrar ninguna fuente
+        if (empty($allowedFonts)) {
+            Log::info('FontManager::generatePdfFontCSS - No hay fuentes definidas en el JSON', [
+                'configFile' => $configFile,
+                'configPath' => $configPath
+            ]);
+            return '';
+        }
+
+        // Filtrar las fuentes: solo incluir las que están en el JSON
+        $fonts = array_filter($fonts, function ($font) use ($allowedFonts) {
+            return in_array($font['cssName'], $allowedFonts); // Comparación exacta por cssName
+        });
+
+        // Debug: Verificar qué fuentes se están filtrando
+        Log::info('FontManager::generatePdfFontCSS Debug', [
+            'configFile' => $configFile,
+            'configPath' => $configPath,
+            'configExists' => file_exists($configPath),
+            'allowedFonts' => $allowedFonts,
+            'totalFontsAvailable' => count(self::getAllFonts()),
+            'filteredFontsCount' => count($fonts),
+            'filteredFontNames' => array_column($fonts, 'cssName')
+        ]);
+
+        $css = '';
+
+        foreach ($fonts as $font) {
+            // CSS para @font-face
             $css .= "@font-face {\n";
             $css .= "    font-family: '{$font['familyName']}';\n";
             $css .= "    src: url('/fonts/{$font['filename']}') format('truetype');\n";
@@ -226,9 +277,24 @@ class FontManager
 
         // Remover sufijos comunes de variación (case insensitive)
         $variations = [
-            'bold', 'italic', 'regular', 'normal', 'light', 'medium', 'heavy',
-            'black', 'thin', 'extralight', 'semibold', 'extrabold', 'condensed',
-            'extended', 'narrow', 'wide', 'oblique', 'slanted'
+            'bold',
+            'italic',
+            'regular',
+            'normal',
+            'light',
+            'medium',
+            'heavy',
+            'black',
+            'thin',
+            'extralight',
+            'semibold',
+            'extrabold',
+            'condensed',
+            'extended',
+            'narrow',
+            'wide',
+            'oblique',
+            'slanted'
         ];
 
         foreach ($variations as $variation) {
@@ -248,9 +314,22 @@ class FontManager
     private static function isVariationFont($fontName)
     {
         $variations = [
-            'bold', 'italic', 'light', 'medium', 'heavy', 'black', 'thin',
-            'extralight', 'semibold', 'extrabold', 'condensed', 'extended',
-            'narrow', 'wide', 'oblique', 'slanted'
+            'bold',
+            'italic',
+            'light',
+            'medium',
+            'heavy',
+            'black',
+            'thin',
+            'extralight',
+            'semibold',
+            'extrabold',
+            'condensed',
+            'extended',
+            'narrow',
+            'wide',
+            'oblique',
+            'slanted'
         ];
 
         $fontNameLower = strtolower($fontName);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\UI;
 use App\Http\Controllers\Controller;
 use App\Services\FontManager;
 use Barryvdh\DomPDF\Facade\Pdf;
+use FontLib\Font;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
@@ -85,63 +86,66 @@ class GeneratorController extends Controller
                     'text-1-top' => (float) $request->input('verso_text_1_top'),
                     'text-2-top' => (float) $request->input('verso_text_2_top'),
                     'primary-font-size' => (float) $request->input('verso_primary_font_size'),
-                    'secondary-font-size' => (float) $request->input('verso_secondary_font_size')
+                    'secondary-font-size' => (float) $request->input('verso_secondary_font_size'),
+                    'text-1-font-family' => $request->input('verso_text_1_font_family'),
+                    'text-2-font-family' => $request->input('verso_text_2_font_family')
                 ],
                 'recto' => [
                     'margin' => (float) $request->input('recto_margin'),
                     'image-margin' => (float) $request->input('recto_image_margin'),
                     'font-size' => (float) $request->input('recto_font_size'),
-                    'text-top' => (float) $request->input('recto_text_top')
+                    'text-top' => (float) $request->input('recto_text_top'),
+                    'text-font-family' => $request->input('recto_text_font_family')
                 ],
                 'page1' => [
-                    'title-line-1' => $request->input('page1_title_line_1'),
-                    'title-line-1-y-percentage' => (float) $request->input('page1_title_line_1_y_percentage'),
-                    'title-line-1-font-size' => (float) $request->input('page1_title_line_1_font_size'),
-                    'title-line-2' => $request->input('page1_title_line_2'),
-                    'title-line-2-font-size' => (float) $request->input('page1_title_line_2_font_size'),
-                    'title-line-2-margin' => (float) $request->input('page1_title_line_2_margin'),
-                    'title-line-3' => $request->input('page1_title_line_3'),
-                    'title-line-3-margin' => (float) $request->input('page1_title_line_3_margin'),
-                    'title-line-3-font-size' => (float) $request->input('page1_title_line_3_font_size'),
-                    'logo-image' => $request->input('page1_logo_image'),
-                    'logo-y-percentage' => (float) $request->input('page1_logo_y_percentage'),
-                    'logo-height' => (float) $request->input('page1_logo_height')
+                    'text' => $request->input('page1_text'),
+                    'text-top' => (float) $request->input('page1_text_top'),
+                    'text-margin-x' => (float) $request->input('page1_text_margin_x'),
+                    'background-url' => $request->input('page1_background_url'),
+                    'image-url' => $request->input('page1_image_url'),
+                    'image-top' => (float) $request->input('page1_image_top'),
+                    'image-height' => (float) $request->input('page1_image_height'),
+                    'image-width' => $request->input('page1_image_width')
                 ],
                 'page2' => [
+                    'text' => $request->input('page2_text'),
                     'text-top' => (float) $request->input('page2_text_top'),
-                    'text-y-space' => (float) $request->input('page2_text_y_space'),
-                    'text-font-size' => (float) $request->input('page2_text_font_size'),
-                    'margin-x' => (float) $request->input('page2_margin_x'),
-                    'margin-bottom' => (float) $request->input('page2_margin_bottom'),
-                    'text-block-1' => $request->input('page2_text_block_1'),
-                    'text-block-2' => $request->input('page2_text_block_2'),
-                    'text-block-3' => $request->input('page2_text_block_3'),
-                    'text-block-4' => $request->input('page2_text_block_4')
+                    'text-margin-x' => (float) $request->input('page2_text_margin_x'),
+                    'background-url' => $request->input('page2_background_url'),
+                    'image-url' => $request->input('page2_image_url'),
+                    'image-top' => (float) $request->input('page2_image_top'),
+                    'image-height' => (float) $request->input('page2_image_height'),
+                    'image-width' => $request->input('page2_image_width')
                 ],
                 'page3' => [
-                    'image' => $request->input('page3_image'),
-                    'image-y-percentage' => (float) $request->input('page3_image_y_percentage'),
-                    'margin' => (float) $request->input('page3_margin')
+                    'text' => $request->input('page3_text'),
+                    'text-top' => (float) $request->input('page3_text_top'),
+                    'text-margin-x' => (float) $request->input('page3_text_margin_x'),
+                    'background-url' => $request->input('page3_background_url'),
+                    'image-url' => $request->input('page3_image_url'),
+                    'image-top' => (float) $request->input('page3_image_top'),
+                    'image-height' => (float) $request->input('page3_image_height'),
+                    'image-width' => $request->input('page3_image_width')
                 ],
                 'page4' => [
-                    'image' => $request->input('page4_image')
+                    'text' => $request->input('page4_text'),
+                    'text-top' => (float) $request->input('page4_text_top'),
+                    'text-margin-x' => (float) $request->input('page4_text_margin_x'),
+                    'background-url' => $request->input('page4_background_url'),
+                    'image-url' => $request->input('page4_image_url'),
+                    'image-top' => (float) $request->input('page4_image_top'),
+                    'image-height' => (float) $request->input('page4_image_height'),
+                    'image-width' => $request->input('page4_image_width')
                 ],
                 'page5' => [
-                    'image' => $request->input('page5_image'),
-                    'header-y' => (float) $request->input('page5_header_y'),
-                    'header-font-size' => (float) $request->input('page5_header_font_size'),
-                    'header-text' => $request->input('page5_header_text'),
-                    'footer-y' => (float) $request->input('page5_footer_y'),
-                    'footer-font-size' => (float) $request->input('page5_footer_font_size'),
-                    'footer-text' => $request->input('page5_footer_text'),
-                    'text-font-size' => (float) $request->input('page5_text_font_size'),
-                    'text-1-y' => (float) $request->input('page5_text_1_y'),
-                    'text-1-content' => $request->input('page5_text_1_content'),
-                    'text-2-y' => (float) $request->input('page5_text_2_y'),
-                    'text-2-content' => $request->input('page5_text_2_content'),
-                    'text-3-y' => (float) $request->input('page5_text_3_y'),
-                    'text-3-content' => $request->input('page5_text_3_content'),
-                    'margin' => (float) $request->input('page5_margin')
+                    'text' => $request->input('page5_text'),
+                    'text-top' => (float) $request->input('page5_text_top'),
+                    'text-margin-x' => (float) $request->input('page5_text_margin_x'),
+                    'background-url' => $request->input('page5_background_url'),
+                    'image-url' => $request->input('page5_image_url'),
+                    'image-top' => (float) $request->input('page5_image_top'),
+                    'image-height' => (float) $request->input('page5_image_height'),
+                    'image-width' => $request->input('page5_image_width')
                 ],
                 'fonts' => $request->input('selected_fonts', []) // Fuentes seleccionadas
             ];
@@ -239,7 +243,7 @@ class GeneratorController extends Controller
 
         try {
             // Obtener el archivo JSON seleccionado desde el request
-            $selectedJsonFile = $request->input('selectedJsonFile', '/json/chinese.json');
+            $selectedJsonFile = $request->input('selectedJsonFile');
             $filename = basename($selectedJsonFile);
 
             // Leer configuración desde archivo JSON
@@ -323,6 +327,7 @@ class GeneratorController extends Controller
         }
     }
 
+
     /**
      * Extrae todas las fuentes utilizadas en los textos del JSON de configuración
      * Busca clases CSS con prefijo ql-font- y extrae el nombre de la fuente
@@ -359,66 +364,48 @@ class GeneratorController extends Controller
         return array_unique($fonts);
     }
 
-    /**
-     * Limpia el cache de DomPDF para evitar duplicación de fuentes
-     */
-    private function clearDomPDFCache()
-    {
-        try {
-            // Rutas donde DomPDF puede almacenar cache de fuentes
-            $fontPaths = [
-                storage_path('fonts'),
-                base_path('storage/fonts'),
-                resource_path('fonts'),
-            ];
 
-            foreach ($fontPaths as $fontPath) {
-                if (is_dir($fontPath)) {
-                    $this->cleanFontCache($fontPath);
-                }
-            }
-
-            // También limpiar cache específico de DomPDF
-            $dompdfCachePath = storage_path('app/dompdf');
-            if (is_dir($dompdfCachePath)) {
-                $this->cleanFontCache($dompdfCachePath);
-            }
-        } catch (\Exception $e) {
-            // Log error pero no fallar la generación
-            Log::warning('Error limpiando cache de DomPDF: ' . $e->getMessage());
-        }
-    }
 
     /**
-     * Limpia archivos de cache de fuentes en un directorio específico
+     * Elimina todas las fuentes del directorio especificado
      */
-    private function cleanFontCache($directory)
+    private function clearAllFonts($directory)
     {
         if (!is_dir($directory)) {
+            Log::info('Directorio de fuentes no existe: ' . $directory);
             return;
         }
 
+        $deletedCount = 0;
+        $errorCount = 0;
+
+        // Obtener todos los archivos del directorio
         $files = glob($directory . '/*');
+
         foreach ($files as $file) {
             if (is_file($file)) {
-                $extension = pathinfo($file, PATHINFO_EXTENSION);
-                $filename = pathinfo($file, PATHINFO_FILENAME);
+                $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+                $filename = basename($file);
 
-                // Eliminar archivos cache (.ufm, .afm) que tengan hash duplicados
-                if (in_array($extension, ['ufm', 'afm'])) {
-                    // Si el archivo tiene un hash MD5/SHA al final y ya existe una versión sin hash
-                    if (preg_match('/_[a-f0-9]{32}$/', $filename)) {
-                        $cleanName = preg_replace('/_[a-f0-9]{32}$/', '', $filename);
-                        $cleanFile = $directory . '/' . $cleanName . '.' . $extension;
-
-                        // Si existe la versión limpia, eliminar la duplicada
-                        if (file_exists($cleanFile)) {
-                            unlink($file);
+                // Eliminar archivos de fuentes comunes
+                if (in_array($extension, ['ttf', 'otf', 'woff', 'woff2', 'eot', 'svg', 'ufm', 'afm'])) {
+                    try {
+                        if (unlink($file)) {
+                            $deletedCount++;
+                            Log::info('Fuente eliminada: ' . $filename);
+                        } else {
+                            $errorCount++;
+                            Log::warning('No se pudo eliminar la fuente: ' . $filename);
                         }
+                    } catch (\Exception $e) {
+                        $errorCount++;
+                        Log::warning('Error eliminando fuente ' . $filename . ': ' . $e->getMessage());
                     }
                 }
             }
         }
+
+        Log::info("Limpieza de fuentes completada. Eliminadas: {$deletedCount}, Errores: {$errorCount}");
     }
 
     public function getPreview(Request $request)
@@ -487,7 +474,11 @@ class GeneratorController extends Controller
 
         try {
             // Obtener parámetros directamente del request
-            $numberOfPages = $request->input('numberOfPages', 5); // Limitar páginas para preview
+
+
+            $selectedJsonFile = $request->input('selectedJsonFile');
+
+            $numberOfPages = $request->input('numberOfPages'); // Limitar páginas para preview
             $spreadsheetId = $request->input('spreadsheetId');
             $sheetName = $request->input('sheetName');
             $imagesURL = $request->input('imagesURL');
@@ -516,7 +507,7 @@ class GeneratorController extends Controller
             }
 
             // Obtener fuentes seleccionadas desde request
-            $quillFonts = $request->input('selectedFonts', []);
+            $quillFonts = FontManager::generatePdfFontCSS($selectedJsonFile);
 
             $data = [
                 'items' => $items,
@@ -527,7 +518,7 @@ class GeneratorController extends Controller
                 })),
                 'layout' => $layout,
                 'quillFonts' => $quillFonts,
-                'preview' => false // Para PDF usar fuentes locales, no preview mode
+                'preview' => true // Para PDF usar fuentes locales, no preview mode
             ];
 
             // Generar PDF usando DOMPDF
@@ -560,8 +551,8 @@ class GeneratorController extends Controller
      */
     private function processSpreadsheetData($spreadsheetId, $sheetName, $imagesURL, $numberOfPages, $tempFileName)
     {
-        // Descargar el archivo de Google Spreadsheet como Excel
-        $exportUrl = "https://docs.google.com/spreadsheets/d/$spreadsheetId/export?format=xlsx&sheet=$sheetName";
+        // Descargar el archivo completo de Google Spreadsheet como Excel (sin filtro específico de hoja)
+        $exportUrl = "https://docs.google.com/spreadsheets/d/$spreadsheetId/export?format=xlsx";
 
         // Descargar el archivo temporalmente
         $tempExcel = storage_path('app/' . $tempFileName);
@@ -573,8 +564,87 @@ class GeneratorController extends Controller
                 throw new \Exception("Excel file could not be downloaded");
             }
 
-            // Leer y procesar el Excel
-            $hoja = Excel::toArray([], $tempExcel, null, \Maatwebsite\Excel\Excel::XLSX)[0];
+            // Leer TODAS las hojas del Excel
+            $allSheets = Excel::toArray([], $tempExcel, null, \Maatwebsite\Excel\Excel::XLSX);
+
+            Log::info("Procesando Excel - Hojas encontradas:", ['total' => count($allSheets), 'target' => $sheetName]);
+
+            // Obtener los nombres reales de las hojas
+            $sheetNames = [];
+            try {
+                $reader = \Maatwebsite\Excel\Facades\Excel::import(new class implements \Maatwebsite\Excel\Concerns\WithMultipleSheets {
+                    public function sheets(): array { return []; }
+                }, $tempExcel);
+
+                // Usar PhpSpreadsheet directamente para obtener los nombres de hojas
+                $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($tempExcel);
+                $sheetNames = $spreadsheet->getSheetNames();
+                Log::info("Nombres reales de hojas obtenidos:", $sheetNames);
+            } catch (\Exception $e) {
+                Log::warning("No se pudieron obtener nombres de hojas:", ['error' => $e->getMessage()]);
+                // Fallback: usar nombres genéricos
+                for ($i = 0; $i < count($allSheets); $i++) {
+                    $sheetNames[] = "Sheet_" . $i;
+                }
+            }
+
+            // Buscar la hoja por nombre exacto primero
+            $targetSheetIndex = null;
+            foreach ($sheetNames as $index => $realSheetName) {
+                if (trim($realSheetName) === trim($sheetName)) {
+                    $targetSheetIndex = $index;
+                    Log::info("Hoja encontrada por nombre exacto:", ['name' => $realSheetName, 'index' => $index]);
+                    break;
+                }
+            }
+
+            // Si no se encuentra por nombre exacto, buscar por headers
+            if ($targetSheetIndex === null) {
+                Log::info("Buscando hoja por headers...");
+                foreach ($allSheets as $index => $sheetData) {
+                    $firstRow = $sheetData[0] ?? [];
+                    $headersString = strtoupper(implode('|', $firstRow));
+
+                    // Verificar si tiene los headers que necesitamos
+                    if (strpos($headersString, 'EN') !== false &&
+                        strpos($headersString, 'SYM') !== false &&
+                        strpos($headersString, 'ES') !== false) {
+                        $targetSheetIndex = $index;
+                        $actualSheetName = $sheetNames[$index] ?? "Sheet_$index";
+                        Log::info("Hoja encontrada por headers:", [
+                            'requested' => $sheetName,
+                            'actual' => $actualSheetName,
+                            'index' => $index,
+                            'headers' => array_slice($firstRow, 0, 10)
+                        ]);
+                        break;
+                    }
+                }
+            }
+
+            if ($targetSheetIndex === null) {
+                $availableSheets = [];
+                foreach ($sheetNames as $index => $name) {
+                    $firstRow = $allSheets[$index][0] ?? [];
+                    $availableSheets[] = [
+                        'index' => $index,
+                        'name' => $name,
+                        'headers' => array_slice($firstRow, 0, 5)
+                    ];
+                }
+                throw new \Exception("No se encontró la hoja '$sheetName'. Hojas disponibles: " . json_encode($availableSheets));
+            }
+
+            // Usar la hoja encontrada
+            $hoja = $allSheets[$targetSheetIndex];
+            $actualSheetName = $sheetNames[$targetSheetIndex] ?? "Sheet_$targetSheetIndex";
+            Log::info("Procesando hoja final:", [
+                'requested' => $sheetName,
+                'actual' => $actualSheetName,
+                'index' => $targetSheetIndex,
+                'rows' => count($hoja),
+                'headers' => array_slice($hoja[0] ?? [], 0, 10)
+            ]);
             $limpio = $this->cleanExcelData($hoja);
 
             // Buscar las columnas requeridas
@@ -740,5 +810,128 @@ class GeneratorController extends Controller
         }
 
         return $items;
+    }
+
+    /**
+     * Método de prueba para diagnosticar la lectura de hojas de Excel
+     */
+    public function testExcelReading(Request $request)
+    {
+        try {
+            // Parámetros de prueba - usar los del JSON actual
+            $spreadsheetId = '1nYdFCcD5hLjPmz1xmddfNupjItjOI4riFzgpKX9Bq7k';
+            $targetSheetName = $request->get('sheet', 'Chino'); // Permitir especificar la hoja
+            $testPages = 3; // Solo procesar 3 páginas para prueba
+
+            Log::info('=== INICIO TEST EXCEL READING ===');
+            Log::info('Spreadsheet ID:', ['id' => $spreadsheetId]);
+            Log::info('Target Sheet:', ['name' => $targetSheetName]);
+
+            // Probar el método processSpreadsheetData directamente
+            $items = $this->processSpreadsheetData(
+                $spreadsheetId,
+                $targetSheetName,
+                'https://example.com/images/', // URL de prueba
+                $testPages,
+                'test_process_' . time() . '.xlsx'
+            );
+
+            $result = [
+                'success' => true,
+                'spreadsheetId' => $spreadsheetId,
+                'targetSheetName' => $targetSheetName,
+                'itemsProcessed' => count($items),
+                'sampleItems' => array_slice($items, 0, 3), // Primeros 3 items como muestra
+                'method' => 'processSpreadsheetData',
+                'timestamp' => now()->toDateTimeString()
+            ];
+
+            Log::info('Test completado exitosamente:', $result);
+            Log::info('=== FIN TEST EXCEL READING ===');
+
+            return response()->json([
+                'success' => true,
+                'message' => "Test de procesamiento de Excel completado exitosamente para hoja '$targetSheetName'",
+                'data' => $result
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Error en test de Excel:', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error en test de Excel: ' . $e->getMessage(),
+                'error_details' => [
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'targetSheet' => $targetSheetName
+                ]
+            ], 500);
+        }
+    }
+
+    /**
+     * Método para listar todas las hojas disponibles en el Excel
+     */
+    public function listExcelSheets(Request $request)
+    {
+        try {
+            $spreadsheetId = $request->get('spreadsheetId', '1nYdFCcD5hLjPmz1xmddfNupjItjOI4riFzgpKX9Bq7k');
+
+            // Descargar el archivo Excel
+            $exportUrl = "https://docs.google.com/spreadsheets/d/$spreadsheetId/export?format=xlsx";
+            $tempExcel = storage_path('app/list_sheets_' . time() . '.xlsx');
+            file_put_contents($tempExcel, file_get_contents($exportUrl));
+
+            try {
+                // Leer todas las hojas
+                $allSheets = Excel::toArray([], $tempExcel, null, \Maatwebsite\Excel\Excel::XLSX);
+
+                // Obtener nombres reales de hojas
+                $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($tempExcel);
+                $sheetNames = $spreadsheet->getSheetNames();
+
+                $sheetDetails = [];
+                foreach ($sheetNames as $index => $sheetName) {
+                    $sheetData = $allSheets[$index] ?? [];
+                    $firstRow = $sheetData[0] ?? [];
+
+                    $hasRequiredHeaders = (
+                        strpos(strtoupper(implode('|', $firstRow)), 'EN') !== false &&
+                        strpos(strtoupper(implode('|', $firstRow)), 'SYM') !== false &&
+                        strpos(strtoupper(implode('|', $firstRow)), 'ES') !== false
+                    );
+
+                    $sheetDetails[] = [
+                        'index' => $index,
+                        'name' => $sheetName,
+                        'totalRows' => count($sheetData),
+                        'headers' => array_slice($firstRow, 0, 10),
+                        'hasRequiredHeaders' => $hasRequiredHeaders
+                    ];
+                }
+
+                return response()->json([
+                    'success' => true,
+                    'spreadsheetId' => $spreadsheetId,
+                    'totalSheets' => count($sheetNames),
+                    'sheets' => $sheetDetails
+                ]);
+
+            } finally {
+                if (file_exists($tempExcel)) {
+                    unlink($tempExcel);
+                }
+            }
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error listando hojas: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

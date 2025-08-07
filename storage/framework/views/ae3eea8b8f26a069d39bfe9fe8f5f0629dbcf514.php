@@ -29,6 +29,7 @@
     if (isset($opacity)) $styleAttributes[] = "opacity: {$opacity}";
     if (isset($transform)) $styleAttributes[] = "transform: {$transform}";
     if (isset($zIndex)) $styleAttributes[] = "z-index: {$zIndex}";
+    if (isset($border)) $styleAttributes[] = "border: {$border}";
 
     // Combinar todos los estilos
     $styleString = implode('; ', $styleAttributes);

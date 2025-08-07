@@ -1,0 +1,71 @@
+{
+    "width": 21.59,
+    "height": 27.94,
+    "margin-in": 0.95,
+    "margin-out": 0.64,
+    "spreadsheetId": "1nYdFCcD5hLjPmz1xmddfNupjItjOI4riFzgpKX9Bq7k",
+    "spreadsheetSheetName": "Chino",
+    "imagesURL": "https://printables.happycapibara.com/color-books/chinese/",
+    "verso": {
+        "margin": 0.5,
+        "border-margin": 0.25,
+        "image-margin": 0.25,
+        "text-1-top": 17.8,
+        "text-2-top": 19.7,
+        "primary-font-size": 2.1,
+        "secondary-font-size": 1.5,
+        "text-1-font-family": "NotoSerifRegular",
+        "text-2-font-family": "NotoSerifItalic"
+    },
+    "recto": {
+        "margin": 0.5,
+        "image-margin": 0.25,
+        "font-size": 8,
+        "text-top": 6,
+        "text-font-family": "ZenAntiqueRegular"
+    },
+    "page1": {
+        "text": "<p class=\"ql-align-center\"><span class=\"ql-font-NotoSerifSCBold\" style=\"font-size: 1.7cm; line-height: 1.7cm;\">El secreto</span></p><p class=\"ql-align-center\"><span class=\"ql-font-NotoSerifSCBold\" style=\"font-size: 1cm; line-height: 1.7cm;\">de los</span></p><p class=\"ql-align-center\"><span class=\"ql-font-NotoSerifSCBold\" style=\"font-size: 1.7cm; line-height: 1.7cm;\">Ideogramas Chinos</span></p><p><br></p>",
+        "text-top": 9,
+        "text-margin-x": 0,
+        "background-url": null,
+        "image-url": "https://printables.happycapibara.com/logo.png",
+        "image-top": 23,
+        "image-height": 3,
+        "image-width": "auto"
+    },
+    "page2": {
+        "text": "<p><span style=\"font-size: 0.3cm; line-height: 0.32cm;\">El secreto de los ideogramas chinos</span></p><p><span style=\"font-size: 0.3cm; line-height: 0.32cm;\">Libro para colorear para mentes curiosas</span></p><p><br></p><p><span style=\"font-size: 0.3cm; line-height: 0.32cm;\">© 2025 The Happy Capybara</span></p><p><span style=\"font-size: 0.3cm; line-height: 0.32cm;\">Todos los derechos reservados</span></p><p><br></p><p><span style=\"font-size: 0.3cm; line-height: 0.32cm;\">Ninguna parte de esta publicación puede ser reproducida, distribuida o transmitida de forma alguna ni por medio alguno, incluyendo fotocopias, grabaciones u otros métodos electrónicos o mecánicos, sin el permiso previo por escrito del editor, excepto en el caso de citas breves incorporadas en críticas y ciertos otros usos no comerciales permitidos por la ley de derechos de autor.</span></p><p><br></p><p><span style=\"font-size: 0.3cm; line-height: 0.32cm;\">Primera edición Julio 2025</span></p><p><span style=\"font-size: 0.3cm; line-height: 0.32cm;\">Publicado por The Happy Capybara Barcelona, España</span></p><p><span style=\"font-size: 0.3cm; line-height: 0.32cm;\">info@thehappycapybara.com</span></p><p><span style=\"font-size: 0.3cm; line-height: 0.32cm;\">ISBN: 9798294523992</span></p><p><span style=\"font-size: 0.3cm; line-height: 0.32cm;\">Independently published</span></p><p><span style=\"font-size: 0.3cm; line-height: 0.32cm;\">Impreso en Italia</span></p><p><span style=\"font-size: 0.3cm; line-height: 0.32cm;\">Editado y distribuido por Amazon KDP</span></p>",
+        "text-top": 19.5,
+        "text-margin-x": 0.5,
+        "background-url": null,
+        "image-url": null,
+        "image-top": 0,
+        "image-height": 0,
+        "image-width": "auto"
+    },
+    "page3": {
+        "text": "<p><br></p>",
+        "text-top": 0,
+        "text-margin-x": 0,
+        "background-url": null,
+        "image-url": "https://printables.happycapibara.com/color-books/birds.png",
+        "image-top": 5,
+        "image-height": 0,
+        "image-width": "20"
+    },
+    "page4": {
+        "image": "https://printables.happycapibara.com/color-books/chinese_landscape.png"
+    },
+    "page5": {
+        "text": "<p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><span style=\"line-height: 0.5cm; font-size: 0.5cm;\" class=\"ql-font-NotoSerifSCBold\">Un viaje al corazón de la caligrafía china</span></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><span style=\"line-height: 0.48cm; font-size: 0.45cm;\" class=\"ql-font-NotoSerifRegular\">Los caracteres chinos, conocidos como Hànzì, son mucho más que meras letras; son ideogramas que, en su origen eran representaciones pictóricas de objetos, conceptos y sentimientos.</span></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><span style=\"line-height: 0.48cm; font-size: 0.45cm;\" class=\"ql-font-NotoSerifRegular\">Al colorear estos caracteres te sumerges en una práctica que, para la cultura china, es tanto un arte como una forma de meditación. La caligrafía es considerada una de las más elevadas expresiones artísticas, un reflejo de la armonía, el equilibrio y la conexión con la naturaleza. Los trazos, el ritmo y la composición de cada carácter son fundamentales, y al concentrarse en sus formas, podrás experimentar una sensación de calma y atención plena, similar a la que se busca en disciplinas como el tai chi o la meditación zen.</span></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><span style=\"line-height: 0.48cm; font-size: 0.45cm;\" class=\"ql-font-NotoSerifRegular\">Este libro te invita a explorar no solo la estética visual de las palabras como \"belleza\" (美, měi) o \"espíritu\" (心, xīn), sino también el significado profundo que subyace en cada una. Al pintar \"paz\" (安, ān) o \"sueño\" (梦, mèng), no solo estás aplicando color, sino que estás interactuando con conceptos que han moldeado la cosmovisión china durante siglos.</span></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><br></p><p class=\"ql-align-center\"><span style=\"line-height: 0.5cm; font-size: 0.5cm;\" class=\"ql-font-NotoSerifSCBold\">Que los Hànzì te brinden inspiración, relajación y bienestar.</span></p>",
+        "text-top": 5,
+        "text-margin-x": 0,
+        "background-url": "https://printables.happycapibara.com/color-books/chinese_background.png",
+        "image-url": "",
+        "image-top": 0,
+        "image-height": 0,
+        "image-width": "auto"
+    },
+    "fonts": []
+}

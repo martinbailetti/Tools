@@ -23,5 +23,7 @@ Route::get('/load-config', [GeneratorController::class, 'loadConfig'])->name('co
 Route::get('/generate/fonts', [GeneratorController::class, 'getFonts'])->name('fonts.list');
 Route::post('/get-fonts-from-json', [GeneratorController::class, 'getFontsFromJson'])->name('fonts.from-json');
 Route::get('/fonts.css', [GeneratorController::class, 'getFontCSS'])->name('fonts.css');
+Route::get('/test-excel', [GeneratorController::class, 'testExcelReading'])->name('test.excel');
+Route::get('/list-sheets', [GeneratorController::class, 'listExcelSheets'])->name('list.sheets');
 
 
