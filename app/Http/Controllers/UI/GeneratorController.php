@@ -250,20 +250,11 @@ class GeneratorController extends Controller
         try {
             // Obtener el archivo JSON seleccionado desde el request
             $selectedJsonFile = $request->input('selectedJsonFile');
-            $filename = basename($selectedJsonFile);
 
-            // Leer configuración desde archivo JSON
-            $layoutJsonPath = public_path('json/' . $filename);
-            if (!file_exists($layoutJsonPath)) {
-                throw new \Exception("Layout configuration file not found at: " . $layoutJsonPath);
-            }
+            $book = Book::where('token', $selectedJsonFile)->first();
 
-            $layoutJson = file_get_contents($layoutJsonPath);
-            $config = json_decode($layoutJson, true);
+            $config = json_decode($book->config, true);
 
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new \Exception("Error parsing layout JSON: " . json_last_error_msg());
-            }
 
             $numberOfPages = $request->input('numberOfPages', 0);
             $languageSelector = $request->input('languageSelector', 'ES');
