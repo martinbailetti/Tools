@@ -1635,16 +1635,89 @@
                     // Add cache busting parameter to prevent loading from cache
                     urlParams.append('_t', Date.now().toString());
 
-                    const basePreviewUrl = '/preview-pdf?' + urlParams.toString();
+                    // Preparar datos para llamada POST
 
-                    // Agregar parámetros para mostrar PDF a pantalla completa sin navegación lateral
+                    // Hacer llamada POST al nuevo endpoint que genera PDF temporal
+                    console.log('Llamando al endpoint POST para generar PDF temporal...');
+                    $.ajax({
+                        url: '/preview-pdf',
+                        type: 'POST',
+                        data: previewData,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            if (response.success && response.pdf_url) {
+                                console.log('PDF temporal generado:', response.pdf_url);
+                                
+                                // Cargar el PDF en el iframe con parámetros de visualización
+                                const pdfUrl = response.pdf_url + '#toolbar=0&navpanes=0&view=FitH&zoom=page-width';
+                                console.log('URL de preview PDF:', pdfUrl);
+                                
+                                const iframe = document.getElementById('previewFrame');
+                                
+                                // Configurar listeners para detectar carga exitosa del PDF
+                                iframe.onload = function() {
+                                    console.log('Iframe onload evento disparado - verificando estado del PDF...');
+                                    waitForPdfReady(iframe, function() {
+                                        console.log("PDF está listo en el iframe");
+                                        hidePreviewLoading();
+                                    });
+                                };
+                                
+                                iframe.onerror = function() {
+                                    console.log('Error cargando PDF en iframe');
+                                    hidePreviewLoading();
+                                };
+                                
+                                // Cargar PDF en iframe
+                                console.log('Cargando PDF generado en iframe...');
+                                iframe.src = pdfUrl;
+                            } else {
+                                throw new Error(response.error || 'Error desconocido generando PDF');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error generando PDF temporal:', error);
+                            let errorMessage = 'Error generando vista previa';
+                            
+                            if (xhr.responseJSON && xhr.responseJSON.error) {
+                                errorMessage = xhr.responseJSON.error;
+                            }
+                            
+                            // Mostrar error en iframe
+                            const iframe = document.getElementById('previewFrame');
+                            const errorUrl = 'data:text/html;charset=utf-8,' + encodeURIComponent(`
+                                <html>
+                                    <body style="font-family: Arial, sans-serif; padding: 20px; text-align: center; color: #666;">
+                                        <div style="border: 2px dashed #dc3545; padding: 40px; border-radius: 10px;">
+                                            <i style="font-size: 48px; color: #dc3545;">⚠️</i>
+                                            <h3 style="color: #dc3545; margin: 20px 0;">Error generando PDF</h3>
+                                            <p>${errorMessage}</p>
+                                        </div>
+                                    </body>
+                                </html>
+                            `);
+                            
+                            iframe.onload = function() {
+                                console.log('Iframe de error cargado');
+                                hidePreviewLoading();
+                            };
+                            
+                            iframe.src = errorUrl;
+                            
+                            setTimeout(function() {
+                                hidePreviewLoading();
+                            }, 1000);
+                        }
+                    });
                     // toolbar=0: oculta toolbar superior
                     // navpanes=0: oculta panel de navegación lateral
                     // scrollbar=0: oculta scrollbar (opcional)
                     // view=FitH: ajusta horizontalmente
                     // zoom=page-width: ajusta al ancho de página
-                    const previewUrl = basePreviewUrl + '#toolbar=0&navpanes=0&view=FitH&zoom=page-width';
-                    console.log('URL de preview PDF:', previewUrl);
+
+
 
                     // Cargar PDF directamente en el iframe
                     const iframe = document.getElementById('previewFrame');
@@ -1688,13 +1761,7 @@
                     };
 
                     // Cargar PDF directamente en iframe
-                    console.log('Iniciando carga de PDF en iframe...');
-                    console.log('=== URL COMPLETA GENERADA ===');
-                    console.log('Preview URL:', previewUrl);
-                    console.log('Base URL sin fragmento:', basePreviewUrl);
-                    console.log('Parámetros URL:', urlParams.toString());
-                    console.log('================================');
-                    iframe.src = previewUrl;
+
                 })
                 .fail(function(xhr, status, error) {
                     console.error('Error cargando configuración JSON:', error);

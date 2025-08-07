@@ -528,29 +528,45 @@ class GeneratorController extends Controller
             ];
 
             // Generar PDF usando DOMPDF
-            $pdf = Pdf::loadView('pdf.colorbook_margin', $data)->setPaper([0, 0, $layout["width"] / 2.54 * 72, $layout["height"] / 2.54 * 72]);
+            $pdf = Pdf::loadView('pdf.colorbook_margin', $data)
+                ->setPaper([0, 0, $layout["width"] / 2.54 * 72, $layout["height"] / 2.54 * 72]);
 
+            // Generar nombre único para el archivo PDF temporal
+            $tempPdfName = 'preview_' . uniqid() . '_' . date('Y-m-d-H-i-s') . '.pdf';
 
+            // Crear directorio temporal si no existe
+            $tempDir = public_path('temp');
+            if (!file_exists($tempDir)) {
+                mkdir($tempDir, 0755, true);
+            }
 
-            // Retornar el PDF como respuesta inline para mostrar en iframe
-            return $pdf->stream('preview.pdf', ['Attachment' => false]);
+            // Ruta completa del archivo temporal
+            $tempPdfPath = $tempDir . DIRECTORY_SEPARATOR . $tempPdfName;
+
+            // Guardar PDF en archivo temporal
+            $pdfOutput = $pdf->output();
+            file_put_contents($tempPdfPath, $pdfOutput);
+
+            // Limpiar archivos temporales antiguos (más de 1 hora)
+            $this->cleanOldTempFiles($tempDir);
+
+            // Generar URL del PDF temporal
+            $pdfUrl = url('temp/' . $tempPdfName);
+
+            // Retornar JSON con la URL del PDF
+            return response()->json([
+                'success' => true,
+                'pdf_url' => $pdfUrl,
+                'filename' => $tempPdfName,
+                'message' => 'PDF generado exitosamente'
+            ]);
 
         } catch (\Exception $e) {
-            // En caso de error, crear un PDF con el mensaje de error
-            $errorData = [
-                'error' => true,
-                'message' => $e->getMessage(),
-                'title' => 'Error de Preview'
-            ];
-
-            try {
-                $errorPdf = Pdf::loadView('errors.preview-pdf', $errorData);
-                return $errorPdf->stream('error.pdf', ['Attachment' => false]);
-            } catch (\Exception $pdfError) {
-                // Si no se puede generar ni siquiera el PDF de error, devolver respuesta de texto
-                return response('Error generando preview PDF: ' . $e->getMessage(), 500)
-                    ->header('Content-Type', 'text/plain');
-            }
+            // En caso de error, retornar JSON con error
+            return response()->json([
+                'success' => false,
+                'error' => 'Error generando preview PDF: ' . $e->getMessage()
+            ], 500);
         }
     }    /**
      * Procesa los datos del spreadsheet de Google y retorna los items procesados
@@ -979,6 +995,42 @@ class GeneratorController extends Controller
         } catch (\Exception $e) {
             Log::error("Error creando backup: " . $e->getMessage());
             // No lanzamos excepción para no interrumpir el guardado principal
+        }
+    }
+
+    /**
+     * Limpia archivos temporales antiguos
+     */
+    private function cleanOldTempFiles($tempDir, $maxAge = 3600)
+    {
+        try {
+            if (!is_dir($tempDir)) {
+                return;
+            }
+
+            $files = glob($tempDir . '/*');
+            $currentTime = time();
+            $deletedCount = 0;
+
+            foreach ($files as $file) {
+                if (is_file($file)) {
+                    $fileAge = $currentTime - filemtime($file);
+
+                    // Eliminar archivos más antiguos que $maxAge segundos (por defecto 1 hora)
+                    if ($fileAge > $maxAge) {
+                        if (unlink($file)) {
+                            $deletedCount++;
+                        }
+                    }
+                }
+            }
+
+            if ($deletedCount > 0) {
+                Log::info("Limpieza de archivos temporales: eliminados {$deletedCount} archivos");
+            }
+
+        } catch (\Exception $e) {
+            Log::error("Error limpiando archivos temporales: " . $e->getMessage());
         }
     }
 
