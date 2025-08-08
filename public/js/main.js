@@ -1119,27 +1119,8 @@ function populateFontSelectors() {
     });
 }
 
-// Función para establecer valores de fuentes desde configuración
-/*
-        function setFontSelectorValues(config) {
-            console.log('Estableciendo valores de selectores de fuentes...');
 
-            if (config.verso) {
-                $('#config_verso_text_1_font_family').val(config.verso['text-1-font-family'] || '');
-                $('#config_verso_text_2_font_family').val(config.verso['text-2-font-family'] || '');
-            }
 
-            if (config.recto) {
-                $('#config_recto_text_font_family').val(config.recto['text-font-family'] || '');
-            }
-
-            console.log('Valores de fuentes establecidos:', {
-                verso_text_1: config.verso ? . ['text-1-font-family']
-                , verso_text_2: config.verso ? . ['text-2-font-family']
-                , recto_text: config.recto ? . ['text-font-family']
-            });
-        }
-*/
 // Función mejorada para establecer valores de fuentes desde configuración
 function setFontSelectorValuesImproved(config) {
     console.log(
